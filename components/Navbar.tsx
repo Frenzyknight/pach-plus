@@ -27,7 +27,7 @@ export default function Navbar() {
               priority
             />
             <div className="hidden lg:flex items-center gap-6 text-[11px] font-medium tracking-[0.15em] uppercase">
-              <a href="#" className="hover:opacity-60 transition-opacity">
+              <a href="/shop" className="hover:opacity-60 transition-opacity">
                 Shop
               </a>
               <a href="#" className="hover:opacity-60 transition-opacity">
