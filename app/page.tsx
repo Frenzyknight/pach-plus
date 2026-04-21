@@ -1,6 +1,9 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import WellnessSection from "@/components/WellnessSection";
+import CommunitySection from "@/components/CommunitySection";
+import PouchShowcaseSection from "@/components/PouchShowcaseSection";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -8,6 +11,9 @@ export default function Home() {
       <Navbar />
       <HeroSection />
       <WellnessSection />
+      <PouchShowcaseSection />
+      <CommunitySection />
+      <Footer />
     </div>
   );
 }

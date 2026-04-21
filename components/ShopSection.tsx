@@ -153,6 +153,7 @@ export default function ShopSection() {
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 66vw"
+              priority
             />
           </div>
           <ProductCard product={PRODUCTS[3]} />
