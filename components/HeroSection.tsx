@@ -92,37 +92,59 @@ export default function HeroSection() {
 
   const sectionRef = useRef<HTMLElement>(null);
   const dotRefs = useRef<(SVGCircleElement | null)[]>([]);
-  const buttonRef = useRef<HTMLButtonElement>(null);
   const prevIndex = useRef(0);
+  const currentIndexRef = useRef(0);
+  const textSwapTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const pkg = PACKAGES[currentIndex];
   const displayPkg = PACKAGES[displayIndex];
 
-  const goTo = useCallback((index: number) => {
-    setCurrentIndex(index);
-    setTimerKey((k) => k + 1);
+  const updatePackage = useCallback((index: number) => {
+    const nextIndex =
+      ((index % PACKAGES.length) + PACKAGES.length) % PACKAGES.length;
+
+    if (currentIndexRef.current === nextIndex) return;
+
+    currentIndexRef.current = nextIndex;
+    setCurrentIndex(nextIndex);
+
+    if (textSwapTimeoutRef.current) {
+      clearTimeout(textSwapTimeoutRef.current);
+    }
+
+    setTextVisible(false);
+    textSwapTimeoutRef.current = setTimeout(() => {
+      setDisplayIndex(nextIndex);
+      setTextVisible(true);
+      textSwapTimeoutRef.current = null;
+    }, 250);
   }, []);
+
+  const goTo = useCallback(
+    (index: number) => {
+      updatePackage(index);
+      setTimerKey((k) => k + 1);
+    },
+    [updatePackage],
+  );
 
   // Auto-cycle timer
   useEffect(() => {
     const id = setInterval(() => {
-      setCurrentIndex((i) => (i + 1) % PACKAGES.length);
+      updatePackage(currentIndexRef.current + 1);
     }, 6000);
     return () => clearInterval(id);
-  }, [timerKey]);
+  }, [timerKey, updatePackage]);
 
-  // Text crossfade: hide text, swap content after fade-out, then reveal
   useEffect(() => {
-    if (displayIndex === currentIndex) return;
-    setTextVisible(false);
-    const timeout = setTimeout(() => {
-      setDisplayIndex(currentIndex);
-      setTextVisible(true);
-    }, 250);
-    return () => clearTimeout(timeout);
-  }, [currentIndex, displayIndex]);
+    return () => {
+      if (textSwapTimeoutRef.current) {
+        clearTimeout(textSwapTimeoutRef.current);
+      }
+    };
+  }, []);
 
-  // GSAP: background color + SVG dot fills + button base color
+  // GSAP: background color + SVG dot fills
   useEffect(() => {
     const prev = prevIndex.current;
     if (prev === currentIndex) return;
@@ -139,20 +161,13 @@ export default function HeroSection() {
       if (el) gsap.to(el, { attr: { fill: pkg.accent }, duration: 0.7 });
     });
 
-    if (buttonRef.current) {
-      gsap.to(buttonRef.current, {
-        backgroundColor: pkg.accentLight,
-        duration: 0.5,
-      });
-    }
-
     prevIndex.current = currentIndex;
-  }, [currentIndex, pkg.bg, pkg.accent, pkg.accentLight]);
+  }, [currentIndex, pkg.bg, pkg.accent]);
 
   return (
     <section
       ref={sectionRef}
-      className="relative h-screen overflow-hidden"
+      className="relative h-svh min-h-[640px] overflow-hidden md:h-screen md:min-h-screen"
       style={{ backgroundColor: PACKAGES[0].bg }}
     >
       {/* Preload all package images (rendered but invisible) */}
@@ -163,12 +178,12 @@ export default function HeroSection() {
       </div>
 
       {/* Giant Display Text */}
-      <div className="absolute top-[3%] lg:top-[5%] inset-x-0 z-1 pointer-events-none select-none overflow-hidden">
-        <div className="flex items-end px-8">
+      <div className="absolute top-[4%] lg:top-[5%] inset-x-0 z-1 pointer-events-none select-none overflow-hidden">
+        <div className="flex items-end px-5 xs:px-8">
           <h1
-            className="whitespace-nowrap leading-[0.85] tracking-[-0.04em] text-foreground pt-18 transition-all duration-300"
+            className="whitespace-nowrap leading-[0.85] tracking-[-0.04em] text-foreground pt-24 xs:pt-20 md:pt-18 transition-all duration-300"
             style={{
-              fontSize: "clamp(5rem, 15.5vw, 20rem)",
+              fontSize: "clamp(2.85rem, 15vw, 20rem)",
               opacity: textVisible ? 1 : 0,
               transform: textVisible ? "translateY(0)" : "translateY(8px)",
             }}
@@ -178,16 +193,35 @@ export default function HeroSection() {
             <span className="font-bold">{displayPkg.heading.bold2}</span>
           </h1>
           <FlowerIcon
-            className="w-[4.5vw] h-[4.5vw] min-w-7 min-h-7 shrink-0 mb-[1.5vw] ml-[0.3vw] transition-colors duration-700"
+            className="w-[6vw] h-[6vw] min-w-5 min-h-5 max-w-16 max-h-16 shrink-0 mb-[1.5vw] ml-[0.3vw] transition-colors duration-700"
             color={pkg.accent}
           />
+        </div>
+        <div
+          className="mx-5 mt-3 max-w-[330px] xs:mx-8 md:hidden transition-all duration-300"
+          style={{
+            opacity: textVisible ? 1 : 0,
+            transform: textVisible ? "translateY(0)" : "translateY(4px)",
+          }}
+        >
+          <p className="text-[10px] font-medium tracking-[0.22em] uppercase text-foreground/80">
+            {displayPkg.label}
+          </p>
+          <div className="mt-2 flex items-start gap-2.5">
+            <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-foreground text-[10px] text-black">
+              i
+            </span>
+            <p className="text-[10px] font-medium uppercase leading-[1.65] tracking-[0.05em] text-foreground/70">
+              {displayPkg.description}
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Orbital Decoration + Carousel */}
-      <div className="absolute inset-0 flex items-center justify-center z-5 translate-y-[14%]">
+      <div className="absolute inset-0 flex items-center justify-center z-5 translate-y-[6%] sm:translate-y-[8%] md:translate-y-[14%]">
         <svg
-          className="absolute w-[55vw] h-[55vw] max-w-[700px] max-h-[700px]"
+          className="absolute w-[82vw] h-[82vw] max-w-[560px] max-h-[560px] md:w-[55vw] md:h-[55vw] md:max-w-[700px] md:max-h-[700px]"
           viewBox="0 0 700 700"
           fill="none"
         >
@@ -238,7 +272,7 @@ export default function HeroSection() {
       </div>
 
       {/* Right: Description + CTA */}
-      <div className="absolute right-6 lg:right-12 top-[22%] lg:top-[42%] z-20 max-w-[240px] hidden md:flex flex-col items-end gap-4">
+      <div className="absolute right-6 top-[32%] lg:top-[42%] z-20 hidden max-w-[320px] flex-col items-end gap-4 md:flex lg:right-12">
         <div className="flex items-start gap-3">
           <span className="shrink-0 w-[18px] h-[18px] rounded-full border border-foreground flex items-center justify-center text-[12px] mt-0.5 text-black">
             i
@@ -253,29 +287,44 @@ export default function HeroSection() {
             {displayPkg.description}
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="block w-20 h-px bg-foreground/15" />
+        <div className="flex items-center gap-2.5">
+          <span className="hidden lg:block w-12 h-px bg-foreground/15" />
           <button
-            ref={buttonRef}
-            className="px-5 py-2.5 rounded-full text-white text-[10px] font-medium tracking-[0.12em] uppercase cursor-pointer whitespace-nowrap transition-colors duration-200"
-            style={{ backgroundColor: PACKAGES[0].accentLight }}
-            onMouseEnter={() => {
-              if (buttonRef.current)
-                gsap.to(buttonRef.current, {
-                  backgroundColor: PACKAGES[currentIndex].accent,
-                  duration: 0.2,
-                });
-            }}
-            onMouseLeave={() => {
-              if (buttonRef.current)
-                gsap.to(buttonRef.current, {
-                  backgroundColor: PACKAGES[currentIndex].accentLight,
-                  duration: 0.2,
-                });
-            }}
+            type="button"
+            className="px-5 py-2.5 rounded-full text-white text-[10px] font-medium tracking-[0.12em] uppercase cursor-pointer whitespace-nowrap transition-all duration-200 hover:brightness-95 hover:-translate-y-0.5"
+            style={{ backgroundColor: pkg.accentLight }}
           >
             Explore Science
           </button>
+          <button
+            type="button"
+            className="px-5 py-2.5 rounded-full text-white text-[10px] font-semibold tracking-[0.12em] uppercase cursor-pointer whitespace-nowrap shadow-[0_10px_24px_rgba(0,0,0,0.12)] transition-all duration-200 hover:brightness-90 hover:-translate-y-0.5"
+            style={{ backgroundColor: pkg.accent }}
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile: CTAs */}
+      <div className="absolute inset-x-5 bottom-7 z-20 md:hidden">
+        <div className="flex w-full flex-col items-center text-center">
+          <div className="grid w-full grid-cols-1 gap-2.5 xs:grid-cols-2">
+            <button
+              type="button"
+              className="w-full rounded-full px-4 py-3 text-[10px] font-medium uppercase tracking-[0.12em] text-white shadow-[0_10px_24px_rgba(0,0,0,0.08)] transition-all duration-200 active:scale-[0.98]"
+              style={{ backgroundColor: pkg.accentLight }}
+            >
+              Explore Science
+            </button>
+            <button
+              type="button"
+              className="w-full rounded-full px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-[0_10px_24px_rgba(0,0,0,0.12)] transition-all duration-200 active:scale-[0.98]"
+              style={{ backgroundColor: pkg.accent }}
+            >
+              Add to Cart
+            </button>
+          </div>
         </div>
       </div>
 

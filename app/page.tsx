@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import WellnessSection from "@/components/WellnessSection";
 import CommunitySection from "@/components/CommunitySection";
 import PouchShowcaseSection from "@/components/PouchShowcaseSection";
+import LayerStackSection from "@/components/LayerStackSection";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       <WellnessSection />
       <PouchShowcaseSection />
       <CommunitySection />
+      <LayerStackSection />
       <Footer />
     </div>
   );

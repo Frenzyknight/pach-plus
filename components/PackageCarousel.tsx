@@ -73,7 +73,7 @@ export default function PackageCarousel({
 
   return (
     <div className="relative z-10 flex flex-col items-center">
-      <div className="relative w-[22vw] min-w-[180px] max-w-[300px] aspect-300/430">
+      <div className="relative w-[43vw] min-w-[150px] max-w-[220px] aspect-300/430 sm:w-[34vw] sm:max-w-[260px] md:w-[22vw] md:min-w-[180px] md:max-w-[300px]">
         {images.map((img, i) => (
           <div
             key={img.src}
@@ -95,7 +95,7 @@ export default function PackageCarousel({
         ))}
       </div>
 
-      <div className="flex gap-2.5 mt-6 z-20">
+      <div className="flex gap-2.5 mt-5 md:mt-6 z-20">
         {images.map((_, i) => (
           <button
             key={i}
