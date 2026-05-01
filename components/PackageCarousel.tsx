@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 
@@ -9,6 +10,7 @@ const R = 120;
 interface PackageImage {
   src: string;
   alt: string;
+  href?: string;
 }
 
 interface PackageCarouselProps {
@@ -80,17 +82,27 @@ export default function PackageCarousel({
             ref={(el) => {
               wrapperRefs.current[i] = el;
             }}
-            className={`absolute inset-0 ${i === 0 ? "" : "opacity-0"}`}
+            className={`absolute inset-0 ${
+              i === currentIndex ? "pointer-events-auto" : "pointer-events-none"
+            } ${i === 0 ? "" : "opacity-0"}`}
           >
-            <Image
-              src={img.src}
-              alt={img.alt}
-              width={300}
-              height={430}
-              className="w-full h-full object-contain rounded-xl"
-              style={{ filter: "drop-shadow(0 25px 50px rgba(0,0,0,0.3))" }}
-              priority={i === 0}
-            />
+            <Link
+              href={img.href ?? "#"}
+              aria-label={`View ${img.alt}`}
+              className="block h-full w-full"
+            >
+              <Image
+                src={img.src}
+                alt={img.alt}
+                width={300}
+                height={430}
+                className="w-full h-full object-contain rounded-xl"
+                style={{
+                  filter: "drop-shadow(0 25px 50px rgba(0,0,0,0.3))",
+                }}
+                priority={i === 0}
+              />
+            </Link>
           </div>
         ))}
       </div>

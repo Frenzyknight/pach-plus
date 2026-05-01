@@ -54,11 +54,11 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-pink-300 text-pink-900 pt-16 pb-6 px-4 lg:px-16">
+    <footer className="border-t border-black bg-white px-4 pt-16 pb-6 text-foreground lg:px-16">
       <div className="mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-start">
           {/* Left: p+ logo mark */}
-          <div className="lg:col-span-4 flex justify-start lg:pt-4">
+          <div className="hidden justify-start lg:col-span-4 lg:flex lg:pt-4">
             <Image
               src="/logo mark - black@2x.png"
               alt="pach+"
@@ -82,10 +82,13 @@ export default function Footer() {
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
-              {FOOTER_COLUMNS.map((column) => (
-                <div key={column.heading}>
-                  <h3 className="text-lg font-semibold tracking-tight text-pink-900 mb-4">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 sm:gap-8">
+              {FOOTER_COLUMNS.map((column, index) => (
+                <div
+                  key={column.heading}
+                  className={index === 2 ? "col-span-2 sm:col-span-1" : undefined}
+                >
+                  <h3 className="mb-4 text-lg font-semibold tracking-tight text-foreground">
                     {column.heading}
                   </h3>
                   <ul className="space-y-2.5">
@@ -93,7 +96,7 @@ export default function Footer() {
                       <li key={link.label}>
                         <Link
                           href={link.href}
-                          className="text-[15px] text-pink-900/90 hover:text-pink-700 transition-colors"
+                          className="text-[15px] text-foreground/80 transition-colors hover:text-foreground"
                         >
                           {link.label}
                         </Link>
@@ -107,15 +110,15 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="mt-14 lg:mt-20 border-t border-pink-900/25" />
+        <div className="mt-14 border-t border-foreground/20 lg:mt-20" />
 
         {/* Bottom bar */}
-        <div className="pt-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-[13px] text-pink-900">
+        <div className="flex flex-col items-start justify-between gap-4 pt-5 text-[13px] text-foreground sm:flex-row sm:items-center">
           <div className="flex flex-wrap items-center gap-x-16 gap-y-2">
             <span>Copyright &copy; pach+</span>
             <Link
               href="#"
-              className="hover:text-pink-700 transition-colors"
+              className="transition-colors hover:text-foreground/65"
             >
               Terms of Service
             </Link>
@@ -124,11 +127,11 @@ export default function Footer() {
           <button
             type="button"
             onClick={handleBackToTop}
-            className="flex items-center gap-2 hover:text-pink-700 transition-colors group"
+            className="group flex items-center gap-2 transition-colors hover:text-foreground/65"
             aria-label="Back to top"
           >
             <span>Back to top</span>
-            <span className="w-6 h-6 border border-pink-900/60 rounded-[2px] flex items-center justify-center group-hover:border-pink-700 transition-colors">
+            <span className="flex h-6 w-6 items-center justify-center rounded-[2px] border border-foreground/60 transition-colors group-hover:border-foreground/65">
               <BackToTopArrow />
             </span>
           </button>

@@ -41,26 +41,30 @@ const POLAROIDS: Polaroid[] = [
   {
     src: "/girl-guy.png",
     alt: "Couple wearing pach+ patches",
-    className: "left-[-5%] top-[8%] w-[62%] z-10",
+    className:
+      "left-[-7%] top-[12%] w-[58%] z-10 sm:left-[2%] sm:top-[10%] sm:w-[50%] lg:left-[-5%] lg:top-[8%] lg:w-[62%]",
     rotation: "-7deg",
   },
   {
     src: "/girl-pach.png",
     alt: "Woman with pach+ Happy Hormones patch",
-    className: "right-[-2%] top-[0%] w-[52%] z-30",
+    className:
+      "right-[-5%] top-[2%] w-[50%] z-30 sm:right-[3%] sm:top-[0%] sm:w-[44%] lg:right-[-2%] lg:w-[52%]",
     rotation: "6deg",
   },
   {
     src: "/package.png",
     alt: "pach+ Recovery patch",
-    className: "left-[18%] bottom-[-4%] w-[40%] z-20",
+    className:
+      "left-[14%] bottom-[4%] w-[38%] z-20 sm:left-[23%] sm:bottom-[-2%] sm:w-[34%] lg:left-[18%] lg:bottom-[-4%] lg:w-[40%]",
     rotation: "-4deg",
     tint: "#E9D5FF",
   },
   {
     src: "/package3.png",
     alt: "pach+ Happy Hormones patch",
-    className: "right-[10%] bottom-[2%] w-[36%] z-40",
+    className:
+      "right-[8%] bottom-[7%] w-[34%] z-40 sm:right-[17%] sm:bottom-[1%] sm:w-[30%] lg:right-[10%] lg:bottom-[2%] lg:w-[36%]",
     rotation: "8deg",
     tint: "#FCE7F3",
   },
@@ -68,14 +72,17 @@ const POLAROIDS: Polaroid[] = [
 
 export default function CommunitySection() {
   return (
-    <section className="relative bg-teal-100/50 py-20 lg:py-28 px-6 lg:px-10 overflow-hidden">
-      <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <section
+      id="about"
+      className="relative overflow-hidden bg-white px-5 pb-12 pt-28 xs:px-6 sm:pb-18 sm:pt-32 lg:px-10 lg:py-28"
+    >
+      <div className="mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-20">
         {/* Left: Polaroid photo collage */}
-        <div className="relative w-full h-[500px] lg:h-[620px] order-2 lg:order-1">
+        <div className="relative order-2 mx-auto h-[360px] w-full max-w-[420px] xs:h-[430px] sm:h-[560px] sm:max-w-[680px] md:h-[620px] lg:order-1 lg:h-[620px] lg:max-w-none">
           {POLAROIDS.map((p) => (
             <div
               key={p.src}
-              className={`absolute ${p.className} bg-white pt-3 px-3 pb-3 rounded-sm`}
+              className={`absolute ${p.className} rounded-sm bg-white px-2 pb-2 pt-2 sm:px-3 sm:pb-3 sm:pt-3`}
               style={{
                 transform: `rotate(${p.rotation})`,
                 boxShadow:
@@ -91,7 +98,7 @@ export default function CommunitySection() {
                   alt={p.alt}
                   fill
                   className={p.tint ? "object-contain p-4" : "object-cover"}
-                  sizes="(max-width: 1024px) 50vw, 30vw"
+                  sizes="(max-width: 640px) 60vw, (max-width: 1024px) 45vw, 30vw"
                 />
               </div>
             </div>
@@ -99,24 +106,24 @@ export default function CommunitySection() {
         </div>
 
         {/* Right: Content */}
-        <div className="relative order-1 lg:order-2">
-          <h2
-            className="font-bold tracking-tight leading-[1.1] text-teal-900"
-            style={{ fontSize: "clamp(2rem, 3.6vw, 3.25rem)" }}
-          >
+        <div className="relative order-1 mx-auto w-full max-w-[560px] lg:order-2 lg:max-w-none">
+          <p className="mb-2 text-[10px] font-black uppercase tracking-[0.24em] text-teal-800/60 sm:mb-3 sm:text-xs">
+            Our mission
+          </p>
+          <h2 className="text-[1.9rem] font-black leading-[0.95] tracking-[-0.055em] text-slate-900 xs:text-[2.35rem] sm:text-5xl lg:text-[clamp(2.75rem,3.8vw,3.75rem)] xl:text-6xl">
             We want to make wellness{" "}
-            <span className="text-teal-700">simple, science-backed</span> and
-            effortless &mdash; so you can feel good, live better, and enjoy every
+            <span className="block sm:inline">simple, science backed</span> and
+            effortless, so you can feel good, live better, and enjoy every
             single day.
           </h2>
 
-          <p className="mt-6 text-base lg:text-lg text-teal-900/70 leading-relaxed max-w-[540px]">
+          <p className="mt-2.5 max-w-[500px] text-[10px] font-medium leading-relaxed text-foreground/68 xs:text-xs sm:mt-5 sm:text-sm lg:text-base">
             Loved by thousands of community members, our plant-based transdermal
             patches deliver targeted, precision-dosed ingredients right where you
             need them. No pills. No mess. Just real relief while you live.
           </p>
 
-          <div className="mt-10 flex items-center gap-5 flex-wrap">
+          <div className="mt-8 flex flex-col items-start gap-4 xs:flex-row xs:items-center xs:gap-5 sm:mt-10 sm:flex-wrap">
             <Link
               href="/shop"
               className="group flex items-center gap-0"
@@ -147,9 +154,9 @@ export default function CommunitySection() {
             </div>
           </div>
 
-          <div className="mt-14 flex items-end gap-3">
+          <div className="mt-10 flex items-end gap-3 sm:mt-14">
             <p
-              className="text-3xl lg:text-4xl text-teal-900/80"
+              className="text-2xl text-teal-900/80 xs:text-3xl lg:text-4xl"
               style={{
                 fontFamily: "'Brush Script MT', 'Lucida Handwriting', cursive",
                 fontStyle: "italic",
@@ -159,7 +166,7 @@ export default function CommunitySection() {
             </p>
             <svg
               viewBox="0 0 60 40"
-              className="w-14 h-10 text-teal-900/60 mb-1"
+              className="mb-1 h-8 w-12 text-teal-900/60 xs:h-10 xs:w-14"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.5"

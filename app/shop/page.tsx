@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import ShopSection from "@/components/ShopSection";
+import Footer from "@/components/Footer";
 
 export default function ShopPage() {
   return (
@@ -8,6 +9,7 @@ export default function ShopPage() {
       <div className="pt-24">
         <ShopSection />
       </div>
+      <Footer />
     </div>
   );
 }

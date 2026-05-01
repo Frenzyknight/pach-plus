@@ -7,9 +7,9 @@ import PackageCarousel from "./PackageCarousel";
 
 const PACKAGES = [
   {
+    slug: "happy-muscles",
     src: "/package.png",
     alt: "Happy Muscles",
-    bg: "#E9D5FF",
     accent: "#574092",
     accentLight: "#896CC4",
     heading: { bold1: "REC", light: "O", bold2: "VERY" },
@@ -19,9 +19,9 @@ const PACKAGES = [
       "Experience the future of wellness with pach+\u2019s tailored transdermal recovery.",
   },
   {
+    slug: "happy-breathe",
     src: "/package2.png",
     alt: "Happy Breathe",
-    bg: "#DBEAFE",
     accent: "#1E3A8A",
     accentLight: "#93C5FD",
     heading: { bold1: "BRE", light: "A", bold2: "THE" },
@@ -31,9 +31,9 @@ const PACKAGES = [
       "Breathe easy with pach+\u2019s plant-based nasal comfort patch.",
   },
   {
+    slug: "happy-hormones",
     src: "/package3.png",
     alt: "Happy Hormones (for Her)",
-    bg: "#FCE7F3",
     accent: "#BE185D",
     accentLight: "#F9A8D4",
     heading: { bold1: "BAL", light: "A", bold2: "NCE" },
@@ -43,9 +43,9 @@ const PACKAGES = [
       "Support your daily hormonal balance with pach+\u2019s PCOS support patch.",
   },
   {
+    slug: "happy-gut",
     src: "/package4.png",
     alt: "Happy Gut",
-    bg: "#D1FAE5",
     accent: "#065F46",
     accentLight: "#6EE7B7",
     heading: { bold1: "NO", light: "U", bold2: "RISH" },
@@ -56,7 +56,11 @@ const PACKAGES = [
   },
 ];
 
-const CAROUSEL_IMAGES = PACKAGES.map(({ src, alt }) => ({ src, alt }));
+const CAROUSEL_IMAGES = PACKAGES.map(({ src, alt, slug }) => ({
+  src,
+  alt,
+  href: `/products/${slug}`,
+}));
 
 function FlowerIcon({
   className,
@@ -90,7 +94,6 @@ export default function HeroSection() {
   const [displayIndex, setDisplayIndex] = useState(0);
   const [textVisible, setTextVisible] = useState(true);
 
-  const sectionRef = useRef<HTMLElement>(null);
   const dotRefs = useRef<(SVGCircleElement | null)[]>([]);
   const prevIndex = useRef(0);
   const currentIndexRef = useRef(0);
@@ -144,32 +147,20 @@ export default function HeroSection() {
     };
   }, []);
 
-  // GSAP: background color + SVG dot fills
+  // GSAP: SVG dot fills on package change
   useEffect(() => {
     const prev = prevIndex.current;
     if (prev === currentIndex) return;
-
-    if (sectionRef.current) {
-      gsap.to(sectionRef.current, {
-        backgroundColor: pkg.bg,
-        duration: 0.8,
-        ease: "power2.inOut",
-      });
-    }
 
     dotRefs.current.forEach((el) => {
       if (el) gsap.to(el, { attr: { fill: pkg.accent }, duration: 0.7 });
     });
 
     prevIndex.current = currentIndex;
-  }, [currentIndex, pkg.bg, pkg.accent]);
+  }, [currentIndex, pkg.accent]);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative h-svh min-h-[640px] overflow-hidden md:h-screen md:min-h-screen"
-      style={{ backgroundColor: PACKAGES[0].bg }}
-    >
+    <section className="relative h-svh min-h-[640px] overflow-hidden bg-background md:h-screen md:min-h-screen">
       {/* Preload all package images (rendered but invisible) */}
       <div aria-hidden className="absolute w-0 h-0 overflow-hidden">
         {PACKAGES.map((p) => (
@@ -221,17 +212,17 @@ export default function HeroSection() {
       {/* Orbital Decoration + Carousel */}
       <div className="absolute inset-0 flex items-center justify-center z-5 translate-y-[6%] sm:translate-y-[8%] md:translate-y-[14%]">
         <svg
-          className="absolute w-[82vw] h-[82vw] max-w-[560px] max-h-[560px] md:w-[55vw] md:h-[55vw] md:max-w-[700px] md:max-h-[700px]"
+          className="absolute w-[82vw] h-[82vw] max-w-[560px] max-h-[560px] text-foreground/15 md:w-[55vw] md:h-[55vw] md:max-w-[700px] md:max-h-[700px]"
           viewBox="0 0 700 700"
           fill="none"
         >
-          <circle cx="350" cy="350" r="320" stroke="rgba(255,255,255,0.6)" strokeWidth="1" />
-          <circle cx="350" cy="350" r="230" stroke="rgba(255,255,255,0.6)" strokeWidth="1" />
-          <circle cx="350" cy="350" r="140" stroke="rgba(255,255,255,0.6)" strokeWidth="1" />
+          <circle cx="350" cy="350" r="320" stroke="currentColor" strokeWidth="1" />
+          <circle cx="350" cy="350" r="230" stroke="currentColor" strokeWidth="1" />
+          <circle cx="350" cy="350" r="140" stroke="currentColor" strokeWidth="1" />
 
-          <line x1="70" y1="150" x2="630" y2="550" stroke="rgba(255,255,255,0.5)" strokeWidth="0.8" />
-          <line x1="630" y1="150" x2="70" y2="550" stroke="rgba(255,255,255,0.5)" strokeWidth="0.8" />
-          <line x1="30" y1="350" x2="670" y2="350" stroke="rgba(255,255,255,0.5)" strokeWidth="0.8" />
+          <line x1="70" y1="150" x2="630" y2="550" stroke="currentColor" strokeWidth="0.8" />
+          <line x1="630" y1="150" x2="70" y2="550" stroke="currentColor" strokeWidth="0.8" />
+          <line x1="30" y1="350" x2="670" y2="350" stroke="currentColor" strokeWidth="0.8" />
 
           <circle ref={(el) => { dotRefs.current[0] = el; }} cx="145" cy="228" r="3.5" fill={PACKAGES[0].accent} />
           <circle ref={(el) => { dotRefs.current[1] = el; }} cx="555" cy="228" r="3.5" fill={PACKAGES[0].accent} />

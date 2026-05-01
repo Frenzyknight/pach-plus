@@ -1,51 +1,6 @@
 import Image from "next/image";
-
-const PRODUCTS = [
-  {
-    src: "/package.png",
-    name: "Happy Muscles",
-    type: "Recovery Patch",
-    price: 24,
-    rating: 4.8,
-    reviews: 16,
-    tagline: "For Clean, Targeted Recovery*",
-    accent: "#574092",
-    bg: "#E9D5FF",
-  },
-  {
-    src: "/package2.png",
-    name: "Happy Breathe",
-    type: "Nasal Comfort Patch",
-    price: 24,
-    rating: 4.5,
-    reviews: 19,
-    tagline: "For Easy, Plant-Based Breathing*",
-    accent: "#1E3A8A",
-    bg: "#DBEAFE",
-  },
-  {
-    src: "/package3.png",
-    name: "Happy Hormones",
-    type: "Balance Patch",
-    price: 24,
-    rating: 5.0,
-    reviews: 29,
-    tagline: "For Hormonal Harmony & Balance*",
-    accent: "#BE185D",
-    bg: "#FCE7F3",
-  },
-  {
-    src: "/package4.png",
-    name: "Happy Gut",
-    type: "Nourish Patch",
-    price: 24,
-    rating: 4.9,
-    reviews: 12,
-    tagline: "For Gut Health & Metabolism*",
-    accent: "#065F46",
-    bg: "#D1FAE5",
-  },
-];
+import Link from "next/link";
+import { PRODUCTS, type Product } from "@/lib/products";
 
 function StarRating({ rating, reviews }: { rating: number; reviews: number }) {
   const fullStars = Math.floor(rating);
@@ -85,14 +40,16 @@ function StarRating({ rating, reviews }: { rating: number; reviews: number }) {
   );
 }
 
-function ProductCard({
+export function ProductCard({
   product,
 }: {
-  product: (typeof PRODUCTS)[number];
+  product: Product;
 }) {
   return (
     <div className="group flex flex-col">
-      <div
+      <Link
+        href={`/products/${product.slug}`}
+        aria-label={`View ${product.name}`}
         className="relative aspect-square rounded-2xl overflow-hidden mb-4 transition-transform duration-300 group-hover:scale-[1.02]"
         style={{ backgroundColor: product.bg }}
       >
@@ -103,7 +60,7 @@ function ProductCard({
           className="object-contain p-8 transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, 33vw"
         />
-      </div>
+      </Link>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <p className="text-sm font-medium text-foreground truncate">
@@ -116,6 +73,17 @@ function ProductCard({
         </div>
         <StarRating rating={product.rating} reviews={product.reviews} />
       </div>
+      <button
+        type="button"
+        className="mt-4 w-full rounded-full py-3.5 text-[11px] font-medium uppercase tracking-[0.15em] text-white transition-transform duration-300 hover:scale-[1.01] focus-visible:outline-2 focus-visible:outline-offset-2 cursor-pointer"
+        style={{
+          backgroundColor: product.accent,
+          outlineColor: product.accent,
+        }}
+        aria-label={`Add ${product.name} to cart`}
+      >
+        Add to Cart
+      </button>
     </div>
   );
 }
