@@ -11,7 +11,7 @@ const MENU_ITEMS: StaggeredMenuItem[] = [
   { label: "Home", ariaLabel: "Go to home page", link: "/" },
   { label: "Shop", ariaLabel: "Shop pach+ products", link: "/shop" },
   { label: "About", ariaLabel: "Learn about pach+", link: "/#about" },
-  { label: "Science", ariaLabel: "The science behind pach+", link: "/#science" },
+  { label: "Science", ariaLabel: "The science behind pach+", link: "/science" },
 ];
 
 export default function Navbar() {
@@ -57,7 +57,7 @@ export default function Navbar() {
                   About
                 </Link>
                 <Link
-                  href="/#science"
+                  href="/science"
                   className="transition-opacity hover:opacity-60"
                 >
                   Science

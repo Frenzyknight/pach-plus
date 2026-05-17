@@ -85,7 +85,7 @@ function LayerDetailCards({ className }: { className?: string }) {
         return (
           <article
             key={detail.label}
-            className="layer-stack-card rounded-[1.15rem] border border-foreground/6 bg-white p-2.5 shadow-[0_18px_48px_rgba(87,64,146,0.08)] xs:rounded-[1.35rem] xs:p-3 lg:min-h-[150px] lg:rounded-3xl lg:p-4 xl:min-h-[165px] 2xl:min-h-[190px] 2xl:p-5"
+            className="layer-stack-card rounded-[1.15rem] border border-foreground/6 bg-white p-2.5  xs:rounded-[1.35rem] xs:p-3 lg:min-h-[150px] lg:rounded-3xl lg:p-4 xl:min-h-[165px] 2xl:min-h-[190px] 2xl:p-5"
           >
             <div
               className={`layer-stack-card-icon mb-2 flex size-8 items-center justify-center rounded-xl xs:mb-3 xs:size-9 lg:mb-4 lg:size-10 lg:rounded-2xl 2xl:mb-6 2xl:size-12 ${detail.accent}`}
@@ -253,7 +253,7 @@ export default function LayerStackSection() {
 
   return (
     <section
-      id="science"
+      id="patch-anatomy"
       ref={sectionRef}
       className="layer-stack-section relative h-svh min-h-[640px] w-full overflow-hidden bg-white lg:h-screen lg:min-h-0"
       aria-label="pach+ patch layer breakdown"
