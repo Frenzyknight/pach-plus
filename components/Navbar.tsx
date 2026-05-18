@@ -10,7 +10,7 @@ import StaggeredMenu, {
 const MENU_ITEMS: StaggeredMenuItem[] = [
   { label: "Home", ariaLabel: "Go to home page", link: "/" },
   { label: "Shop", ariaLabel: "Shop pach+ products", link: "/shop" },
-  { label: "About", ariaLabel: "Learn about pach+", link: "/#about" },
+  { label: "About", ariaLabel: "Learn about pach+", link: "/about" },
   { label: "Science", ariaLabel: "The science behind pach+", link: "/science" },
 ];
 
@@ -51,7 +51,7 @@ export default function Navbar() {
                   Shop
                 </Link>
                 <Link
-                  href="/#about"
+                  href="/about"
                   className="transition-opacity hover:opacity-60"
                 >
                   About

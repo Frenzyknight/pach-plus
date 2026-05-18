@@ -18,9 +18,9 @@ export default function PouchGridSection() {
   };
 
   return (
-    <section className="bg-white px-6 py-20 lg:px-10">
+    <section className="bg-white px-5 py-16 xs:px-6 sm:py-20 lg:px-10 lg:py-28">
       <div className="mx-auto max-w-[1400px]">
-        <div className="mb-12 flex items-center justify-between">
+        <div className="mb-8 flex items-center justify-between sm:mb-12">
           <h2 className="text-[11px] font-medium uppercase tracking-[0.25em] text-foreground/60">
             Shop the Pouches
           </h2>
