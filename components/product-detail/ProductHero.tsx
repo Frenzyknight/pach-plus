@@ -1,5 +1,5 @@
-import Image from "next/image";
 import type { Product } from "@/lib/products";
+import ProductImageCarousel from "@/components/product-detail/ProductImageCarousel";
 
 function Rating({ rating, reviews }: { rating: number; reviews: number }) {
   return (
@@ -41,28 +41,11 @@ function Chevron() {
 export default function ProductHero({ product }: { product: Product }) {
   return (
     <section className="grid min-h-[calc(100svh-6rem)] grid-cols-1 gap-4 border-b border-black/10 bg-white p-4 lg:grid-cols-[59%_41%] lg:gap-6 lg:p-6">
-      <div
-        className="relative min-h-[520px] overflow-hidden rounded-3xl lg:min-h-[calc(100svh-9rem)]"
-        style={{ backgroundColor: product.bg }}
-      >
-        <Image
-          src={product.src}
-          alt={`${product.name} package`}
-          fill
-          sizes="(max-width: 1024px) 100vw, 60vw"
-          className="object-contain p-16 sm:p-24 lg:p-28"
-          priority
-        />
-
-        <div className="absolute bottom-7 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-black/10 px-3 py-2 backdrop-blur">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <span
-              key={index}
-              className={`h-1.5 rounded-full ${index === 0 ? "w-5 bg-black/45" : "w-1.5 bg-black/20"}`}
-            />
-          ))}
-        </div>
-      </div>
+      <ProductImageCarousel
+        productName={product.name}
+        productSrc={product.src}
+        bg={product.bg}
+      />
 
       <div className="bg-white px-2 py-8 sm:px-6 lg:px-8 lg:py-9">
         <div className="mx-auto max-w-[520px]">
