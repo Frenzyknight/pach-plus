@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 interface Stat {
   value: string;
@@ -12,18 +13,6 @@ const STATS: Stat[] = [
   { value: "100%", label: "Plant-based actives, no fillers" },
 ];
 
-interface ChartBar {
-  label: string;
-  height: number;
-  color: string;
-}
-
-const CHART_BARS: ChartBar[] = [
-  { label: "Recovery", height: 82, color: "var(--color-teal-700)" },
-  { label: "Breathe", height: 64, color: "var(--color-gold-500)" },
-  { label: "Balance", height: 91, color: "var(--color-purple-500)" },
-  { label: "Nourish", height: 75, color: "var(--color-pink-500)" },
-];
 
 function ArrowIcon() {
   return (
@@ -61,12 +50,17 @@ export default function AboutStatsMission() {
         </div>
 
         <div className="mt-16 grid grid-cols-1 items-center gap-12 lg:mt-24 lg:grid-cols-2 lg:gap-16">
-          <div>
-            <p className="mb-3 text-[10px] font-black uppercase tracking-[0.24em] text-teal-800/60 sm:mb-4 sm:text-xs">
+          <div className="order-2 lg:order-1">
+            <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.25em] text-foreground/60 sm:mb-4">
               Our mission
             </p>
-            <h2 className="text-[1.9rem] font-black leading-[0.95] tracking-[-0.055em] text-slate-900 xs:text-[2.35rem] sm:text-5xl lg:text-[clamp(2.5rem,3.4vw,3.5rem)]">
-              Driving wellness through smart formulation.
+            <h2
+              className="leading-[1.05] tracking-[-0.03em] text-foreground"
+              style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}
+            >
+              <span className="font-bold">Driving wellness</span>{" "}
+              <span className="font-extralight">through</span>{" "}
+              <span className="font-bold">smart formulation.</span>
             </h2>
             <p className="mt-5 max-w-[560px] text-[11px] font-medium leading-relaxed text-foreground/68 xs:text-xs sm:mt-6 sm:text-sm lg:text-base">
               We exist to make wellness effortless. Every pach+ patch delivers
@@ -93,52 +87,23 @@ export default function AboutStatsMission() {
             </div>
           </div>
 
-          <div className="rounded-[28px] bg-[#F4F2EE] p-7 lg:p-10">
-            <div className="flex items-baseline justify-between gap-4">
-              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-foreground/55 sm:text-xs">
-                Bioavailability index
-              </p>
-              <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-foreground/55">
-                Relative %
-              </p>
-            </div>
-
-            <div className="mt-8 flex h-56 items-end gap-4 sm:h-64 lg:h-72">
-              {CHART_BARS.map((bar) => (
-                <div
-                  key={bar.label}
-                  className="flex h-full flex-1 flex-col items-center justify-end gap-3"
-                >
-                  <span className="text-[10px] font-black tracking-[-0.01em] text-slate-900 sm:text-xs">
-                    {bar.height}
-                  </span>
-                  <div
-                    className="w-full rounded-t-lg transition-all duration-500"
-                    style={{
-                      height: `${bar.height}%`,
-                      backgroundColor: bar.color,
-                    }}
-                    aria-hidden="true"
-                  />
-                  <span className="text-[10px] font-medium uppercase tracking-[0.14em] text-foreground/70 sm:text-[11px]">
-                    {bar.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-foreground/10 pt-5 text-[10px] font-medium uppercase tracking-[0.18em] text-foreground/55 sm:text-[11px]">
-              <span className="text-foreground/80">Patch line</span>
-              {CHART_BARS.map((bar) => (
-                <span key={bar.label} className="flex items-center gap-2">
-                  <span
-                    className="block h-2.5 w-2.5 rounded-full"
-                    style={{ backgroundColor: bar.color }}
-                  />
-                  {bar.label}
-                </span>
-              ))}
-            </div>
+          <div className="order-1 overflow-hidden rounded-[28px] lg:order-2">
+            <Image
+              src="/mission-desktop.jpeg"
+              alt="Our mission — athletes wearing pach+ patches"
+              width={1024}
+              height={576}
+              className="hidden w-full object-cover lg:block lg:h-[520px]"
+              priority
+            />
+            <Image
+              src="/mission-mobile.jpeg"
+              alt="Our mission — athletes wearing pach+ patches"
+              width={600}
+              height={800}
+              className="h-[480px] w-full object-cover lg:hidden"
+              priority
+            />
           </div>
         </div>
       </div>

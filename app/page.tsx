@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import BannerSection from "@/components/BannerSection";
 import HeroSection from "@/components/HeroSection";
 // import WellnessSection from "@/components/WellnessSection";
-import LayerStackSection from "@/components/LayerStackSection";
+import TestimonialReelsSection from "@/components/TestimonialReelsSection";
 import CtaBannerSection from "@/components/CtaBannerSection";
 import PouchGridSection from "@/components/PouchGridSection";
 import Footer from "@/components/Footer";
@@ -14,7 +14,7 @@ export default function Home() {
       <BannerSection />
       <HeroSection />
       {/* <WellnessSection /> */}
-      <LayerStackSection />
+      <TestimonialReelsSection />
       <CtaBannerSection />
       <PouchGridSection />
       <Footer />

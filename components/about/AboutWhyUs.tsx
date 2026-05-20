@@ -1,12 +1,23 @@
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 interface ValueCard {
   title: string;
   description: string;
+  imageSrc: string;
+  imageAlt: string;
   discBg: string;
+  ringColor: string;
   icon: ReactNode;
 }
+
+const ROTATION_MS = 8000;
+const RING_RADIUS = 26.5;
+const RING_INSET = 1.5;
+const RING_START_OFFSET = 90;
 
 function LeafFlaskIcon() {
   return (
@@ -87,48 +98,173 @@ const CARDS: ValueCard[] = [
     title: "Transparent science",
     description:
       "Every active is named, dosed and explained. No proprietary blends, no fine print.",
-    discBg: "bg-teal-100",
+    imageSrc: "/transparent-science.jpeg",
+    imageAlt: "Scientist in lab holding petri dish",
+    discBg: "bg-purple-100",
+    ringColor: "#574092",
     icon: <LeafFlaskIcon />,
   },
   {
     title: "Precision dosing",
     description:
       "Measured, controlled-release delivery so each patch works steadily through your day.",
+    imageSrc: "/precision-dosing.jpeg",
+    imageAlt: "Robotic arms precision-filling patches on a conveyor belt",
     discBg: "bg-gold-100",
+    ringColor: "#FFCD49",
     icon: <TargetIcon />,
   },
   {
     title: "Plant-first formulas",
     description:
       "Botanicals and minerals lead the recipe. Synthetics only when nothing else will do.",
-    discBg: "bg-purple-100",
+    imageSrc: "/plant-ingredients.jpeg",
+    imageAlt: "Botanical herbs and plant extracts laid out on a yellow surface",
+    discBg: "bg-teal-100",
+    ringColor: "#33957B",
     icon: <LeafIcon />,
   },
   {
     title: "Made for daily life",
     description:
       "Discreet, breathable patches that move with you \u2014 from workouts to long-haul flights.",
+    imageSrc: "/flight-sleep.jpeg",
+    imageAlt: "Woman sleeping on a plane wearing a pach+ patch",
     discBg: "bg-pink-100",
+    ringColor: "#F088B8",
     icon: <ClockIcon />,
   },
 ];
 
-function Card({ card }: { card: ValueCard }) {
+interface CardProps {
+  card: ValueCard;
+  isActive: boolean;
+  isPaused: boolean;
+  onHoverStart: () => void;
+  onHoverEnd: () => void;
+}
+
+function Card({ card, isActive, isPaused, onHoverStart, onHoverEnd }: CardProps) {
   return (
-    <article className="flex h-full flex-col rounded-[28px] bg-[#F4F2EE] p-6 transition-colors duration-300 hover:bg-[#EFEDE7] lg:p-7">
-      <span
-        className={`flex h-11 w-11 items-center justify-center rounded-full text-slate-900 ${card.discBg}`}
-        aria-hidden="true"
-      >
-        {card.icon}
-      </span>
-      <h3 className="mt-6 text-[20px] font-black leading-tight tracking-[-0.02em] text-slate-900 lg:text-[22px]">
-        {card.title}
-      </h3>
-      <p className="mt-2 text-[11px] font-medium leading-relaxed text-foreground/68 xs:text-xs sm:text-sm">
-        {card.description}
-      </p>
+    <article
+      onMouseEnter={onHoverStart}
+      onMouseLeave={onHoverEnd}
+      className={`relative flex h-[420px] flex-col overflow-hidden rounded-[28px] bg-[#F4F2EE] transition-colors duration-300 lg:h-[440px] ${
+        isActive ? "bg-[#EFEDE7]" : ""
+      }`}
+    >
+      <div className="min-h-0 flex-1 overflow-hidden">
+        <Image
+          src={card.imageSrc}
+          alt={card.imageAlt}
+          width={600}
+          height={400}
+          className="h-full w-full object-cover"
+        />
+      </div>
+      <div className="shrink-0 flex flex-col p-6">
+        <div className="flex items-center gap-3">
+          <span
+            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-slate-900 ${card.discBg}`}
+            aria-hidden="true"
+          >
+            {card.icon}
+          </span>
+          <h3 className="text-[20px] font-black leading-tight tracking-[-0.02em] text-slate-900 lg:text-[22px]">
+            {card.title}
+          </h3>
+        </div>
+        <div
+          className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${
+            isActive ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+          }`}
+        >
+          <div className="overflow-hidden">
+            <p
+              className={`mt-2 text-[11px] font-medium leading-relaxed text-foreground/68 transition-opacity duration-500 ease-in-out xs:text-xs sm:text-sm ${
+                isActive ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {card.description}
+            </p>
+          </div>
+        </div>
+      </div>
+      {isActive ? (
+        <ProgressRing color={card.ringColor} paused={isPaused} />
+      ) : null}
     </article>
+  );
+}
+
+function ProgressRing({ color, paused }: { color: string; paused: boolean }) {
+  const ref = useRef<SVGSVGElement>(null);
+  const [size, setSize] = useState<{ w: number; h: number } | null>(null);
+
+  useEffect(() => {
+    const svg = ref.current;
+    if (!svg) return;
+    const update = () => {
+      const rect = svg.getBoundingClientRect();
+      setSize({ w: rect.width, h: rect.height });
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(svg);
+    return () => ro.disconnect();
+  }, []);
+
+  const d = (() => {
+    if (!size || size.w === 0 || size.h === 0) return "";
+    const { w, h } = size;
+    const r = RING_RADIUS;
+    const i = RING_INSET;
+    const startY = Math.min(RING_START_OFFSET, h - i - r - 1);
+    return [
+      `M ${i} ${startY}`,
+      `L ${i} ${i + r}`,
+      `A ${r} ${r} 0 0 1 ${i + r} ${i}`,
+      `L ${w - i - r} ${i}`,
+      `A ${r} ${r} 0 0 1 ${w - i} ${i + r}`,
+      `L ${w - i} ${h - i - r}`,
+      `A ${r} ${r} 0 0 1 ${w - i - r} ${h - i}`,
+      `L ${i + r} ${h - i}`,
+      `A ${r} ${r} 0 0 1 ${i} ${h - i - r}`,
+      `L ${i} ${startY}`,
+    ].join(" ");
+  })();
+
+  return (
+    <svg
+      ref={ref}
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 h-full w-full"
+    >
+      {d ? (
+        <path
+          d={d}
+          fill="none"
+          stroke={color}
+          strokeWidth="3"
+          strokeLinecap="round"
+          pathLength={1}
+          style={
+            paused
+              ? { strokeDasharray: 1, strokeDashoffset: 0 }
+              : {
+                  strokeDasharray: 1,
+                  animation: `pach-progress-ring ${ROTATION_MS}ms linear forwards`,
+                }
+          }
+        />
+      ) : null}
+      <style>{`
+        @keyframes pach-progress-ring {
+          from { stroke-dashoffset: 1; }
+          to { stroke-dashoffset: 0; }
+        }
+      `}</style>
+    </svg>
   );
 }
 
@@ -139,11 +275,16 @@ function TitleBlock() {
         aria-hidden="true"
         className="absolute inset-0 -z-10 bg-[radial-gradient(circle,rgba(13,62,50,0.12)_1px,transparent_1px)] bg-size-[18px_18px]"
       />
-      <p className="mb-3 text-[10px] font-black uppercase tracking-[0.24em] text-teal-800/60 sm:mb-4 sm:text-xs">
+      <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.25em] text-foreground/60 sm:mb-4">
         Why pach+
       </p>
-      <h2 className="max-w-[420px] text-[1.9rem] font-black leading-[0.95] tracking-[-0.055em] text-slate-900 xs:text-[2.35rem] sm:text-5xl lg:text-[clamp(2.25rem,2.6vw,3rem)]">
-        Why people choose us.
+      <h2
+        className="max-w-[460px] leading-[1.05] tracking-[-0.03em] text-foreground"
+        style={{ fontSize: "clamp(1.9rem, 4.4vw, 3rem)" }}
+      >
+        <span className="font-bold">Why</span>{" "}
+        <span className="font-extralight">people</span>{" "}
+        <span className="font-bold">choose us.</span>
       </h2>
       <p className="mt-5 max-w-[360px] text-[11px] font-medium leading-relaxed text-foreground/68 xs:text-xs sm:text-sm">
         Four small commitments that add up to a wellness routine you can actually
@@ -173,19 +314,53 @@ function TitleBlock() {
 }
 
 export default function AboutWhyUs() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const isPaused = hoveredIndex !== null;
+  const displayIndex = hoveredIndex ?? activeIndex;
+
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = window.setTimeout(() => {
+      setActiveIndex((i) => (i + 1) % CARDS.length);
+    }, ROTATION_MS);
+    return () => window.clearTimeout(timer);
+  }, [activeIndex, isPaused]);
+
+  const handleHoverStart = (index: number) => {
+    setHoveredIndex(index);
+    setActiveIndex(index);
+  };
+  const handleHoverEnd = () => setHoveredIndex(null);
+
+  const renderCard = (cardIndex: number) => {
+    const card = CARDS[cardIndex];
+    return (
+      <Card
+        key={card.title}
+        card={card}
+        isActive={displayIndex === cardIndex}
+        isPaused={isPaused}
+        onHoverStart={() => handleHoverStart(cardIndex)}
+        onHoverEnd={handleHoverEnd}
+      />
+    );
+  };
+
   return (
     <section className="bg-white px-5 py-20 xs:px-6 lg:px-10 lg:py-28">
       <div className="mx-auto max-w-[1400px]">
         {/* Desktop: 3-column layout with title in the center, cards in side columns */}
         <div className="hidden grid-cols-3 gap-6 lg:grid lg:gap-8">
-          <div className="flex flex-col gap-6 lg:gap-8">
-            <Card card={CARDS[0]} />
-            <Card card={CARDS[2]} />
+          <div className="flex flex-col gap-10 lg:gap-12">
+            {renderCard(0)}
+            {renderCard(2)}
           </div>
           <TitleBlock />
-          <div className="flex flex-col gap-6 lg:gap-8">
-            <Card card={CARDS[1]} />
-            <Card card={CARDS[3]} />
+          <div className="flex flex-col gap-10 lg:gap-12">
+            {renderCard(1)}
+            {renderCard(3)}
           </div>
         </div>
 
@@ -193,9 +368,7 @@ export default function AboutWhyUs() {
         <div className="lg:hidden">
           <TitleBlock />
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
-            {CARDS.map((card) => (
-              <Card key={card.title} card={card} />
-            ))}
+            {CARDS.map((_, index) => renderCard(index))}
           </div>
         </div>
       </div>

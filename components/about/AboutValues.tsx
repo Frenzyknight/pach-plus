@@ -4,12 +4,17 @@ export default function AboutValues() {
   return (
     <section className="bg-white px-5 py-20 xs:px-6 lg:px-10 lg:py-28">
       <div className="mx-auto max-w-[1400px]">
-        <div className="text-center">
-          <p className="mb-3 text-[10px] font-black uppercase tracking-[0.24em] text-teal-800/60 sm:mb-4 sm:text-xs">
+        <div className="flex flex-col items-center text-center">
+          <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.25em] text-foreground/60 sm:mb-4">
             Our value
           </p>
-          <h2 className="mx-auto max-w-[820px] text-[1.9rem] font-black leading-[0.95] tracking-[-0.055em] text-slate-900 xs:text-[2.35rem] sm:text-5xl lg:text-[clamp(2.5rem,3.4vw,3.5rem)]">
-            Our commitment to values-driven wellness.
+          <h2
+            className="mx-auto max-w-[920px] leading-[1.05] tracking-[-0.03em] text-foreground"
+            style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}
+          >
+            <span className="font-bold">Our commitment to</span>{" "}
+            <span className="font-extralight">values-driven</span>{" "}
+            <span className="font-bold">wellness.</span>
           </h2>
         </div>
 

@@ -261,12 +261,13 @@ export default function LayerStackSection() {
       <div className="layer-stack-frame absolute inset-0 px-6 pb-5 pt-24 lg:px-10 lg:py-20">
         <div className="layer-stack-layout relative mx-auto grid h-full max-w-[1400px] grid-rows-[auto_minmax(172px,1fr)_auto] gap-3 lg:block">
           <div className="relative z-20 max-w-[680px] lg:absolute lg:left-0 lg:top-1/2 lg:max-w-[620px] lg:-translate-y-1/2 xl:max-w-[700px] 2xl:max-w-[860px]">
-            <p className="mb-2 text-[10px] font-black uppercase tracking-[0.24em] text-teal-800/60 sm:mb-3 sm:text-xs">
+            <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.25em] text-foreground/60 sm:mb-3">
               Patch anatomy
             </p>
-            <h2 className="layer-stack-title text-[1.9rem] font-black leading-[0.95] tracking-[-0.055em] text-slate-900 xs:text-4xl sm:text-5xl xl:text-6xl">
-              Built for steady{" "}
-              <span className="block sm:inline">skin delivery</span>
+            <h2 className="layer-stack-title text-[1.9rem] leading-[1.05] tracking-[-0.03em] text-foreground xs:text-4xl sm:text-5xl xl:text-6xl">
+              <span className="font-bold">Built for</span>{" "}
+              <span className="font-extralight">steady</span>{" "}
+              <span className="block font-bold sm:inline">skin delivery</span>
             </h2>
             <div className="layer-stack-copy mt-2.5 max-w-[500px] text-[10px] font-medium leading-relaxed text-foreground/68 xs:text-xs sm:mt-5 sm:text-sm lg:text-base">
               The matrix is carefully infused with lipophilic vitamins and

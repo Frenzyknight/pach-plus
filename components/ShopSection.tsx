@@ -60,51 +60,57 @@ export function ProductCard({
           className="object-contain p-8 transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, 33vw"
         />
+        {product.comingSoon && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px]">
+            <span className="rounded-full bg-white px-4 py-1.5 text-[10px] font-black tracking-[0.25em] uppercase text-black shadow-lg">
+              Coming Soon
+            </span>
+          </div>
+        )}
       </Link>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <p className="text-sm font-medium text-foreground truncate">
             {product.name}
             <span className="text-foreground/40 font-normal">
-              {" "}&bull; ${product.price}
+              {" "}&bull; ₹{product.price}
             </span>
           </p>
           <p className="text-xs text-foreground/50 mt-0.5">{product.tagline}</p>
         </div>
         <StarRating rating={product.rating} reviews={product.reviews} />
       </div>
-      <button
-        type="button"
-        className="mt-4 w-full rounded-full py-3.5 text-[11px] font-medium uppercase tracking-[0.15em] text-white transition-transform duration-300 hover:scale-[1.01] focus-visible:outline-2 focus-visible:outline-offset-2 cursor-pointer"
-        style={{
-          backgroundColor: product.accent,
-          outlineColor: product.accent,
-        }}
-        aria-label={`Add ${product.name} to cart`}
-      >
-        Add to Cart
-      </button>
+      {product.comingSoon ? (
+        <button
+          type="button"
+          disabled
+          className="mt-4 w-full rounded-full py-3.5 text-[11px] font-medium uppercase tracking-[0.15em] text-white/70 cursor-not-allowed"
+          style={{ backgroundColor: product.accent, opacity: 0.5 }}
+          aria-label={`${product.name} coming soon`}
+        >
+          Coming Soon
+        </button>
+      ) : (
+        <button
+          type="button"
+          className="mt-4 w-full rounded-full py-3.5 text-[11px] font-medium uppercase tracking-[0.15em] text-white transition-transform duration-300 hover:scale-[1.01] focus-visible:outline-2 focus-visible:outline-offset-2 cursor-pointer"
+          style={{
+            backgroundColor: product.accent,
+            outlineColor: product.accent,
+          }}
+          aria-label={`Add ${product.name} to cart`}
+        >
+          Add to Cart
+        </button>
+      )}
     </div>
   );
 }
 
 export default function ShopSection() {
   return (
-    <section className="bg-white py-20 px-6 lg:px-10">
+    <section className="bg-white pt-6 pb-20 px-6 lg:px-10">
       <div className="max-w-[1400px] mx-auto">
-        {/* Section header */}
-        <div className="flex items-center justify-between mb-12">
-          <h2 className="text-[11px] font-medium tracking-[0.25em] uppercase text-foreground/60">
-            Shop All
-          </h2>
-          <a
-            href="#"
-            className="text-[11px] font-medium tracking-[0.15em] uppercase text-foreground/60 hover:text-foreground transition-colors underline underline-offset-4"
-          >
-            View All
-          </a>
-        </div>
-
         {/* Row 1: 3 product cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
           {PRODUCTS.slice(0, 3).map((product) => (
@@ -160,8 +166,8 @@ export default function ShopSection() {
               </div>
               <div className="mt-8">
                 <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-2xl font-bold text-teal-900">$85</span>
-                  <span className="text-sm text-teal-700/50 line-through">$96</span>
+                  <span className="text-2xl font-bold text-teal-900">₹3,997</span>
+                  <span className="text-sm text-teal-700/50 line-through">₹4,497</span>
                 </div>
                 <StarRating rating={5.0} reviews={73} />
                 <button className="mt-5 w-full bg-teal-700 text-white text-[11px] font-medium tracking-[0.15em] uppercase py-3.5 rounded-full hover:bg-teal-900 transition-colors cursor-pointer">

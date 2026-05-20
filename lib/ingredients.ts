@@ -15,6 +15,7 @@ export type Ingredient = {
   bestFor: string[];
   patch: IngredientPatch;
   illustration: IngredientIllustrationKind;
+  stencilImage?: string;
 };
 
 export const PATCH_META: Record<
@@ -37,6 +38,7 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Clear Breathing", "Congestion Relief", "Freshness", "Relaxation"],
     patch: "breathe",
     illustration: "leaf",
+    stencilImage: "/stencil-eucalyptus.png",
   },
   {
     index: 2,
@@ -47,6 +49,7 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Cooling Relief", "Nasal Comfort", "Freshness", "Mental Clarity"],
     patch: "breathe",
     illustration: "leaf",
+    stencilImage: "/menthol-stencil.png",
   },
   {
     index: 3,
@@ -57,6 +60,7 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Breathing Support", "Refreshment", "Energy", "Focus"],
     patch: "breathe",
     illustration: "leaf",
+    stencilImage: "/peppermint-stencil.png",
   },
   {
     index: 4,
@@ -67,6 +71,7 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Congestion Relief", "Cooling Comfort", "Relaxation", "Refreshment"],
     patch: "breathe",
     illustration: "leaf",
+    stencilImage: "/camphor-stencil.png",
   },
   {
     index: 5,
@@ -77,6 +82,7 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Hormonal Balance", "Stress Relief", "Relaxation", "Mental Wellness"],
     patch: "hormones",
     illustration: "root",
+    stencilImage: "/ashwagandha-stencil.png",
   },
   {
     index: 6,
@@ -87,6 +93,7 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Relaxation", "Sleep Support", "Stress Relief", "Hormonal Wellness"],
     patch: "hormones",
     illustration: "mineral",
+    stencilImage: "/mg-glycinate-stencil.png",
   },
   {
     index: 7,
@@ -97,6 +104,7 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Hormonal Support", "Mood Balance", "Skin Health", "Women's Wellness"],
     patch: "hormones",
     illustration: "flower",
+    stencilImage: "/parviflora-stencil.png",
   },
   {
     index: 8,
@@ -107,6 +115,7 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Relaxation", "Calmness", "Sleep Quality", "Stress Relief"],
     patch: "hormones",
     illustration: "flower",
+    stencilImage: "/chamomille-stencil.png",
   },
   {
     index: 9,
@@ -117,6 +126,7 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Muscle Recovery", "Relaxation", "Recovery Support", "Performance"],
     patch: "muscles",
     illustration: "mineral",
+    stencilImage: "/mgcl-stencil.png",
   },
   {
     index: 10,
@@ -127,6 +137,7 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Endurance", "Muscle Support", "Recovery", "Energy"],
     patch: "muscles",
     illustration: "mineral",
+    stencilImage: "/taurine-stencil.png",
   },
   {
     index: 11,
@@ -137,6 +148,7 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Joint Comfort", "Recovery", "Mobility", "Muscle Wellness"],
     patch: "muscles",
     illustration: "leaf",
+    stencilImage: "/boswelia-stencil.png",
   },
   {
     index: 12,
@@ -147,6 +159,7 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Cellular Energy", "Recovery", "Endurance", "Vitality"],
     patch: "muscles",
     illustration: "mineral",
+    stencilImage: "/coenzyme-stencil.png",
   },
   {
     index: 13,
@@ -157,6 +170,7 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Digestion", "Gut Comfort", "Bloating Relief", "Wellness"],
     patch: "gut",
     illustration: "root",
+    stencilImage: "/ginger-stencil.png",
   },
   {
     index: 14,
@@ -167,6 +181,7 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Digestive Comfort", "Bloating Relief", "Gut Wellness", "Freshness"],
     patch: "gut",
     illustration: "leaf",
+    stencilImage: "/fennel-stencil.png",
   },
   {
     index: 15,
@@ -177,6 +192,7 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Digestive Ease", "Cooling Relief", "Gut Comfort", "Freshness"],
     patch: "gut",
     illustration: "leaf",
+    stencilImage: "/peppermint-stencil.png",
   },
   {
     index: 16,
@@ -187,5 +203,6 @@ export const INGREDIENTS: Ingredient[] = [
     bestFor: ["Digestive Support", "Bloating Relief", "Gut Balance", "Comfort"],
     patch: "gut",
     illustration: "flower",
+    stencilImage: "/caraway-stencil.png",
   },
 ];

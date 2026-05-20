@@ -1,3 +1,4 @@
+import Image from "next/image";
 import IngredientIllustration from "@/components/IngredientIllustration";
 import { INGREDIENTS, PATCH_META, type Ingredient } from "@/lib/ingredients";
 
@@ -5,7 +6,7 @@ function pad(n: number) {
   return n.toString().padStart(2, "0");
 }
 
-function IngredientCard({ ingredient }: { ingredient: Ingredient }) {
+function IngredientCard({ ingredient, priority }: { ingredient: Ingredient; priority?: boolean }) {
   const patch = PATCH_META[ingredient.patch];
 
   return (
@@ -30,10 +31,23 @@ function IngredientCard({ ingredient }: { ingredient: Ingredient }) {
       </div>
 
       <div className="mb-6 flex h-24 items-center justify-center text-foreground/55">
-        <IngredientIllustration
-          kind={ingredient.illustration}
-          className="h-20 w-20 lg:h-24 lg:w-24"
-        />
+        {ingredient.stencilImage ? (
+          <div className="relative h-20 w-20 lg:h-24 lg:w-24">
+            <Image
+              src={ingredient.stencilImage}
+              alt={ingredient.name}
+              fill
+              priority={priority}
+              className="object-contain opacity-60"
+              sizes="96px"
+            />
+          </div>
+        ) : (
+          <IngredientIllustration
+            kind={ingredient.illustration}
+            className="h-20 w-20 lg:h-24 lg:w-24"
+          />
+        )}
       </div>
 
       <h3 className="text-[20px] font-black leading-tight tracking-[-0.02em] text-slate-900 lg:text-[22px]">
@@ -64,7 +78,7 @@ export default function HerbalIndexGrid() {
       <div className="mx-auto max-w-[1400px]">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
           {INGREDIENTS.map((ingredient) => (
-            <IngredientCard key={ingredient.index} ingredient={ingredient} />
+            <IngredientCard key={ingredient.index} ingredient={ingredient} priority={ingredient.index === 1} />
           ))}
         </div>
 

@@ -31,6 +31,7 @@ export type Product = {
   price: number;
   rating: number;
   reviews: number;
+  comingSoon?: boolean;
   tagline: string;
   accent: string;
   accentLight: string;
@@ -140,7 +141,7 @@ export const PRODUCTS: Product[] = [
     src: "/package.png",
     name: "Happy Muscles",
     type: "Recovery Patch",
-    price: 24,
+    price: 1499,
     rating: 4.8,
     reviews: 16,
     tagline: "For Clean, Targeted Recovery*",
@@ -250,9 +251,10 @@ export const PRODUCTS: Product[] = [
     src: "/package2.png",
     name: "Happy Breathe",
     type: "Nasal Comfort Patch",
-    price: 24,
+    price: 799,
     rating: 4.5,
     reviews: 19,
+    comingSoon: true,
     tagline: "For Easy, Plant-Based Breathing*",
     accent: "#1E3A8A",
     accentLight: "#93C5FD",
@@ -360,7 +362,7 @@ export const PRODUCTS: Product[] = [
     src: "/package3.png",
     name: "Happy Hormones",
     type: "Balance Patch",
-    price: 24,
+    price: 1499,
     rating: 5.0,
     reviews: 29,
     tagline: "For Hormonal Harmony & Balance*",
@@ -470,7 +472,7 @@ export const PRODUCTS: Product[] = [
     src: "/package4.png",
     name: "Happy Gut",
     type: "Nourish Patch",
-    price: 24,
+    price: 1499,
     rating: 4.9,
     reviews: 12,
     tagline: "For Gut Health & Metabolism*",

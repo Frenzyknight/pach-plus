@@ -75,7 +75,7 @@ export default function ProductHero({ product }: { product: Product }) {
             </div>
             <div className="text-right">
               <Rating rating={product.rating} reviews={product.reviews} />
-              <p className="mt-1 text-2xl font-black">${product.price}</p>
+              <p className="mt-1 text-2xl font-black">₹{product.price}</p>
             </div>
           </div>
 
@@ -102,56 +102,82 @@ export default function ProductHero({ product }: { product: Product }) {
             {product.detailLine}
           </div>
 
-          <div className="mb-7 grid grid-cols-3 gap-2">
-            {["30 Day Supply", "60 Day Supply", "90 Day Supply"].map((label) => (
-              <button
-                key={label}
-                type="button"
-                className="rounded-full border border-black px-3 py-2.5 text-[11px] font-bold transition-colors hover:bg-black hover:text-white"
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-
-          <div className="mb-3 grid grid-cols-2 overflow-hidden rounded-full border border-black text-[11px] font-bold">
-            <button
-              type="button"
-              className="py-3 text-white"
-              style={{ backgroundColor: product.accent }}
+          {product.comingSoon ? (
+            <div
+              className="rounded-2xl border-2 px-6 py-8 text-center"
+              style={{ borderColor: product.accent, backgroundColor: `${product.bg}` }}
             >
-              Subscribe and Save 10%
-            </button>
-            <button type="button" className="bg-white py-3">
-              Single Purchase
-            </button>
-          </div>
-
-          <div className="rounded-2xl border border-black bg-[#F4F5EF] p-4 text-[11px] font-semibold">
-            <div className="mb-3 flex items-center justify-between border-b border-black/15 pb-3">
-              <span>Delivered every 2 weeks</span>
-              <Chevron />
-            </div>
-            <ul className="space-y-2 text-black/70">
-              <li>* Earn loyalty points and share to friends</li>
-              <li>* Seasonal wellness object gift</li>
-              <li>* Edit your frequency or cancel at any time</li>
-            </ul>
-          </div>
-
-          <button
-            type="button"
-            className="mt-4 flex w-full items-center justify-between rounded-full px-5 py-4 text-[12px] font-black text-white transition-transform hover:scale-[1.01]"
-            style={{ backgroundColor: product.accent }}
-          >
-            <span>Add to Bag</span>
-            <span>
-              <span className="mr-2 text-white/55 line-through">
-                ${product.price.toFixed(2)}
+              <span
+                className="inline-block rounded-full px-4 py-1.5 text-[10px] font-black tracking-[0.25em] uppercase text-white mb-4"
+                style={{ backgroundColor: product.accent }}
+              >
+                Coming Soon
               </span>
-              ${(product.price * 0.9).toFixed(2)}
-            </span>
-          </button>
+              <p className="text-sm font-semibold text-black/70 leading-relaxed">
+                We&apos;re putting the finishing touches on this one. Join the waitlist to be first to know when it launches.
+              </p>
+              <button
+                type="button"
+                className="mt-5 w-full rounded-full py-3.5 text-[11px] font-black tracking-[0.15em] uppercase text-white transition-transform hover:scale-[1.01]"
+                style={{ backgroundColor: product.accent }}
+              >
+                Notify Me
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className="mb-7 grid grid-cols-3 gap-2">
+                {["30 Day Supply", "60 Day Supply", "90 Day Supply"].map((label) => (
+                  <button
+                    key={label}
+                    type="button"
+                    className="rounded-full border border-black px-3 py-2.5 text-[11px] font-bold transition-colors hover:bg-black hover:text-white"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="mb-3 grid grid-cols-2 overflow-hidden rounded-full border border-black text-[11px] font-bold">
+                <button
+                  type="button"
+                  className="py-3 text-white"
+                  style={{ backgroundColor: product.accent }}
+                >
+                  Subscribe and Save 10%
+                </button>
+                <button type="button" className="bg-white py-3">
+                  Single Purchase
+                </button>
+              </div>
+
+              <div className="rounded-2xl border border-black bg-[#F4F5EF] p-4 text-[11px] font-semibold">
+                <div className="mb-3 flex items-center justify-between border-b border-black/15 pb-3">
+                  <span>Delivered every 2 weeks</span>
+                  <Chevron />
+                </div>
+                <ul className="space-y-2 text-black/70">
+                  <li>* Earn loyalty points and share to friends</li>
+                  <li>* Seasonal wellness object gift</li>
+                  <li>* Edit your frequency or cancel at any time</li>
+                </ul>
+              </div>
+
+              <button
+                type="button"
+                className="mt-4 flex w-full items-center justify-between rounded-full px-5 py-4 text-[12px] font-black text-white transition-transform hover:scale-[1.01]"
+                style={{ backgroundColor: product.accent }}
+              >
+                <span>Add to Bag</span>
+                <span>
+                  <span className="mr-2 text-white/55 line-through">
+                    ₹{product.price.toFixed(2)}
+                  </span>
+                  ₹{(product.price * 0.9).toFixed(2)}
+                </span>
+              </button>
+            </>
+          )}
         </div>
       </div>
     </section>

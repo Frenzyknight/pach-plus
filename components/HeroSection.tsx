@@ -29,6 +29,7 @@ const PACKAGES = [
     ingredients: ["Eucalyptus", "Menthol", "Peppermint"],
     description:
       "Breathe easy with pach+\u2019s plant-based nasal comfort patch.",
+    comingSoon: true,
   },
   {
     slug: "happy-hormones",
@@ -287,13 +288,24 @@ export default function HeroSection() {
           >
             Explore Science
           </button>
-          <button
-            type="button"
-            className="px-5 py-2.5 rounded-full text-white text-[10px] font-semibold tracking-[0.12em] uppercase cursor-pointer whitespace-nowrap shadow-[0_10px_24px_rgba(0,0,0,0.12)] transition-all duration-200 hover:brightness-90 hover:-translate-y-0.5"
-            style={{ backgroundColor: pkg.accent }}
-          >
-            Add to Cart
-          </button>
+          {pkg.comingSoon ? (
+            <button
+              type="button"
+              disabled
+              className="px-5 py-2.5 rounded-full text-white/80 text-[10px] font-semibold tracking-[0.12em] uppercase whitespace-nowrap cursor-not-allowed"
+              style={{ backgroundColor: pkg.accent, opacity: 0.55 }}
+            >
+              Coming Soon
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="px-5 py-2.5 rounded-full text-white text-[10px] font-semibold tracking-[0.12em] uppercase cursor-pointer whitespace-nowrap shadow-[0_10px_24px_rgba(0,0,0,0.12)] transition-all duration-200 hover:brightness-90 hover:-translate-y-0.5"
+              style={{ backgroundColor: pkg.accent }}
+            >
+              Add to Cart
+            </button>
+          )}
         </div>
       </div>
 
@@ -308,13 +320,24 @@ export default function HeroSection() {
             >
               Explore Science
             </button>
-            <button
-              type="button"
-              className="w-full rounded-full px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-[0_10px_24px_rgba(0,0,0,0.12)] transition-all duration-200 active:scale-[0.98]"
-              style={{ backgroundColor: pkg.accent }}
-            >
-              Add to Cart
-            </button>
+            {pkg.comingSoon ? (
+              <button
+                type="button"
+                disabled
+                className="w-full rounded-full px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/80 cursor-not-allowed"
+                style={{ backgroundColor: pkg.accent, opacity: 0.55 }}
+              >
+                Coming Soon
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="w-full rounded-full px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-[0_10px_24px_rgba(0,0,0,0.12)] transition-all duration-200 active:scale-[0.98]"
+                style={{ backgroundColor: pkg.accent }}
+              >
+                Add to Cart
+              </button>
+            )}
           </div>
         </div>
       </div>
