@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ProductCard } from "@/components/ShopSection";
+import { Reveal } from "@/components/motion/Reveal";
 import { PRODUCTS } from "@/lib/products";
 
 export default function PouchGridSection() {
@@ -100,11 +101,15 @@ export default function PouchGridSection() {
           </div>
         </div>
 
-        <div className="hidden gap-5 sm:grid sm:grid-cols-2 lg:grid-cols-4">
+        <Reveal
+          stagger={0.08}
+          amount={0.2}
+          className="hidden gap-5 sm:grid sm:grid-cols-2 lg:grid-cols-4"
+        >
           {PRODUCTS.map((product) => (
             <ProductCard key={product.src} product={product} />
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "motion/react";
+import { Reveal, revealItem } from "@/components/motion/Reveal";
 
 const FOOTER_COLUMNS = [
   {
@@ -56,9 +58,16 @@ export default function Footer() {
   return (
     <footer className="border-t border-black bg-white px-4 pt-16 pb-6 text-foreground lg:px-16">
       <div className="mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-start">
+        <Reveal
+          stagger={0.06}
+          amount={0.2}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-start"
+        >
           {/* Left: p+ logo mark */}
-          <div className="hidden justify-start lg:col-span-4 lg:flex lg:pt-4">
+          <motion.div
+            variants={revealItem}
+            className="hidden justify-start lg:col-span-4 lg:flex lg:pt-4"
+          >
             <Image
               src="/logo mark - black@2x.png"
               alt="pach+"
@@ -67,10 +76,10 @@ export default function Footer() {
               className="w-[180px] h-auto lg:w-[240px]"
               priority={false}
             />
-          </div>
+          </motion.div>
 
           {/* Right: wordmark + link columns */}
-          <div className="lg:col-span-8">
+          <motion.div variants={revealItem} className="lg:col-span-8">
             <div className="mb-12 lg:mb-16">
               <Image
                 src="/logo-full.png"
@@ -84,8 +93,9 @@ export default function Footer() {
 
             <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 sm:gap-8">
               {FOOTER_COLUMNS.map((column, index) => (
-                <div
+                <motion.div
                   key={column.heading}
+                  variants={revealItem}
                   className={index === 2 ? "col-span-2 sm:col-span-1" : undefined}
                 >
                   <h3 className="mb-4 text-lg font-semibold tracking-tight text-foreground">
@@ -94,20 +104,26 @@ export default function Footer() {
                   <ul className="space-y-2.5">
                     {column.links.map((link) => (
                       <li key={link.label}>
-                        <Link
-                          href={link.href}
-                          className="text-[15px] text-foreground/80 transition-colors hover:text-foreground"
+                        <motion.span
+                          whileHover={{ x: 3 }}
+                          transition={{ type: "spring", stiffness: 320, damping: 22 }}
+                          className="inline-block"
                         >
-                          {link.label}
-                        </Link>
+                          <Link
+                            href={link.href}
+                            className="text-[15px] text-foreground/80 transition-colors hover:text-foreground"
+                          >
+                            {link.label}
+                          </Link>
+                        </motion.span>
                       </li>
                     ))}
                   </ul>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </Reveal>
 
         {/* Divider */}
         <div className="mt-14 border-t border-foreground/20 lg:mt-20" />

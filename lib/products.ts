@@ -101,7 +101,7 @@ const SHARED_COMPARISON_ROWS: ProductComparisonRow[] = [
   },
 ];
 
-const SHARED_FAQS: ProductFaq[] = [
+export const SHARED_FAQS: ProductFaq[] = [
   {
     question: "How do pach+ patches work?",
     answer:

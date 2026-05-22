@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
+import { Reveal, revealItem } from "@/components/motion/Reveal";
 import { getProductBySlug, type Product } from "@/lib/products";
 
 type Reel = {
@@ -247,22 +249,33 @@ export default function TestimonialReelsSection() {
 
       <div className="relative z-10 px-5 xs:px-6 lg:px-10">
         <div className="mx-auto max-w-[1400px]">
-          <div className="mb-12 flex flex-col items-center text-center sm:mb-16">
-            <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-foreground/60">
+          <Reveal
+            stagger={0.08}
+            amount={0.4}
+            className="mb-12 flex flex-col items-center text-center sm:mb-16"
+          >
+            <motion.p
+              variants={revealItem}
+              className="text-[10px] font-medium uppercase tracking-[0.25em] text-foreground/60"
+            >
               Real Routines
-            </p>
-            <h2
+            </motion.p>
+            <motion.h2
+              variants={revealItem}
               className="mt-3 leading-[1.05] tracking-[-0.03em] text-foreground"
               style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}
             >
               <span className="font-bold">Real people.</span>{" "}
               <span className="font-extralight">Real</span>{" "}
               <span className="font-bold">rituals.</span>
-            </h2>
-            <p className="mt-4 max-w-md text-sm text-foreground/60 sm:text-base">
+            </motion.h2>
+            <motion.p
+              variants={revealItem}
+              className="mt-4 max-w-md text-sm text-foreground/60 sm:text-base"
+            >
               See how pach+ fits into everyday wellness routines.
-            </p>
-          </div>
+            </motion.p>
+          </Reveal>
         </div>
       </div>
 
@@ -302,20 +315,32 @@ export default function TestimonialReelsSection() {
           return (
             <div
               key={reel.src}
-              className={`absolute left-1/2 top-1/2 ${
-                isLargeJump
-                  ? "transition-none"
-                  : "transition-[transform,opacity] duration-500 ease-out"
-              } ${isAntipode ? "pointer-events-none" : ""}`}
-              style={{
-                width: wrapperWidth,
-                height: wrapperHeight,
-                transform: `translate(-50%, -50%) translateX(${offset * gapVw}vw)`,
-                opacity,
-                zIndex: 20 - distance,
-              }}
-              aria-hidden={!isActive}
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+              style={{ zIndex: 20 - distance }}
             >
+              <motion.div
+                className={`relative ${isAntipode ? "pointer-events-none" : ""}`}
+                style={{
+                  width: wrapperWidth,
+                  height: wrapperHeight,
+                }}
+                initial={false}
+                animate={{
+                  x: `${offset * gapVw}vw`,
+                  opacity,
+                }}
+                transition={
+                  isLargeJump
+                    ? { duration: 0 }
+                    : {
+                        type: "spring",
+                        stiffness: 160,
+                        damping: 26,
+                        mass: 0.8,
+                      }
+                }
+                aria-hidden={!isActive}
+              >
               <div
                 className="absolute left-0 right-0 top-1/2 -translate-y-1/2 transition-[height] duration-500 ease-out"
                 style={{ height: videoHeight }}
@@ -439,6 +464,7 @@ export default function TestimonialReelsSection() {
                   </div>
                 </div>
               </div>
+              </motion.div>
             </div>
           );
         })}

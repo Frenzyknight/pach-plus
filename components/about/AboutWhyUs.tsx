@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { motion } from "motion/react";
+import { Reveal, revealItem } from "@/components/motion/Reveal";
 
 interface ValueCard {
   title: string;
@@ -146,9 +148,12 @@ interface CardProps {
 
 function Card({ card, isActive, isPaused, onHoverStart, onHoverEnd }: CardProps) {
   return (
-    <article
+    <motion.article
       onMouseEnter={onHoverStart}
       onMouseLeave={onHoverEnd}
+      variants={revealItem}
+      whileHover={{ y: -4 }}
+      transition={{ type: "spring", stiffness: 260, damping: 24 }}
       className={`relative flex h-[420px] flex-col overflow-hidden rounded-[28px] bg-[#F4F2EE] transition-colors duration-300 lg:h-[440px] ${
         isActive ? "bg-[#EFEDE7]" : ""
       }`}
@@ -193,7 +198,7 @@ function Card({ card, isActive, isPaused, onHoverStart, onHoverEnd }: CardProps)
       {isActive ? (
         <ProgressRing color={card.ringColor} paused={isPaused} />
       ) : null}
-    </article>
+    </motion.article>
   );
 }
 
@@ -270,7 +275,7 @@ function ProgressRing({ color, paused }: { color: string; paused: boolean }) {
 
 function TitleBlock() {
   return (
-    <div className="relative flex h-full flex-col items-center justify-center overflow-hidden rounded-[28px] px-6 py-12 text-center lg:px-8 lg:py-16">
+    <div className="relative flex h-full flex-col items-center justify-center overflow-hidden rounded-[28px] px-6 pb-12 text-center lg:px-8 lg:py-16">
       <div
         aria-hidden="true"
         className="absolute inset-0 -z-10 bg-[radial-gradient(circle,rgba(13,62,50,0.12)_1px,transparent_1px)] bg-size-[18px_18px]"
@@ -290,25 +295,43 @@ function TitleBlock() {
         Four small commitments that add up to a wellness routine you can actually
         feel &mdash; rooted in plants, backed by science.
       </p>
-      <Link
-        href="/science"
-        className="mt-7 inline-flex items-center gap-1.5 rounded-full border border-teal-900/20 px-4 py-2 text-[11px] font-medium uppercase tracking-[0.15em] text-teal-900 transition-colors hover:bg-teal-900 hover:text-white"
+      <motion.div
+        initial="rest"
+        animate="rest"
+        whileHover="hover"
+        whileTap={{ scale: 0.97 }}
+        variants={{
+          rest: { y: 0 },
+          hover: { y: -2 },
+        }}
+        transition={{ type: "spring", stiffness: 320, damping: 22 }}
+        className="mt-7 inline-block"
       >
-        Learn more
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-3.5 w-3.5"
-          aria-hidden="true"
+        <Link
+          href="/science"
+          className="inline-flex items-center gap-1.5 rounded-full border border-teal-900/20 px-4 py-2 text-[11px] font-medium uppercase tracking-[0.15em] text-teal-900 transition-colors hover:bg-teal-900 hover:text-white"
         >
-          <path d="M7 17L17 7" />
-          <path d="M7 7h10v10" />
-        </svg>
-      </Link>
+          Learn more
+          <motion.svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-3.5 w-3.5"
+            aria-hidden="true"
+            variants={{
+              rest: { x: 0 },
+              hover: { x: 3 },
+            }}
+            transition={{ type: "spring", stiffness: 320, damping: 22 }}
+          >
+            <path d="M7 17L17 7" />
+            <path d="M7 7h10v10" />
+          </motion.svg>
+        </Link>
+      </motion.div>
     </div>
   );
 }
@@ -349,29 +372,179 @@ export default function AboutWhyUs() {
   };
 
   return (
-    <section className="bg-white px-5 py-20 xs:px-6 lg:px-10 lg:py-28">
+    <section className="bg-white px-5 xs:px-6 lg:px-10 lg:py-28">
       <div className="mx-auto max-w-[1400px]">
         {/* Desktop: 3-column layout with title in the center, cards in side columns */}
-        <div className="hidden grid-cols-3 gap-6 lg:grid lg:gap-8">
-          <div className="flex flex-col gap-10 lg:gap-12">
+        <Reveal
+          stagger={0.1}
+          amount={0.15}
+          className="hidden grid-cols-3 gap-6 lg:grid lg:gap-8"
+        >
+          <motion.div
+            variants={revealItem}
+            className="flex flex-col gap-10 lg:gap-12"
+          >
             {renderCard(0)}
             {renderCard(2)}
-          </div>
-          <TitleBlock />
-          <div className="flex flex-col gap-10 lg:gap-12">
+          </motion.div>
+          <motion.div variants={revealItem}>
+            <TitleBlock />
+          </motion.div>
+          <motion.div
+            variants={revealItem}
+            className="flex flex-col gap-10 lg:gap-12"
+          >
             {renderCard(1)}
             {renderCard(3)}
-          </div>
+          </motion.div>
+        </Reveal>
+
+        {/* Tablet: title block, then 2-col card grid */}
+        <div className="hidden sm:block lg:hidden">
+          <TitleBlock />
+          <Reveal
+            stagger={0.08}
+            amount={0.15}
+            className="mt-8 grid grid-cols-2 gap-5"
+          >
+            {CARDS.map((_, index) => renderCard(index))}
+          </Reveal>
         </div>
 
-        {/* Mobile / tablet: title block, then 2-col card grid */}
-        <div className="lg:hidden">
+        {/* Mobile: title block, then carousel with arrows */}
+        <div className="sm:hidden">
           <TitleBlock />
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
-            {CARDS.map((_, index) => renderCard(index))}
-          </div>
+          <MobileCarousel
+            activeIndex={activeIndex}
+            displayIndex={displayIndex}
+            isPaused={isPaused}
+            onSelect={(index) => {
+              setActiveIndex(index);
+              setHoveredIndex(null);
+            }}
+            onHoverStart={handleHoverStart}
+            onHoverEnd={handleHoverEnd}
+          />
         </div>
       </div>
     </section>
+  );
+}
+
+interface MobileCarouselProps {
+  activeIndex: number;
+  displayIndex: number;
+  isPaused: boolean;
+  onSelect: (index: number) => void;
+  onHoverStart: (index: number) => void;
+  onHoverEnd: () => void;
+}
+
+function MobileCarousel({
+  activeIndex,
+  displayIndex,
+  isPaused,
+  onSelect,
+  onHoverStart,
+  onHoverEnd,
+}: MobileCarouselProps) {
+  const goPrev = () =>
+    onSelect((activeIndex - 1 + CARDS.length) % CARDS.length);
+  const goNext = () => onSelect((activeIndex + 1) % CARDS.length);
+
+  return (
+    <div className="relative mt-8">
+      <div className="overflow-hidden rounded-[28px]">
+        <motion.div
+          className="flex"
+          initial={false}
+          animate={{ x: `-${activeIndex * 100}%` }}
+          transition={{
+            type: "spring",
+            stiffness: 180,
+            damping: 26,
+            mass: 0.8,
+          }}
+        >
+          {CARDS.map((card, index) => (
+            <div key={card.title} className="w-full shrink-0 px-1">
+              <Card
+                card={card}
+                isActive={displayIndex === index}
+                isPaused={isPaused}
+                onHoverStart={() => onHoverStart(index)}
+                onHoverEnd={onHoverEnd}
+              />
+            </div>
+          ))}
+        </motion.div>
+      </div>
+
+      <div className="mt-5 flex items-center justify-between">
+        <motion.button
+          type="button"
+          onClick={goPrev}
+          aria-label="Previous"
+          whileHover={{ scale: 1.06 }}
+          whileTap={{ scale: 0.92 }}
+          transition={{ type: "spring", stiffness: 360, damping: 22 }}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-teal-900/20 bg-white text-teal-900 transition-colors hover:bg-teal-900 hover:text-white"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-4 w-4"
+            aria-hidden="true"
+          >
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </motion.button>
+
+        <div className="flex items-center gap-2" role="tablist">
+          {CARDS.map((card, index) => (
+            <button
+              key={card.title}
+              type="button"
+              onClick={() => onSelect(index)}
+              aria-label={`Go to ${card.title}`}
+              aria-selected={activeIndex === index}
+              role="tab"
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                activeIndex === index
+                  ? "w-6 bg-teal-900"
+                  : "w-1.5 bg-teal-900/25"
+              }`}
+            />
+          ))}
+        </div>
+
+        <motion.button
+          type="button"
+          onClick={goNext}
+          aria-label="Next"
+          whileHover={{ scale: 1.06 }}
+          whileTap={{ scale: 0.92 }}
+          transition={{ type: "spring", stiffness: 360, damping: 22 }}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-teal-900/20 bg-white text-teal-900 transition-colors hover:bg-teal-900 hover:text-white"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-4 w-4"
+            aria-hidden="true"
+          >
+            <path d="M9 6l6 6-6 6" />
+          </svg>
+        </motion.button>
+      </div>
+    </div>
   );
 }

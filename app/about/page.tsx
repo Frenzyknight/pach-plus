@@ -4,7 +4,9 @@ import AboutHero from "@/components/about/AboutHero";
 import AboutStatsMission from "@/components/about/AboutStatsMission";
 import AboutWhyUs from "@/components/about/AboutWhyUs";
 import AboutValues from "@/components/about/AboutValues";
+import AboutFaq from "@/components/about/AboutFaq";
 import PouchGridSection from "@/components/PouchGridSection";
+import PageMotionProvider from "@/components/motion/PageMotionProvider";
 
 export const metadata = {
   title: "About | pach+",
@@ -14,14 +16,17 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-background relative">
-      <Navbar />
-      <AboutHero />
-      <AboutStatsMission />
-      <AboutWhyUs />
-      <AboutValues />
-      <PouchGridSection />
-      <Footer />
-    </div>
+    <PageMotionProvider>
+      <div className="min-h-screen bg-background relative">
+        <Navbar />
+        <AboutHero />
+        <AboutStatsMission />
+        <AboutWhyUs />
+        <AboutValues />
+        <AboutFaq />
+        <PouchGridSection />
+        <Footer />
+      </div>
+    </PageMotionProvider>
   );
 }

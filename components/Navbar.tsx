@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "motion/react";
 import GlassSurface from "@/components/GlassSurface";
 import StaggeredMenu, {
   type StaggeredMenuItem,
@@ -14,10 +15,22 @@ const MENU_ITEMS: StaggeredMenuItem[] = [
   { label: "Science", ariaLabel: "The science behind pach+", link: "/science" },
 ];
 
+const NAV_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/shop", label: "Shop" },
+  { href: "/about", label: "About" },
+  { href: "/science", label: "Science" },
+];
+
 export default function Navbar() {
   return (
     <>
-      <div className="fixed top-5 left-6 right-6 z-50 lg:left-10 lg:right-10">
+      <motion.div
+        initial={{ y: -120, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 220, damping: 26, mass: 0.7 }}
+        className="fixed top-5 left-6 right-6 z-50 lg:left-10 lg:right-10"
+      >
         <GlassSurface
           width="100%"
           height={56}
@@ -41,32 +54,23 @@ export default function Navbar() {
                 />
               </Link>
               <div className="hidden items-center gap-6 text-[11px] font-medium tracking-[0.15em] uppercase lg:flex">
-                <Link href="/" className="transition-opacity hover:opacity-60">
-                  Home
-                </Link>
-                <Link
-                  href="/shop"
-                  className="transition-opacity hover:opacity-60"
-                >
-                  Shop
-                </Link>
-                <Link
-                  href="/about"
-                  className="transition-opacity hover:opacity-60"
-                >
-                  About
-                </Link>
-                <Link
-                  href="/science"
-                  className="transition-opacity hover:opacity-60"
-                >
-                  Science
-                </Link>
+                {NAV_LINKS.map((link) => (
+                  <motion.div
+                    key={link.href}
+                    whileHover={{ y: -1, opacity: 0.7 }}
+                    whileTap={{ scale: 0.96 }}
+                    transition={{ type: "spring", stiffness: 320, damping: 22 }}
+                  >
+                    <Link href={link.href} className="inline-block">
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
               </div>
             </div>
           </nav>
         </GlassSurface>
-      </div>
+      </motion.div>
 
       <div className="lg:hidden">
         <StaggeredMenu

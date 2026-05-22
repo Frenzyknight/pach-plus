@@ -7,6 +7,11 @@ export type IngredientIllustrationKind =
   | "mineral"
   | "mushroom";
 
+export type IngredientStudy = {
+  label: string;
+  url: string;
+};
+
 export type Ingredient = {
   index: number;
   name: string;
@@ -16,16 +21,35 @@ export type Ingredient = {
   patch: IngredientPatch;
   illustration: IngredientIllustrationKind;
   stencilImage?: string;
+  origins: string;
+  whyWeUseIt: string;
+  keyStudies: IngredientStudy[];
 };
 
 export const PATCH_META: Record<
   IngredientPatch,
-  { label: string; accent: string }
+  { label: string; accent: string; slug: string }
 > = {
-  breathe: { label: "Happy Breathe", accent: "#1E3A8A" },
-  hormones: { label: "Happy Hormones", accent: "#BE185D" },
-  muscles: { label: "Happy Muscles", accent: "#574092" },
-  gut: { label: "Happy Gut", accent: "#33957B" },
+  breathe: {
+    label: "Happy Breathe",
+    accent: "#1E3A8A",
+    slug: "happy-breathe",
+  },
+  hormones: {
+    label: "Happy Hormones",
+    accent: "#BE185D",
+    slug: "happy-hormones",
+  },
+  muscles: {
+    label: "Happy Muscles",
+    accent: "#574092",
+    slug: "happy-muscles",
+  },
+  gut: {
+    label: "Happy Gut",
+    accent: "#33957B",
+    slug: "happy-gut",
+  },
 };
 
 export const INGREDIENTS: Ingredient[] = [
@@ -39,6 +63,21 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "breathe",
     illustration: "leaf",
     stencilImage: "/stencil-eucalyptus.png",
+    origins:
+      "Native to Australia and traditionally used in Aboriginal and herbal respiratory remedies.",
+    whyWeUseIt:
+      "The active compound eucalyptol helps support clearer breathing and respiratory comfort. Its cooling aromatic profile may help ease congestion, refresh the senses, and promote relaxation during seasonal discomfort.",
+    keyStudies: [
+      { label: "Study 1", url: "https://pubmed.ncbi.nlm.nih.gov/17005002/" },
+      {
+        label: "Study 2",
+        url: "https://link.springer.com/article/10.1007/s10787-023-01237-6",
+      },
+      {
+        label: "Study 3",
+        url: "https://www.researchgate.net/publication/396199434",
+      },
+    ],
   },
   {
     index: 2,
@@ -50,6 +89,18 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "breathe",
     illustration: "leaf",
     stencilImage: "/menthol-stencil.png",
+    origins:
+      "Derived from mint species traditionally used in cooling balms and inhalation remedies.",
+    whyWeUseIt:
+      "Menthol activates cold-sensitive receptors that create an instant cooling sensation and support the feeling of easier airflow. It also provides refreshing sensory stimulation and mental clarity.",
+    keyStudies: [
+      { label: "Study 1", url: "https://pubmed.ncbi.nlm.nih.gov/17950352/" },
+      { label: "Study 2", url: "https://pubmed.ncbi.nlm.nih.gov/8893526/" },
+      {
+        label: "Study 3",
+        url: "https://www.researchgate.net/publication/399123580",
+      },
+    ],
   },
   {
     index: 3,
@@ -61,6 +112,21 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "breathe",
     illustration: "leaf",
     stencilImage: "/peppermint-stencil.png",
+    origins:
+      "Native to Europe and widely used in traditional herbal medicine for respiratory and digestive wellness.",
+    whyWeUseIt:
+      "Peppermint contains menthol-rich aromatic oils that help support breathing comfort, refresh the senses, and promote a revitalizing feeling of energy and focus.",
+    keyStudies: [
+      { label: "Study 1", url: "https://pubmed.ncbi.nlm.nih.gov/16767798/" },
+      {
+        label: "Study 2",
+        url: "https://doaj.org/article/c1dbacbebbc346b09eb5a585f84ba564",
+      },
+      {
+        label: "Study 3",
+        url: "https://www.sciencedirect.com/science/article/pii/S037851731730414X",
+      },
+    ],
   },
   {
     index: 4,
@@ -72,6 +138,18 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "breathe",
     illustration: "leaf",
     stencilImage: "/camphor-stencil.png",
+    origins:
+      "Traditionally sourced from camphor laurel trees native to East Asia and used in therapeutic aromatic preparations.",
+    whyWeUseIt:
+      "Camphor provides a penetrating cooling sensation that helps create a feeling of respiratory openness while supporting relaxation and physical comfort.",
+    keyStudies: [
+      { label: "Study 1", url: "https://pubmed.ncbi.nlm.nih.gov/30022280/" },
+      { label: "Study 2", url: "https://jddt.in/index.php/jddt/article/view/679" },
+      {
+        label: "Study 3",
+        url: "https://www.sciencedirect.com/science/article/pii/S2225411015001033",
+      },
+    ],
   },
   {
     index: 5,
@@ -83,6 +161,21 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "hormones",
     illustration: "root",
     stencilImage: "/ashwagandha-stencil.png",
+    origins:
+      "Native to India, Africa, and the Middle East, widely used in Ayurvedic medicine as an adaptogenic herb.",
+    whyWeUseIt:
+      "Ashwagandha contains withanolides that help support stress resilience, emotional balance, hormonal wellness, and nervous system relaxation.",
+    keyStudies: [
+      { label: "Study 1", url: "https://pubmed.ncbi.nlm.nih.gov/31517876/" },
+      {
+        label: "Study 2",
+        url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6979308/",
+      },
+      {
+        label: "Study 3",
+        url: "https://www.researchgate.net/publication/354674987",
+      },
+    ],
   },
   {
     index: 6,
@@ -94,6 +187,21 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "hormones",
     illustration: "mineral",
     stencilImage: "/mg-glycinate-stencil.png",
+    origins:
+      "A bioavailable magnesium complex widely used in nutritional and recovery formulations.",
+    whyWeUseIt:
+      "Magnesium supports muscle relaxation, sleep quality, nervous system balance, and hormonal wellness while helping reduce fatigue and tension.",
+    keyStudies: [
+      {
+        label: "Study 1",
+        url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5579607/",
+      },
+      {
+        label: "Study 2",
+        url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5452159/",
+      },
+      { label: "Study 3", url: "https://pubmed.ncbi.nlm.nih.gov/23853635/" },
+    ],
   },
   {
     index: 7,
@@ -105,6 +213,21 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "hormones",
     illustration: "flower",
     stencilImage: "/parviflora-stencil.png",
+    origins:
+      "Native to North America and traditionally used in women's wellness formulations.",
+    whyWeUseIt:
+      "Rich in gamma-linolenic acid (GLA), evening primrose oil supports hormonal balance, skin wellness, mood stability, and healthy inflammatory responses.",
+    keyStudies: [
+      { label: "Study 1", url: "https://pubmed.ncbi.nlm.nih.gov/29446652/" },
+      {
+        label: "Study 2",
+        url: "https://www.sciencedirect.com/science/article/pii/S0378517313002102",
+      },
+      {
+        label: "Study 3",
+        url: "https://link.springer.com/chapter/10.1007/978-3-030-80669-3_8",
+      },
+    ],
   },
   {
     index: 8,
@@ -116,6 +239,21 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "hormones",
     illustration: "flower",
     stencilImage: "/chamomille-stencil.png",
+    origins:
+      "Traditionally used across Europe and Asia as a calming botanical remedy.",
+    whyWeUseIt:
+      "Chamomile contains soothing flavonoids and aromatic compounds that support relaxation, emotional balance, and restful sleep.",
+    keyStudies: [
+      { label: "Study 1", url: "https://pubmed.ncbi.nlm.nih.gov/27912875/" },
+      {
+        label: "Study 2",
+        url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2995283/",
+      },
+      {
+        label: "Study 3",
+        url: "https://www.ijpsr.com/bft-article/development-and-evaluation-of-herbal-transdermal-patch-of-chamomile-extract/",
+      },
+    ],
   },
   {
     index: 9,
@@ -127,6 +265,18 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "muscles",
     illustration: "mineral",
     stencilImage: "/mgcl-stencil.png",
+    origins:
+      "Naturally sourced mineral compound commonly used in muscle recovery and wellness therapies.",
+    whyWeUseIt:
+      "Magnesium helps support muscle relaxation, recovery after physical activity, neuromuscular balance, and reduction of physical tension and fatigue.",
+    keyStudies: [
+      {
+        label: "Study 1",
+        url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5579607/",
+      },
+      { label: "Study 2", url: "https://www.mdpi.com/2072-6643/9/8/813" },
+      { label: "Study 3", url: "https://pubmed.ncbi.nlm.nih.gov/27624531/" },
+    ],
   },
   {
     index: 10,
@@ -138,6 +288,21 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "muscles",
     illustration: "mineral",
     stencilImage: "/taurine-stencil.png",
+    origins:
+      "Naturally occurring amino acid found in muscle and nervous tissue.",
+    whyWeUseIt:
+      "Taurine supports endurance, hydration balance, muscle recovery, and cellular performance while helping reduce fatigue associated with physical exertion.",
+    keyStudies: [
+      {
+        label: "Study 1",
+        url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5933890/",
+      },
+      { label: "Study 2", url: "https://pubmed.ncbi.nlm.nih.gov/29076412/" },
+      {
+        label: "Study 3",
+        url: "https://www.sciencedirect.com/science/article/pii/S1756464620303945",
+      },
+    ],
   },
   {
     index: 11,
@@ -149,6 +314,21 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "muscles",
     illustration: "leaf",
     stencilImage: "/boswelia-stencil.png",
+    origins:
+      "Native to India and traditionally used in Ayurvedic medicine for joint and mobility support.",
+    whyWeUseIt:
+      "Boswellia contains boswellic acids that help support healthy inflammatory responses, joint comfort, mobility, and recovery after physical activity.",
+    keyStudies: [
+      { label: "Study 1", url: "https://pubmed.ncbi.nlm.nih.gov/21266047/" },
+      {
+        label: "Study 2",
+        url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3309643/",
+      },
+      {
+        label: "Study 3",
+        url: "https://www.sciencedirect.com/science/article/pii/S0944711313002422",
+      },
+    ],
   },
   {
     index: 12,
@@ -160,6 +340,18 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "muscles",
     illustration: "mineral",
     stencilImage: "/coenzyme-stencil.png",
+    origins:
+      "Naturally occurring antioxidant present in human cells and energy-producing tissues.",
+    whyWeUseIt:
+      "CoQ10 supports cellular energy production, muscle stamina, recovery, and protection against oxidative stress generated during intense physical activity.",
+    keyStudies: [
+      {
+        label: "Study 1",
+        url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9104583/",
+      },
+      { label: "Study 2", url: "https://pubmed.ncbi.nlm.nih.gov/26864911/" },
+      { label: "Study 3", url: "https://www.mdpi.com/2076-3921/10/5/773" },
+    ],
   },
   {
     index: 13,
@@ -171,6 +363,21 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "gut",
     illustration: "root",
     stencilImage: "/ginger-stencil.png",
+    origins:
+      "Native to Southeast Asia and widely used in Ayurvedic and traditional Chinese medicine for digestive wellness.",
+    whyWeUseIt:
+      "Ginger contains gingerols and shogaols that help support healthy digestion, reduce feelings of bloating and heaviness, and promote gastrointestinal comfort with a naturally warming effect.",
+    keyStudies: [
+      {
+        label: "Study 1",
+        url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6341159/",
+      },
+      { label: "Study 2", url: "https://pubmed.ncbi.nlm.nih.gov/10442508/" },
+      {
+        label: "Study 3",
+        url: "https://www.ijpsjournal.com/article/formulation-and-evaluation-of-herbal-transdermal-patch-containing-ginger-extract",
+      },
+    ],
   },
   {
     index: 14,
@@ -182,6 +389,21 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "gut",
     illustration: "leaf",
     stencilImage: "/fennel-stencil.png",
+    origins:
+      "Native to the Mediterranean region and traditionally used for digestive comfort and bloating relief.",
+    whyWeUseIt:
+      "Fennel contains aromatic compounds such as anethole that help soothe the digestive tract, support smoother digestion, and reduce occasional abdominal discomfort.",
+    keyStudies: [
+      {
+        label: "Study 1",
+        url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4137549/",
+      },
+      { label: "Study 2", url: "https://pubmed.ncbi.nlm.nih.gov/26051506/" },
+      {
+        label: "Study 3",
+        url: "https://www.sciencedirect.com/science/article/pii/S037851731730414X",
+      },
+    ],
   },
   {
     index: 15,
@@ -193,6 +415,21 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "gut",
     illustration: "leaf",
     stencilImage: "/peppermint-stencil.png",
+    origins:
+      "Traditionally used in European and herbal medicine systems for digestive and respiratory support.",
+    whyWeUseIt:
+      "Peppermint oil provides a cooling and soothing sensation that helps relax digestive muscles, ease bloating, and support overall gut comfort after meals.",
+    keyStudies: [
+      {
+        label: "Study 1",
+        url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6337770/",
+      },
+      { label: "Study 2", url: "https://pubmed.ncbi.nlm.nih.gov/31470006/" },
+      {
+        label: "Study 3",
+        url: "https://doaj.org/article/c1dbacbebbc346b09eb5a585f84ba564",
+      },
+    ],
   },
   {
     index: 16,
@@ -204,5 +441,20 @@ export const INGREDIENTS: Ingredient[] = [
     patch: "gut",
     illustration: "flower",
     stencilImage: "/caraway-stencil.png",
+    origins:
+      "Native to Europe, North Africa, and Western Asia, traditionally used in digestive herbal preparations.",
+    whyWeUseIt:
+      "Caraway contains natural aromatic oils that help support healthy digestion, reduce bloating, and promote gastrointestinal balance and comfort.",
+    keyStudies: [
+      { label: "Study 1", url: "https://pubmed.ncbi.nlm.nih.gov/21140172/" },
+      {
+        label: "Study 2",
+        url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4030608/",
+      },
+      {
+        label: "Study 3",
+        url: "https://www.sciencedirect.com/science/article/pii/S0378517319310930",
+      },
+    ],
   },
 ];

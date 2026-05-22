@@ -1,5 +1,16 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "motion/react";
+import { Reveal, revealItem } from "@/components/motion/Reveal";
 import { PRODUCTS, type Product } from "@/lib/products";
 
 function StarRating({ rating, reviews }: { rating: number; reviews: number }) {
@@ -46,7 +57,13 @@ export function ProductCard({
   product: Product;
 }) {
   return (
-    <div className="group flex flex-col">
+    <motion.div
+      className="group flex flex-col"
+      variants={revealItem}
+      whileHover={{ y: -4 }}
+      whileTap={{ scale: 0.99 }}
+      transition={{ type: "spring", stiffness: 280, damping: 22 }}
+    >
       <Link
         href={`/products/${product.slug}`}
         aria-label={`View ${product.name}`}
@@ -91,9 +108,12 @@ export function ProductCard({
           Coming Soon
         </button>
       ) : (
-        <button
+        <motion.button
           type="button"
-          className="mt-4 w-full rounded-full py-3.5 text-[11px] font-medium uppercase tracking-[0.15em] text-white transition-transform duration-300 hover:scale-[1.01] focus-visible:outline-2 focus-visible:outline-offset-2 cursor-pointer"
+          whileHover={{ scale: 1.02, y: -1 }}
+          whileTap={{ scale: 0.97 }}
+          transition={{ type: "spring", stiffness: 360, damping: 22 }}
+          className="mt-4 w-full rounded-full py-3.5 text-[11px] font-medium uppercase tracking-[0.15em] text-white focus-visible:outline-2 focus-visible:outline-offset-2 cursor-pointer"
           style={{
             backgroundColor: product.accent,
             outlineColor: product.accent,
@@ -101,9 +121,69 @@ export function ProductCard({
           aria-label={`Add ${product.name} to cart`}
         >
           Add to Cart
-        </button>
+        </motion.button>
       )}
-    </div>
+    </motion.div>
+  );
+}
+
+/**
+ * Wraps a fill <Image> with a scroll-linked vertical parallax. The inner
+ * element is scaled up slightly so the translation never reveals empty edges.
+ */
+function LifestyleImage({
+  src,
+  alt,
+  wrapperClassName,
+  priority,
+  sizes,
+}: {
+  src: string;
+  alt: string;
+  wrapperClassName: string;
+  priority?: boolean;
+  sizes: string;
+}) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const reduce = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const smoothed = useSpring(scrollYProgress, {
+    stiffness: 80,
+    damping: 24,
+    mass: 0.4,
+  });
+  const y = useTransform(smoothed, [0, 1], ["-4%", "4%"]);
+
+  return (
+    <motion.div
+      ref={ref}
+      variants={revealItem}
+      whileHover={{ scale: 1.005 }}
+      transition={{ type: "spring", stiffness: 240, damping: 26 }}
+      className={`${wrapperClassName} group`}
+    >
+      <motion.div
+        className="absolute inset-0"
+        style={
+          reduce
+            ? undefined
+            : { y, scale: 1.08, willChange: "transform" }
+        }
+      >
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          sizes={sizes}
+          priority={priority}
+        />
+      </motion.div>
+    </motion.div>
   );
 }
 
@@ -111,41 +191,54 @@ export default function ShopSection() {
   return (
     <section className="bg-white pt-6 pb-20 px-6 lg:px-10">
       <div className="max-w-[1400px] mx-auto">
-        {/* Row 1: 3 product cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
-          {PRODUCTS.slice(0, 3).map((product) => (
-            <ProductCard key={product.src} product={product} />
-          ))}
-        </div>
+        {/*
+          Single grid so that on mobile (1 col) the DOM order controls layout:
+          all 4 products first, then both lifestyle images, then the bundle.
+          On md+ we explicitly place items into rows/cols to keep the original
+          desktop layout (prods row, image+prod row, image+bundle row).
+        */}
+        <Reveal
+          stagger={0.08}
+          amount={0.12}
+          className="grid grid-cols-1 md:grid-cols-3 gap-5"
+        >
+          {/* Row 1 (desktop): 3 product cards */}
+          <ProductCard product={PRODUCTS[0]} />
+          <ProductCard product={PRODUCTS[1]} />
+          <ProductCard product={PRODUCTS[2]} />
 
-        {/* Row 2: lifestyle image (2 cols) + product card (1 col) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
-          <div className="md:col-span-2 relative rounded-2xl overflow-hidden aspect-video md:aspect-auto md:min-h-[420px]">
-            <Image
-              src="/girl-guy.png"
-              alt="Man and woman wearing pach+ transdermal patches"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 66vw"
-              priority
-            />
-          </div>
-          <ProductCard product={PRODUCTS[3]} />
-        </div>
+          {/* 4th product — mobile: appears right after the first 3; desktop: row 2, col 3 */}
+          <motion.div
+            variants={revealItem}
+            className="md:col-start-3 md:row-start-2"
+          >
+            <ProductCard product={PRODUCTS[3]} />
+          </motion.div>
 
-        {/* Row 3: lifestyle image (2 cols) + bundle CTA (1 col) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div className="md:col-span-2 relative rounded-2xl overflow-hidden aspect-4/5 md:aspect-auto md:min-h-[520px]">
-            <Image
-              src="/girl-pach.png"
-              alt="Woman using pach+ Happy Hormones patch"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 66vw"
-            />
-          </div>
+          {/* Lifestyle image 1 — mobile: after all products; desktop: row 2, cols 1-2 */}
+          <LifestyleImage
+            src="/girl-guy.png"
+            alt="Man and woman wearing pach+ transdermal patches"
+            wrapperClassName="md:col-span-2 md:col-start-1 md:row-start-2 relative rounded-2xl overflow-hidden aspect-video md:aspect-auto md:min-h-[420px]"
+            sizes="(max-width: 768px) 100vw, 66vw"
+            priority
+          />
 
-          <div className="flex flex-col">
+          {/* Lifestyle image 2 — mobile: after image 1; desktop: row 3, cols 1-2 */}
+          <LifestyleImage
+            src="/girl-pach.png"
+            alt="Woman using pach+ Happy Hormones patch"
+            wrapperClassName="md:col-span-2 md:col-start-1 md:row-start-3 relative rounded-2xl overflow-hidden aspect-4/5 md:aspect-auto md:min-h-[520px]"
+            sizes="(max-width: 768px) 100vw, 66vw"
+          />
+
+          {/* Bundle CTA — mobile: last; desktop: row 3, col 3 */}
+          <motion.div
+            variants={revealItem}
+            whileHover={{ y: -4 }}
+            transition={{ type: "spring", stiffness: 260, damping: 24 }}
+            className="flex flex-col md:col-start-3 md:row-start-3"
+          >
             <div
               className="flex-1 rounded-2xl p-8 lg:p-10 flex flex-col justify-between"
               style={{ backgroundColor: "#EAF5F1" }}
@@ -170,13 +263,18 @@ export default function ShopSection() {
                   <span className="text-sm text-teal-700/50 line-through">₹4,497</span>
                 </div>
                 <StarRating rating={5.0} reviews={73} />
-                <button className="mt-5 w-full bg-teal-700 text-white text-[11px] font-medium tracking-[0.15em] uppercase py-3.5 rounded-full hover:bg-teal-900 transition-colors cursor-pointer">
+                <motion.button
+                  whileHover={{ scale: 1.02, y: -1 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ type: "spring", stiffness: 360, damping: 22 }}
+                  className="mt-5 w-full bg-teal-700 text-white text-[11px] font-medium tracking-[0.15em] uppercase py-3.5 rounded-full hover:bg-teal-900 transition-colors cursor-pointer"
+                >
                   Add to Cart
-                </button>
+                </motion.button>
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </Reveal>
       </div>
     </section>
   );

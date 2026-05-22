@@ -1,13 +1,30 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Clock, Cloud, Droplets, ShieldCheck } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const LAYER_IMAGE_VERSION = "2026-04-27-transparent";
+
+const PATCH_ICON_BASE_CLASS =
+  "block bg-current [mask-repeat:no-repeat] [mask-position:center] [mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center] [-webkit-mask-size:contain]";
+
+function PatchIcon({ src, label, large }: { src: string; label: string; large?: boolean }) {
+  const maskValue = `url("${src}")`;
+  const sizeClass = large
+    ? "size-5.5 xs:size-6 lg:size-7 2xl:size-8"
+    : "size-4.5 xs:size-5 lg:size-6 2xl:size-7";
+  return (
+    <span
+      role="img"
+      aria-label={label}
+      className={`${PATCH_ICON_BASE_CLASS} ${sizeClass}`}
+      style={{ maskImage: maskValue, WebkitMaskImage: maskValue }}
+    />
+  );
+}
 
 const LAYERS = [
   {
@@ -51,28 +68,30 @@ const PATCH_DETAILS = [
     body: "Gives you the fluffy feel",
     color: "text-purple-500",
     accent: "bg-purple-500/12 text-purple-700",
-    icon: Cloud,
+    iconSrc: "/memory.svg",
   },
   {
     label: "Nutrient Reservoir",
     body: "Infused with lipophilic vitamins and minerals",
     color: "text-teal-700",
     accent: "bg-teal-700/12 text-teal-800",
-    icon: Droplets,
+    iconSrc:
+      "/minimalist-outline-icon-illustrating-rainwater-harvesting-system-featuring-water-drops-falling-reser.svg",
+    largeIcon: true,
   },
   {
     label: "Porous Liner",
     body: "Ensures controlled, extended release over 8 hours",
     color: "text-[#1E3A8A]",
     accent: "bg-[#DBEAFE] text-[#1E3A8A]",
-    icon: Clock,
+    iconSrc: "/golf-ball_7798965.svg",
   },
   {
     label: "Adhesive",
     body: "Skin-friendly layer that keeps the patch in place",
     color: "text-pink-700",
     accent: "bg-pink-700/12 text-pink-800",
-    icon: ShieldCheck,
+    iconSrc: "/glue_2815643.svg",
   },
 ];
 
@@ -80,8 +99,6 @@ function LayerDetailCards({ className }: { className?: string }) {
   return (
     <div className={className}>
       {PATCH_DETAILS.map((detail, index) => {
-        const Icon = detail.icon;
-
         return (
           <article
             key={detail.label}
@@ -90,7 +107,7 @@ function LayerDetailCards({ className }: { className?: string }) {
             <div
               className={`layer-stack-card-icon mb-2 flex size-8 items-center justify-center rounded-xl xs:mb-3 xs:size-9 lg:mb-4 lg:size-10 lg:rounded-2xl 2xl:mb-6 2xl:size-12 ${detail.accent}`}
             >
-              <Icon className="size-4.5 xs:size-5 lg:size-6 2xl:size-7" aria-hidden="true" />
+              <PatchIcon src={detail.iconSrc} label={detail.label} large={detail.largeIcon} />
             </div>
             <h3
               className={`layer-stack-card-title text-[11px] font-black leading-tight xs:text-[13px] lg:text-base 2xl:text-lg ${detail.color}`}
