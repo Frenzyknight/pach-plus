@@ -5,6 +5,7 @@ import AboutStatsMission from "@/components/about/AboutStatsMission";
 import AboutWhyUs from "@/components/about/AboutWhyUs";
 import AboutValues from "@/components/about/AboutValues";
 import AboutFaq from "@/components/about/AboutFaq";
+import AboutContactForm from "@/components/about/AboutContactForm";
 import PouchGridSection from "@/components/PouchGridSection";
 import PageMotionProvider from "@/components/motion/PageMotionProvider";
 
@@ -24,6 +25,7 @@ export default function AboutPage() {
         <AboutWhyUs />
         <AboutValues />
         <AboutFaq />
+        <AboutContactForm />
         <PouchGridSection />
         <Footer />
       </div>

@@ -1,33 +1,177 @@
-import type { ProductIngredient, Product } from "@/lib/products";
+"use client";
 
-function BotanicalIcon({
-  ingredient,
-  accent,
-}: {
-  ingredient: ProductIngredient;
-  accent: string;
-}) {
+import { useEffect, useRef, useState } from "react";
+import IngredientFlipCard from "@/components/IngredientFlipCard";
+import { INGREDIENTS, type Ingredient } from "@/lib/ingredients";
+import type { Product } from "@/lib/products";
+
+function CarouselArrowIcon({ direction }: { direction: "left" | "right" }) {
   return (
     <svg
-      viewBox="0 0 56 56"
+      viewBox="0 0 24 24"
       fill="none"
-      stroke={accent}
-      strokeWidth="1.6"
+      stroke="currentColor"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="h-10 w-10"
+      className="h-4 w-4"
       aria-hidden="true"
     >
-      <path d="M28 46V18" />
-      <path d="M28 28c-9-2-13-7-13-16 9 2 13 7 13 16Z" />
-      <path d="M28 34c10-2 15-8 15-18-10 2-15 8-15 18Z" />
-      <circle cx="28" cy="13" r="4" />
-      <title>{ingredient.name}</title>
+      <path d={direction === "left" ? "M15 18l-6-6 6-6" : "M9 18l6-6-6-6"} />
     </svg>
   );
 }
 
+function ArrowButton({
+  direction,
+  accent,
+  disabled,
+  onClick,
+  label,
+}: {
+  direction: "left" | "right";
+  accent: string;
+  disabled: boolean;
+  onClick: () => void;
+  label: string;
+}) {
+  const [hover, setHover] = useState(false);
+  const filled = hover && !disabled;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onFocus={() => setHover(true)}
+      onBlur={() => setHover(false)}
+      aria-label={label}
+      disabled={disabled}
+      className="flex h-10 w-10 items-center justify-center rounded-full border transition-colors disabled:cursor-not-allowed disabled:opacity-30"
+      style={{
+        borderColor: filled ? accent : "rgba(0,0,0,0.15)",
+        backgroundColor: filled ? accent : "#fff",
+        color: filled ? "#fff" : "#000",
+      }}
+    >
+      <CarouselArrowIcon direction={direction} />
+    </button>
+  );
+}
+
+function ExploreScienceButton({ accent }: { accent: string }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <a
+      href="#faqs"
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onFocus={() => setHover(true)}
+      onBlur={() => setHover(false)}
+      className="rounded-full border px-8 py-3 text-[11px] font-bold transition-colors"
+      style={{
+        borderColor: hover ? accent : "#000",
+        backgroundColor: hover ? accent : "transparent",
+        color: hover ? "#fff" : "#000",
+      }}
+    >
+      Explore the Science
+    </a>
+  );
+}
+
+function IngredientsCarousel({
+  items,
+  accent,
+}: {
+  items: Ingredient[];
+  accent: string;
+}) {
+  const scrollerRef = useRef<HTMLDivElement | null>(null);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+
+    const updateScrollState = () => {
+      setCanScrollPrev(scroller.scrollLeft > 1);
+      setCanScrollNext(
+        scroller.scrollLeft < scroller.scrollWidth - scroller.clientWidth - 1,
+      );
+    };
+
+    updateScrollState();
+    scroller.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState);
+    return () => {
+      scroller.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
+    };
+  }, [items.length]);
+
+  const scrollByCard = (direction: "prev" | "next") => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+    const first = scroller.children[0] as HTMLElement | undefined;
+    const second = scroller.children[1] as HTMLElement | undefined;
+    if (!first) return;
+
+    const distance = second
+      ? second.offsetLeft - first.offsetLeft
+      : first.clientWidth;
+    scroller.scrollBy({
+      left: direction === "prev" ? -distance : distance,
+      behavior: "smooth",
+    });
+  };
+
+  const goPrev = () => scrollByCard("prev");
+  const goNext = () => scrollByCard("next");
+
+  return (
+    <div className="relative">
+      <div
+        ref={scrollerRef}
+        className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-5 lg:gap-6 [&::-webkit-scrollbar]:hidden"
+      >
+        {items.map((ingredient) => (
+          <div
+            key={ingredient.index}
+            className="w-full shrink-0 snap-start sm:w-[calc((100%-1.25rem)/2)] lg:w-[calc((100%-3rem)/3)]"
+          >
+            <IngredientFlipCard ingredient={ingredient} />
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-8 flex items-center justify-between">
+        <ArrowButton
+          direction="left"
+          accent={accent}
+          disabled={!canScrollPrev}
+          onClick={goPrev}
+          label="Previous ingredient"
+        />
+
+        <ExploreScienceButton accent={accent} />
+
+        <ArrowButton
+          direction="right"
+          accent={accent}
+          disabled={!canScrollNext}
+          onClick={goNext}
+          label="Next ingredient"
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function ProductIngredients({ product }: { product: Product }) {
+  const items = INGREDIENTS.filter((i) => i.patch === product.patch);
+
   return (
     <section className="overflow-hidden bg-white py-20 lg:py-24">
       <div className="mx-auto max-w-[760px] px-6 text-center">
@@ -39,34 +183,8 @@ export default function ProductIngredients({ product }: { product: Product }) {
         </p>
       </div>
 
-      <div className="mt-14 flex gap-10 overflow-x-auto px-6 pb-4 lg:px-10">
-        {product.ingredients.map((ingredient) => (
-          <article
-            key={ingredient.name}
-            className="relative flex min-h-[250px] w-[210px] shrink-0 flex-col justify-end rounded-3xl bg-[#F0F1ED] p-7"
-          >
-            <span
-              className="absolute right-5 top-5 h-4 w-4 rounded-full"
-              style={{ backgroundColor: ingredient.accent }}
-            />
-            <BotanicalIcon ingredient={ingredient} accent={ingredient.accent} />
-            <h3 className="mt-8 text-[13px] font-black">
-              {ingredient.name}
-            </h3>
-            <p className="mt-3 text-[12px] font-medium leading-relaxed text-black/65">
-              {ingredient.description}
-            </p>
-          </article>
-        ))}
-      </div>
-
-      <div className="mt-12 flex justify-center">
-        <a
-          href="#faqs"
-          className="rounded-full border border-black px-8 py-3 text-[11px] font-bold transition-colors hover:bg-black hover:text-white"
-        >
-          Explore the Science
-        </a>
+      <div className="mx-auto mt-14 max-w-[1400px] px-5 xs:px-6 lg:px-10">
+        <IngredientsCarousel items={items} accent={product.accent} />
       </div>
     </section>
   );

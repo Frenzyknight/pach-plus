@@ -84,7 +84,7 @@ export default function BannerSection() {
               href="/shop"
               className="inline-block rounded-full bg-[#2E2544] px-5 py-3 text-xs font-semibold text-white shadow-[0_12px_32px_rgba(0,0,0,0.22)] hover:bg-[#20182F] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2E2544]"
             >
-              Shop Mother&apos;s Day Sale
+              Shop Special Sale
             </Link>
           </motion.div>
         </motion.div>

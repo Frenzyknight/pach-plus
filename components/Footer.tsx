@@ -10,14 +10,14 @@ const FOOTER_COLUMNS = [
     heading: "About Us",
     links: [
       { label: "Mission", href: "/about#mission" },
-      { label: "Team", href: "#" },
-      { label: "Blogs", href: "#" },
+      { label: "Team", href: "/about#team" },
+      { label: "Blogs", href: "/blogs" },
     ],
   },
   {
     heading: "Support",
     links: [
-      { label: "Contact", href: "#" },
+      { label: "Contact", href: "/about#contact" },
       { label: "Refund Policy", href: "#" },
       { label: "FAQ's", href: "/about#faq" },
     ],
@@ -26,7 +26,7 @@ const FOOTER_COLUMNS = [
     heading: "Social",
     links: [
       { label: "Instagram", href: "#" },
-      { label: "LinkedIn", href: "#" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/company/pach-wellness-pvt-ltd/" },
       { label: "YouTube", href: "#" },
     ],
   },

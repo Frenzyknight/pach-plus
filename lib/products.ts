@@ -1,3 +1,5 @@
+import type { IngredientPatch } from "@/lib/ingredients";
+
 export type ProductIngredient = {
   name: string;
   description: string;
@@ -37,6 +39,7 @@ export type Product = {
   accent: string;
   accentLight: string;
   bg: string;
+  patch: IngredientPatch;
   badges: string[];
   heroDescription: string;
   heroSubcopy: string;
@@ -150,6 +153,7 @@ export const PRODUCTS: Product[] = [
     accent: "#574092",
     accentLight: "#896CC4",
     bg: "#E9D5FF",
+    patch: "muscles",
     badges: ["Plant-Based", "8 Hr Wear", "No Pills", "Targeted"],
     heroDescription:
       "A comfort-first recovery patch designed to support sore muscles, post-workout wind-downs, and everyday body tension without adding another pill to your routine.",
@@ -261,6 +265,7 @@ export const PRODUCTS: Product[] = [
     accent: "#1E3A8A",
     accentLight: "#93C5FD",
     bg: "#DBEAFE",
+    patch: "breathe",
     badges: ["Plant-Based", "Aromatic", "No Pills", "Daily Wear"],
     heroDescription:
       "A crisp nasal comfort patch made with refreshing aromatics to support easier-feeling breathing during busy days, travel, and bedtime routines.",
@@ -372,6 +377,7 @@ export const PRODUCTS: Product[] = [
     accent: "#BE185D",
     accentLight: "#F9A8D4",
     bg: "#FCE7F3",
+    patch: "hormones",
     badges: ["For Her", "Plant-Based", "No Pills", "Daily Wear"],
     heroDescription:
       "A daily balance patch designed for cycle-aware routines, mood support, and the moments your body wants a gentler wellness ritual.",
@@ -483,6 +489,7 @@ export const PRODUCTS: Product[] = [
     accent: "#065F46",
     accentLight: "#6EE7B7",
     bg: "#D1FAE5",
+    patch: "gut",
     badges: ["Plant-Based", "Digestive", "No Pills", "Daily Wear"],
     heroDescription:
       "A nourishing daily patch designed to support gut-focused routines, body comfort, and metabolic wellness without adding more capsules to your shelf.",
