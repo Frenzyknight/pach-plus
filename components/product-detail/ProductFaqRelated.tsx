@@ -41,7 +41,7 @@ function RelatedProductCard({ product }: { product: Product }) {
         </div>
       </Link>
       <h3 className="mt-4 text-[12px] font-black">
-        {product.name} <span className="text-black/45">- ${product.price}</span>
+        {product.name} <span className="text-black/45">- ₹{product.price}</span>
       </h3>
       <p className="mt-1 text-[11px] font-medium text-black/45">
         {product.tagline}

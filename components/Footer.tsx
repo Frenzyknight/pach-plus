@@ -27,7 +27,6 @@ const FOOTER_COLUMNS = [
     links: [
       { label: "Instagram", href: "#" },
       { label: "LinkedIn", href: "https://www.linkedin.com/company/pach-wellness-pvt-ltd/" },
-      { label: "YouTube", href: "#" },
     ],
   },
 ];

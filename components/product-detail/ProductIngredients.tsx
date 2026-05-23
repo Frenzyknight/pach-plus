@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import IngredientFlipCard from "@/components/IngredientFlipCard";
 import { INGREDIENTS, type Ingredient } from "@/lib/ingredients";
 import type { Product } from "@/lib/products";
@@ -62,8 +63,8 @@ function ArrowButton({
 function ExploreScienceButton({ accent }: { accent: string }) {
   const [hover, setHover] = useState(false);
   return (
-    <a
-      href="#faqs"
+    <Link
+      href="/science#herbal-index"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onFocus={() => setHover(true)}
@@ -76,7 +77,7 @@ function ExploreScienceButton({ accent }: { accent: string }) {
       }}
     >
       Explore the Science
-    </a>
+    </Link>
   );
 }
 

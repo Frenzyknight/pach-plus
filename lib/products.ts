@@ -99,9 +99,9 @@ const SHARED_COMPARISON_ROWS: ProductComparisonRow[] = [
   },
   {
     label: "Affordable",
-    pach: "$24",
-    pills: "~$32",
-    alternatives: "~$48",
+    pach: "₹1,999",
+    pills: "~₹2,699",
+    alternatives: "~₹3,999",
   },
 ];
 
