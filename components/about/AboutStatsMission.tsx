@@ -69,7 +69,7 @@ function MissionImage() {
         }
       >
         <Image
-          src="/mission-desktop.jpeg"
+          src="/mission-tablet.jpeg"
           alt="Our mission — athletes wearing pach+ patches"
           width={1024}
           height={576}
@@ -91,7 +91,7 @@ function MissionImage() {
 
 export default function AboutStatsMission() {
   return (
-    <section className="bg-white px-5 py-20 xs:px-6 lg:px-10 lg:py-28">
+    <section id="mission" className="bg-white px-5 py-20 xs:px-6 lg:px-10 lg:py-28">
       <div className="mx-auto max-w-[1400px]">
         <Reveal
           stagger={0.08}

@@ -48,7 +48,7 @@ const LAYERS = [
     alt: "White absorbent layer",
     callout: {
       title: "Porous Liner",
-      body: "for 8 hour extended release",
+
       className: "items-end text-right -left-[58%] xs:-left-[42%] lg:-left-[44%] 2xl:-left-[44%]",
     },
   },
@@ -102,7 +102,7 @@ function LayerDetailCards({ className }: { className?: string }) {
         return (
           <article
             key={detail.label}
-            className="layer-stack-card rounded-[1.15rem] border border-foreground/6 bg-white p-2.5  xs:rounded-[1.35rem] xs:p-3 lg:min-h-[150px] lg:rounded-3xl lg:p-4 xl:min-h-[165px] 2xl:min-h-[190px] 2xl:p-5"
+            className="layer-stack-card rounded-[1.15rem] bg-white p-2.5 xs:rounded-[1.35rem] xs:p-3 lg:min-h-[150px] lg:rounded-3xl lg:p-4 xl:min-h-[165px] 2xl:min-h-[190px] 2xl:p-5"
           >
             <div
               className={`layer-stack-card-icon mb-2 flex size-8 items-center justify-center rounded-xl xs:mb-3 xs:size-9 lg:mb-4 lg:size-10 lg:rounded-2xl 2xl:mb-6 2xl:size-12 ${detail.accent}`}
@@ -112,7 +112,7 @@ function LayerDetailCards({ className }: { className?: string }) {
             <h3
               className={`layer-stack-card-title text-[11px] font-black leading-tight xs:text-[13px] lg:text-base 2xl:text-lg ${detail.color}`}
             >
-              {index + 1}. {detail.label}
+              {detail.label}
             </h3>
             <p className="layer-stack-card-copy mt-1.5 text-[10px] font-medium leading-snug text-foreground/62 xs:mt-2 xs:text-[11px] lg:mt-3 lg:text-sm lg:leading-relaxed 2xl:text-base">
               {detail.body}

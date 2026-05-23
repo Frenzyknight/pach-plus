@@ -74,9 +74,21 @@ export function ProductCard({
           src={product.src}
           alt={product.name}
           fill
-          className="object-contain p-8 transition-transform duration-500 group-hover:scale-105"
+          className="object-contain p-8 transition-[transform,opacity] duration-500 group-hover:scale-105 group-hover:opacity-0"
           sizes="(max-width: 768px) 100vw, 33vw"
         />
+        {product.hoverSrc && (
+          <div className="absolute inset-0 translate-y-full transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-y-0">
+            <Image
+              src={product.hoverSrc}
+              alt=""
+              fill
+              className="object-contain object-bottom"
+              sizes="(max-width: 768px) 100vw, 33vw"
+              aria-hidden
+            />
+          </div>
+        )}
         {product.comingSoon && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px]">
             <span className="rounded-full bg-white px-4 py-1.5 text-[10px] font-black tracking-[0.25em] uppercase text-black shadow-lg">

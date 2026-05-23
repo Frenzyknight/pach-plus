@@ -9,9 +9,9 @@ const FOOTER_COLUMNS = [
   {
     heading: "About Us",
     links: [
-      { label: "Mission", href: "#" },
+      { label: "Mission", href: "/about#mission" },
       { label: "Team", href: "#" },
-      { label: "Newsletter", href: "#" },
+      { label: "Blogs", href: "#" },
     ],
   },
   {
@@ -19,7 +19,7 @@ const FOOTER_COLUMNS = [
     links: [
       { label: "Contact", href: "#" },
       { label: "Refund Policy", href: "#" },
-      { label: "FAQ's", href: "#" },
+      { label: "FAQ's", href: "/about#faq" },
     ],
   },
   {

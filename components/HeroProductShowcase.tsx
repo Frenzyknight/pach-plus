@@ -412,7 +412,7 @@ export default function HeroProductShowcase() {
   }, [activeIndex, total]);
 
   return (
-    <section className="relative isolate overflow-hidden bg-background pb-12 lg:pb-20">
+    <section className="relative isolate overflow-hidden bg-background py-12 lg:py-20">
       {/* Preload all pouch images */}
       <div aria-hidden className="pointer-events-none absolute h-0 w-0 overflow-hidden">
         {PACKAGES.map((p) => (
@@ -669,10 +669,7 @@ export default function HeroProductShowcase() {
               <Link
                 href={`/products/${pkg.slug}`}
                 className="inline-flex items-center rounded-full px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-background transition-all duration-500 ease-out hover:-translate-y-0.5 hover:brightness-110"
-                style={{
-                  backgroundColor: pkg.accent,
-                  boxShadow: `0 14px 30px ${pkg.accent}33`,
-                }}
+                style={{ backgroundColor: pkg.accent }}
               >
                 Explore
               </Link>

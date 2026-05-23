@@ -80,7 +80,7 @@ export default function AboutFaq() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="bg-white px-5 xs:px-6 lg:px-10">
+    <section id="faq" className="bg-white px-5 xs:px-6 lg:px-10">
       <div className="mx-auto grid max-w-[1400px] gap-12 lg:grid-cols-[minmax(0,42%)_minmax(0,58%)] lg:gap-20">
         <Reveal stagger={0.08} amount={0.4} className="lg:pr-6">
           <motion.p

@@ -5,7 +5,7 @@ import { Reveal, revealItem } from "@/components/motion/Reveal";
 
 export default function HerbalIndexHero() {
   return (
-    <section className="bg-white px-5 pb-12 pt-10 xs:px-6 sm:pb-16 lg:px-10 lg:pb-20">
+    <section className="bg-white px-5 py-10 xs:px-6 sm:py-16 lg:px-10 lg:py-20">
       <Reveal
         stagger={0.08}
         amount={0.3}

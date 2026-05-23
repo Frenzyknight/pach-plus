@@ -26,6 +26,7 @@ export type ProductComparisonRow = {
 export type Product = {
   slug: string;
   src: string;
+  hoverSrc?: string;
   name: string;
   type: string;
   price: number;
@@ -139,6 +140,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "happy-muscles",
     src: "/package.png",
+    hoverSrc: "/muscle-hand.png",
     name: "Happy Muscles",
     type: "Recovery Patch",
     price: 1499,
@@ -360,6 +362,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "happy-hormones",
     src: "/package3.png",
+    hoverSrc: "/hormone-hand.png",
     name: "Happy Hormones",
     type: "Balance Patch",
     price: 1499,
@@ -470,6 +473,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "happy-gut",
     src: "/package4.png",
+    hoverSrc: "/gut-hand.png",
     name: "Happy Gut",
     type: "Nourish Patch",
     price: 1499,

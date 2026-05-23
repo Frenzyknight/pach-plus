@@ -26,7 +26,7 @@ export default function BannerSection() {
     mass: 0.4,
   });
 
-  const imageScale = useTransform(smoothed, [0, 1], [1, 1.08]);
+  const imageScale = useTransform(smoothed, [0, 1], [1.06, 1.12]);
   const imageY = useTransform(smoothed, [0, 1], ["0%", "-6%"]);
 
   return (

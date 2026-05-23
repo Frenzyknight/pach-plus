@@ -26,7 +26,7 @@ export default function Home() {
         <Reveal
           as="section"
           aria-label="pach+ marquee"
-          className="bg-white py-4 sm:py-6 lg:py-8"
+          className="bg-white"
           amount={0.2}
         >
           <CurvedLoop

@@ -83,7 +83,7 @@ const CurvedLoop: FC<CurvedLoopProps> = ({
   const [offset, setOffset] = useState(0);
   const uid = useId();
   const pathId = `curve-${uid}`;
-  const pathD = `M-100,40 Q500,${40 + curveAmount} 1540,40`;
+  const pathD = `M-100,75 Q500,${75 + curveAmount} 1540,75`;
 
   const dragRef = useRef(false);
   const lastXRef = useRef(0);
