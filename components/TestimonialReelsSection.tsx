@@ -131,7 +131,9 @@ function PlayPauseIcon({
 }
 
 export default function TestimonialReelsSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeState, setActiveState] = useState({ current: 0, previous: 0 });
+  const activeIndex = activeState.current;
+  const prevActiveIndex = activeState.previous;
   const [muted, setMuted] = useState(true);
   const [playing, setPlaying] = useState(true);
   const [layout, setLayout] = useState({ cardVw: 13, gapVw: 14.5 });
@@ -140,7 +142,6 @@ export default function TestimonialReelsSection() {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const pointerStart = useRef<{ x: number; id: number } | null>(null);
-  const prevOffsetsRef = useRef<number[]>([]);
 
   useEffect(() => {
     const update = () => setLayout(getLayout(window.innerWidth));
@@ -162,7 +163,7 @@ export default function TestimonialReelsSection() {
 
   const goTo = useCallback((index: number) => {
     const next = ((index % REELS.length) + REELS.length) % REELS.length;
-    setActiveIndex(next);
+    setActiveState((prev) => ({ current: next, previous: prev.current }));
     setPlaying(true);
   }, []);
 
@@ -197,10 +198,6 @@ export default function TestimonialReelsSection() {
       }
     });
   }, [activeIndex, muted, playing, inView]);
-
-  useEffect(() => {
-    prevOffsetsRef.current = REELS.map((_, i) => computeOffset(i, activeIndex));
-  }, [activeIndex]);
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     pointerStart.current = { x: event.clientX, id: event.pointerId };
@@ -295,9 +292,8 @@ export default function TestimonialReelsSection() {
           const isActive = offset === 0;
           const isAntipode = distance === HALF;
 
-          const prevOffset = prevOffsetsRef.current[i];
-          const isLargeJump =
-            prevOffset != null && Math.abs(offset - prevOffset) > 1;
+          const prevOffset = computeOffset(i, prevActiveIndex);
+          const isLargeJump = Math.abs(offset - prevOffset) > 1;
 
           const opacity = isAntipode
             ? 0

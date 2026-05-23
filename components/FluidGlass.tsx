@@ -75,7 +75,7 @@ interface ZoomMaterial extends THREE.Material {
   zoom: number;
 }
 
-interface ZoomMesh extends THREE.Mesh<THREE.BufferGeometry, ZoomMaterial> {}
+type ZoomMesh = THREE.Mesh<THREE.BufferGeometry, ZoomMaterial>;
 
 type ZoomGroup = THREE.Group & { children: ZoomMesh[] };
 
@@ -224,7 +224,7 @@ function NavItems({ items }: { items: NavItem[] }) {
 
   const handleNavigate = (link: string) => {
     if (!link) return;
-    link.startsWith('#') ? (window.location.hash = link) : (window.location.href = link);
+    window.location.assign(link);
   };
 
   return (

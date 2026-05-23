@@ -26,7 +26,17 @@ function PatchIcon({ src, label, large }: { src: string; label: string; large?: 
   );
 }
 
-const LAYERS = [
+type Layer = {
+  src: string;
+  alt: string;
+  callout: {
+    title: string;
+    className: string;
+    body?: string;
+  };
+};
+
+const LAYERS: Layer[] = [
   {
     src: `/layer 1.png?v=${LAYER_IMAGE_VERSION}`,
     alt: "pach+ printed top layer",

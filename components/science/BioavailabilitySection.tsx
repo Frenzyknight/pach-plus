@@ -81,10 +81,10 @@ export default function BioavailabilitySection() {
         >
           <motion.div
             variants={revealItem}
-            className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16 xl:gap-24"
+            className="mx-auto grid max-w-[1320px] grid-cols-1 items-center gap-10 lg:grid-cols-[1.45fr_1fr] lg:gap-16 xl:gap-20"
           >
             {/* Video */}
-            <div className="relative mx-auto w-full max-w-[540px] lg:max-w-none">
+            <div className="relative w-full">
               <video
                 ref={videoRef}
                 src="/new.mp4"

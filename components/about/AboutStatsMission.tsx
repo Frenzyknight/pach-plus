@@ -96,7 +96,7 @@ export default function AboutStatsMission() {
         <Reveal
           stagger={0.08}
           amount={0.25}
-          className="grid grid-cols-2 gap-x-6 gap-y-10 border-b border-foreground/10 pb-14 lg:grid-cols-4"
+          className="grid grid-cols-2 gap-x-6 gap-y-10 pb-14 lg:grid-cols-4"
         >
           {STATS.map((stat) => (
             <motion.div key={stat.value} variants={revealItem}>

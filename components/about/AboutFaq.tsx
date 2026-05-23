@@ -3,7 +3,83 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Reveal, revealItem } from "@/components/motion/Reveal";
-import { SHARED_FAQS } from "@/lib/products";
+import type { ProductFaq } from "@/lib/products";
+
+type FaqCategory = {
+  id: string;
+  label: string;
+  color: string;
+  faqs: ProductFaq[];
+};
+
+const FAQ_CATEGORIES: FaqCategory[] = [
+  {
+    id: "basics",
+    label: "Basics",
+    color: "#1A715E",
+    faqs: [
+      {
+        question: "How do pach+ patches work?",
+        answer:
+          "Each patch is designed to sit comfortably on clean, dry skin while its ingredient layer supports a slow, steady wellness ritual throughout the day.",
+      },
+      {
+        question: "Are pach+ patches plant-based?",
+        answer:
+          "Yes. Every formula is built around plant-forward botanicals, vitamins, and minerals chosen for daily comfort and a clean wearable ritual.",
+      },
+      {
+        question: "Do the patches replace my supplements?",
+        answer:
+          "pach+ patches are a wearable addition to your wellness routine, not a substitute for medical care. They can complement balanced meals, hydration, and sleep.",
+      },
+    ],
+  },
+  {
+    id: "usage",
+    label: "Using Patches",
+    color: "#381E79",
+    faqs: [
+      {
+        question: "Where should I apply the patch?",
+        answer:
+          "Apply to a clean, dry, low-friction area such as the upper arm, shoulder, back, or abdomen. Rotate placement daily for best comfort.",
+      },
+      {
+        question: "How long should I wear one?",
+        answer:
+          "Wear one patch for up to 8 hours, then remove and discard it. Do not apply to irritated or broken skin.",
+      },
+      {
+        question: "Will the patch stay on during workouts or showers?",
+        answer:
+          "The flexible adhesive is designed for daily movement. For best results, apply to dry skin before activity and avoid prolonged direct water exposure.",
+      },
+    ],
+  },
+  {
+    id: "routine",
+    label: "Daily Ritual",
+    color: "#BA3F82",
+    faqs: [
+      {
+        question: "Can I use them daily?",
+        answer:
+          "Yes. pach+ patches are built for a daily routine. If you are pregnant, nursing, taking medication, or managing a health condition, check with your healthcare provider first.",
+      },
+      {
+        question: "Can I combine different pach+ products?",
+        answer:
+          "You can build a routine across categories, but start with one patch at a time to understand how each formula fits your day.",
+      },
+      {
+        question: "When is the best time to apply a patch?",
+        answer:
+          "Most rituals start in the morning so you wear the patch through the day. For sleep-focused formulas, apply about an hour before winding down.",
+      },
+    ],
+  },
+];
 
 function Chevron({ open }: { open: boolean }) {
   return (
@@ -77,7 +153,20 @@ function FaqItem({
 }
 
 export default function AboutFaq() {
+  const [activeCategoryId, setActiveCategoryId] = useState<string>(
+    FAQ_CATEGORIES[0].id,
+  );
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  const activeCategory =
+    FAQ_CATEGORIES.find((category) => category.id === activeCategoryId) ??
+    FAQ_CATEGORIES[0];
+
+  const handleSelectCategory = (id: string) => {
+    if (id === activeCategoryId) return;
+    setActiveCategoryId(id);
+    setOpenIndex(0);
+  };
 
   return (
     <section id="faq" className="bg-white px-5 xs:px-6 lg:px-10">
@@ -118,20 +207,76 @@ export default function AboutFaq() {
         <Reveal stagger={0.06} amount={0.2}>
           <motion.div
             variants={revealItem}
+            role="tablist"
+            aria-label="FAQ categories"
+            className="mb-6 flex justify-center sm:mb-8"
+          >
+            <div className="inline-flex items-center gap-1 rounded-full border border-foreground/10 bg-foreground/4 p-1">
+              {FAQ_CATEGORIES.map((category) => {
+                const isActive = category.id === activeCategoryId;
+                return (
+                  <button
+                    key={category.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls={`faq-panel-${category.id}`}
+                    onClick={() => handleSelectCategory(category.id)}
+                    className="relative cursor-pointer rounded-full px-3.5 py-2 text-[10px] font-black uppercase tracking-[0.18em] transition-colors duration-300 sm:px-5 sm:py-2.5 sm:text-[11px]"
+                    style={{
+                      color: isActive ? "#fff" : "rgba(0,0,0,0.55)",
+                    }}
+                  >
+                    {isActive ? (
+                      <motion.span
+                        layoutId="faq-pill-active"
+                        className="absolute inset-0 rounded-full"
+                        style={{ backgroundColor: category.color }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 380,
+                          damping: 32,
+                        }}
+                      />
+                    ) : null}
+                    <span className="relative">{category.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </motion.div>
+
+          <motion.div
+            variants={revealItem}
             className="divide-y divide-foreground/15 border-y border-foreground/15"
           >
-            {SHARED_FAQS.map((faq, index) => (
-              <FaqItem
-                key={faq.question}
-                id={`about-faq-${index}`}
-                question={faq.question}
-                answer={faq.answer}
-                open={openIndex === index}
-                onToggle={() =>
-                  setOpenIndex((current) => (current === index ? null : index))
-                }
-              />
-            ))}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeCategory.id}
+                id={`faq-panel-${activeCategory.id}`}
+                role="tabpanel"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className="divide-y divide-foreground/15"
+              >
+                {activeCategory.faqs.map((faq, index) => (
+                  <FaqItem
+                    key={faq.question}
+                    id={`about-faq-${activeCategory.id}-${index}`}
+                    question={faq.question}
+                    answer={faq.answer}
+                    open={openIndex === index}
+                    onToggle={() =>
+                      setOpenIndex((current) =>
+                        current === index ? null : index,
+                      )
+                    }
+                  />
+                ))}
+              </motion.div>
+            </AnimatePresence>
           </motion.div>
         </Reveal>
       </div>

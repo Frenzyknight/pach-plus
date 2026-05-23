@@ -1,6 +1,35 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useId } from 'react';
+import React, { useEffect, useRef, useId, useSyncExternalStore } from 'react';
+
+let cachedSvgSupport: boolean | null = null;
+let cachedBackdropSupport: boolean | null = null;
+
+const detectSvgFilters = (): boolean => {
+  if (cachedSvgSupport !== null) return cachedSvgSupport;
+  if (typeof window === 'undefined' || typeof document === 'undefined') return false;
+  const ua = navigator.userAgent;
+  const isWebkit = /Safari/.test(ua) && !/Chrome/.test(ua);
+  const isFirefox = /Firefox/.test(ua);
+  if (isWebkit || isFirefox) {
+    cachedSvgSupport = false;
+    return false;
+  }
+  const div = document.createElement('div');
+  div.style.backdropFilter = `url(#feature-test)`;
+  cachedSvgSupport = div.style.backdropFilter !== '';
+  return cachedSvgSupport;
+};
+
+const detectBackdropFilter = (): boolean => {
+  if (cachedBackdropSupport !== null) return cachedBackdropSupport;
+  if (typeof window === 'undefined') return false;
+  cachedBackdropSupport = CSS.supports('backdrop-filter', 'blur(10px)');
+  return cachedBackdropSupport;
+};
+
+const subscribeFeature = () => () => {};
+const featureServerSnapshot = () => false;
 
 export interface GlassSurfaceProps {
   children?: React.ReactNode;
@@ -43,22 +72,24 @@ export interface GlassSurfaceProps {
   style?: React.CSSProperties;
 }
 
-const useDarkMode = () => {
-  const [isDark, setIsDark] = useState(false);
+const DARK_MEDIA_QUERY = '(prefers-color-scheme: dark)';
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setIsDark(mediaQuery.matches);
-
-    const handler = (e: MediaQueryListEvent) => setIsDark(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
-  }, []);
-
-  return isDark;
+const subscribeDarkMode = (onChange: () => void) => {
+  if (typeof window === 'undefined') return () => {};
+  const mq = window.matchMedia(DARK_MEDIA_QUERY);
+  mq.addEventListener('change', onChange);
+  return () => mq.removeEventListener('change', onChange);
 };
+
+const getDarkModeSnapshot = () => {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia(DARK_MEDIA_QUERY).matches;
+};
+
+const getDarkModeServerSnapshot = () => false;
+
+const useDarkMode = () =>
+  useSyncExternalStore(subscribeDarkMode, getDarkModeSnapshot, getDarkModeServerSnapshot);
 
 const GlassSurface: React.FC<GlassSurfaceProps> = ({
   children,
@@ -87,8 +118,8 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
   const redGradId = `red-grad-${uniqueId}`;
   const blueGradId = `blue-grad-${uniqueId}`;
 
-  const [svgSupported, setSvgSupported] = useState<boolean>(false);
-  const [backdropSupported, setBackdropSupported] = useState<boolean>(false);
+  const svgSupported = useSyncExternalStore(subscribeFeature, detectSvgFilters, featureServerSnapshot);
+  const backdropSupported = useSyncExternalStore(subscribeFeature, detectBackdropFilter, featureServerSnapshot);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const feImageRef = useRef<SVGFEImageElement>(null);
@@ -165,11 +196,6 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
   ]);
 
   useEffect(() => {
-    setSvgSupported(supportsSVGFilters());
-    setBackdropSupported(supportsBackdropFilter());
-  }, []);
-
-  useEffect(() => {
     if (!containerRef.current) return;
 
     const resizeObserver = new ResizeObserver(() => {
@@ -200,29 +226,6 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
   useEffect(() => {
     setTimeout(updateDisplacementMap, 0);
   }, [width, height]);
-
-  const supportsSVGFilters = () => {
-    if (typeof window === 'undefined' || typeof document === 'undefined') {
-      return false;
-    }
-
-    const isWebkit = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
-    const isFirefox = /Firefox/.test(navigator.userAgent);
-
-    if (isWebkit || isFirefox) {
-      return false;
-    }
-
-    const div = document.createElement('div');
-    div.style.backdropFilter = `url(#${filterId})`;
-
-    return div.style.backdropFilter !== '';
-  };
-
-  const supportsBackdropFilter = () => {
-    if (typeof window === 'undefined') return false;
-    return CSS.supports('backdrop-filter', 'blur(10px)');
-  };
 
   const getContainerStyles = (): React.CSSProperties => {
     const baseStyles: React.CSSProperties = {
