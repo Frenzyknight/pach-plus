@@ -51,6 +51,17 @@ function BackToTopArrow() {
 
 export default function Footer() {
   const handleBackToTop = () => {
+    type LenisLike = {
+      scrollTo: (
+        target: number | string | HTMLElement,
+        options?: { offset?: number; duration?: number },
+      ) => void;
+    };
+    const lenis = (window as Window & { __lenis?: LenisLike }).__lenis;
+    if (lenis) {
+      lenis.scrollTo(0, { duration: 1.2 });
+      return;
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -128,25 +139,26 @@ export default function Footer() {
         <div className="mt-14 border-t border-foreground/20 lg:mt-20" />
 
         {/* Bottom bar */}
-        <div className="flex flex-col items-start justify-between gap-4 pt-5 text-[13px] text-foreground sm:flex-row sm:items-center">
-          <div className="flex flex-wrap items-center gap-x-16 gap-y-2">
-            <span>Copyright &copy; pach+</span>
-            <Link
-              href="#"
-              className="transition-colors hover:text-foreground/65"
-            >
-              Terms of Service
-            </Link>
-          </div>
+        <div className="grid grid-cols-3 items-center gap-2 pt-5 text-[11px] text-foreground xs:text-[12px] sm:gap-4 sm:text-[13px]">
+          <span className="justify-self-start">
+            Copyright &copy; pach+
+          </span>
+
+          <Link
+            href="#"
+            className="justify-self-center text-center transition-colors hover:text-foreground/65"
+          >
+            Terms of Service
+          </Link>
 
           <button
             type="button"
             onClick={handleBackToTop}
-            className="group flex items-center gap-2 transition-colors hover:text-foreground/65"
+            className="group flex items-center gap-1.5 justify-self-end transition-colors hover:text-foreground/65 sm:gap-2"
             aria-label="Back to top"
           >
             <span>Back to top</span>
-            <span className="flex h-6 w-6 items-center justify-center rounded-[2px] border border-foreground/60 transition-colors group-hover:border-foreground/65">
+            <span className="flex h-5 w-5 items-center justify-center rounded-[2px] border border-foreground/60 transition-colors group-hover:border-foreground/65 sm:h-6 sm:w-6">
               <BackToTopArrow />
             </span>
           </button>
