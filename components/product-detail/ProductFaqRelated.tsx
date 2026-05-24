@@ -24,7 +24,11 @@ function RelatedProductCard({ product }: { product: Product }) {
     <article className="group">
       <Link
         href={`/products/${product.slug}`}
-        aria-label={`View ${product.name}`}
+        aria-label={
+          product.comingSoon
+            ? `${product.name} coming soon`
+            : `View ${product.name}`
+        }
         className="block"
       >
         <div
@@ -38,6 +42,13 @@ function RelatedProductCard({ product }: { product: Product }) {
             sizes="(max-width: 768px) 100vw, 25vw"
             className="object-contain p-10 transition-transform duration-500 group-hover:scale-105"
           />
+          {product.comingSoon && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
+              <span className="rounded-full bg-white px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.25em] text-black shadow-lg">
+                Coming Soon
+              </span>
+            </div>
+          )}
         </div>
       </Link>
       <h3 className="mt-4 text-[12px] font-black">
@@ -46,14 +57,26 @@ function RelatedProductCard({ product }: { product: Product }) {
       <p className="mt-1 text-[11px] font-medium text-black/45">
         {product.tagline}
       </p>
-      <button
-        type="button"
-        className="mt-4 w-full rounded-full px-5 py-3 text-[11px] font-black text-white transition-transform hover:scale-[1.01]"
-        style={{ backgroundColor: product.accent }}
-        aria-label={`Add ${product.name} to cart`}
-      >
-        Add to Cart
-      </button>
+      {product.comingSoon ? (
+        <button
+          type="button"
+          disabled
+          className="mt-4 w-full cursor-not-allowed rounded-full px-5 py-3 text-[11px] font-black uppercase tracking-[0.15em] text-white/70"
+          style={{ backgroundColor: product.accent, opacity: 0.5 }}
+          aria-label={`${product.name} coming soon`}
+        >
+          Coming Soon
+        </button>
+      ) : (
+        <button
+          type="button"
+          className="mt-4 w-full rounded-full px-5 py-3 text-[11px] font-black text-white transition-transform hover:scale-[1.01]"
+          style={{ backgroundColor: product.accent }}
+          aria-label={`Add ${product.name} to cart`}
+        >
+          Add to Cart
+        </button>
+      )}
     </article>
   );
 }

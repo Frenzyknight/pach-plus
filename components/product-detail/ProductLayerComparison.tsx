@@ -34,6 +34,15 @@ export default function ProductLayerComparison({
 }: {
   product: Product;
 }) {
+  const comparisonRows = product.comparisonRows.map((row) =>
+    row.label === "Affordable"
+      ? {
+          ...row,
+          pach: `₹${product.price.toLocaleString("en-IN")}`,
+        }
+      : row,
+  );
+
   return (
     <section className="bg-white px-6 py-20 lg:px-10 lg:py-24">
       <div className="mx-auto max-w-[1180px]">
@@ -59,14 +68,14 @@ export default function ProductLayerComparison({
               Creams
             </div>
 
-            {product.comparisonRows.map((row, index) => (
+            {comparisonRows.map((row, index) => (
               <div key={row.label} className="contents">
                 <div className="flex min-h-14 items-center pr-4 text-[13px] leading-tight">
                   {row.label}
                 </div>
                 <div
                   className={`flex min-h-14 items-center justify-center border-[0.5px] border-white px-4 text-white ${
-                    index === product.comparisonRows.length - 1
+                    index === comparisonRows.length - 1
                       ? "rounded-b-3xl"
                       : ""
                   }`}
@@ -76,7 +85,7 @@ export default function ProductLayerComparison({
                 </div>
                 <div
                   className={`flex min-h-14 items-center justify-center border-[0.5px] border-white bg-[#F0F1ED] px-4 text-black/35 ${
-                    index === product.comparisonRows.length - 1
+                    index === comparisonRows.length - 1
                       ? "rounded-b-3xl"
                       : ""
                   }`}
@@ -85,7 +94,7 @@ export default function ProductLayerComparison({
                 </div>
                 <div
                   className={`flex min-h-14 items-center justify-center border-[0.5px] border-white bg-[#F0F1ED] px-4 text-black/35 ${
-                    index === product.comparisonRows.length - 1
+                    index === comparisonRows.length - 1
                       ? "rounded-b-3xl"
                       : ""
                   }`}
