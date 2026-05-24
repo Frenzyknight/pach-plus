@@ -89,7 +89,7 @@ export default function AboutContactForm() {
   return (
     <section
       id="contact"
-      className="bg-white px-5 py-16 xs:px-6 sm:py-20 lg:px-10 lg:py-28"
+      className="bg-white px-5 pt-16 xs:px-6 sm:pt-20 lg:px-10 lg:pt-28"
     >
       <div className="mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
         <Reveal stagger={0.08} amount={0.2} className="order-2 lg:order-1">

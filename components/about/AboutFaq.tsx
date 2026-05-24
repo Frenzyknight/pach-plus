@@ -181,7 +181,7 @@ export default function AboutFaq() {
           <motion.h2
             variants={revealItem}
             className="leading-[1.05] tracking-[-0.03em] text-foreground"
-            style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
+            style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}
           >
             <span className="font-bold">Frequently</span>{" "}
             <span className="font-extralight">asked</span>{" "}

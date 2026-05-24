@@ -334,8 +334,8 @@ export default function PouchShowcaseSection() {
         style={{ opacity: 0, paddingTop: "10vh" }}
       >
         <h2
-          className="text-center leading-[0.95] tracking-[-0.035em]"
-          style={{ fontSize: "clamp(2rem, 6.2vw, 5.75rem)" }}
+          className="text-center leading-[1.05] tracking-[-0.03em]"
+          style={{ fontSize: "clamp(2.25rem, 7vw, 5.5rem)" }}
         >
           <span className="block font-black" style={{ color: COLORS.teal.deep }}>
             Happy, just the

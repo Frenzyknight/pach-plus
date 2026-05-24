@@ -22,8 +22,8 @@ export default function HerbalIndexHero() {
         </motion.p>
         <motion.h1
           variants={revealItem}
-          className="max-w-[1100px] leading-[1.05] tracking-[-0.03em] text-foreground"
-          style={{ fontSize: "clamp(2rem, 5.2vw, 3.75rem)" }}
+          className="max-w-[1180px] leading-[1.04] tracking-[-0.03em] text-foreground"
+          style={{ fontSize: "clamp(2rem, 5.4vw, 4.25rem)" }}
         >
           <span className="font-bold">A whole world of</span>{" "}
           <span className="font-extralight">plants, minerals and adaptogens</span>{" "}

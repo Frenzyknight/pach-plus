@@ -127,8 +127,8 @@ export default function WellnessSection() {
       </div>
       <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none px-6">
         <h2
-          className="text-center leading-[1.1] tracking-[-0.03em]"
-          style={{ fontSize: "clamp(2.2rem, 5.5vw, 5.5rem)" }}
+          className="text-center leading-[1.05] tracking-[-0.03em]"
+          style={{ fontSize: "clamp(2.25rem, 7vw, 5.5rem)" }}
         >
           <span
             ref={(el) => {

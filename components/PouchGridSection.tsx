@@ -22,12 +22,12 @@ export default function PouchGridSection() {
     <section className="bg-white px-5 py-16 xs:px-6 sm:py-20 lg:px-10 lg:py-28">
       <div className="mx-auto max-w-[1400px]">
         <div className="mb-8 flex items-center justify-between sm:mb-12">
-          <h2 className="text-[11px] font-medium uppercase tracking-[0.25em] text-foreground/60">
+          <h2 className="text-[10px] font-medium uppercase tracking-[0.25em] text-foreground/60">
             Shop the Pouches
           </h2>
           <Link
             href="/shop"
-            className="text-[11px] font-medium uppercase tracking-[0.15em] text-foreground/60 underline underline-offset-4 transition-colors hover:text-foreground"
+            className="text-[10px] font-medium uppercase tracking-[0.18em] text-foreground/60 underline underline-offset-4 transition-colors hover:text-foreground"
           >
             View All
           </Link>

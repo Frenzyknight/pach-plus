@@ -259,12 +259,12 @@ export default function ShopSection() {
                 <span className="inline-block text-[10px] font-semibold tracking-[0.2em] uppercase text-teal-700 bg-teal-100 px-3 py-1 rounded-full mb-6">
                   Bestseller
                 </span>
-                <h3 className="text-3xl lg:text-4xl font-black tracking-tight text-teal-900 leading-[1.1]">
+                <h3 className="text-[1.75rem] font-black leading-[1.1] tracking-tight text-teal-900 xs:text-3xl lg:text-4xl">
                   The Starter
                   <br />
                   Kit
                 </h3>
-                <p className="mt-3 text-sm text-teal-700/70 leading-relaxed">
+                <p className="mt-3 text-[12px] font-medium leading-relaxed text-teal-700/70 sm:text-[13px]">
                   The complete wellness trio with 12% savings. Recovery, balance, and breathe
                   — everything you need to get started.
                 </p>

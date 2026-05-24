@@ -96,7 +96,7 @@ export default function BlogsList() {
             <motion.h1
               variants={revealItem}
               className="leading-[1.04] tracking-[-0.03em] text-foreground"
-              style={{ fontSize: "clamp(2rem, 4.6vw, 3.75rem)" }}
+              style={{ fontSize: "clamp(2rem, 5.4vw, 4.25rem)" }}
             >
               <span className="font-bold">Field notes</span>{" "}
               <span className="font-extralight">from the</span>{" "}

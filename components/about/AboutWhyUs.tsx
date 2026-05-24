@@ -285,7 +285,7 @@ function TitleBlock() {
       </p>
       <h2
         className="max-w-[460px] leading-[1.05] tracking-[-0.03em] text-foreground"
-        style={{ fontSize: "clamp(1.9rem, 4.4vw, 3rem)" }}
+        style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}
       >
         <span className="font-bold">Why</span>{" "}
         <span className="font-extralight">people</span>{" "}

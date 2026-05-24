@@ -678,7 +678,7 @@ export default function HeroProductShowcase() {
 
           {/* Description */}
           <p
-            className="order-2 mx-auto max-w-sm text-center text-sm leading-relaxed text-foreground/60 transition-all duration-500 lg:order-0"
+            className="order-2 mx-auto max-w-sm text-center text-[11px] font-medium leading-relaxed text-foreground/68 transition-all duration-500 xs:text-xs sm:text-sm lg:order-0 lg:text-base"
             style={{
               opacity: textVisible ? 1 : 0,
               transform: textVisible ? "translateY(0)" : "translateY(4px)",

@@ -253,13 +253,13 @@ export default function TestimonialReelsSection() {
           >
             <motion.p
               variants={revealItem}
-              className="text-[10px] font-medium uppercase tracking-[0.25em] text-foreground/60"
+              className="mb-3 text-[10px] font-medium uppercase tracking-[0.25em] text-foreground/60 sm:mb-4"
             >
               Real Routines
             </motion.p>
             <motion.h2
               variants={revealItem}
-              className="mt-3 leading-[1.05] tracking-[-0.03em] text-foreground"
+              className="leading-[1.05] tracking-[-0.03em] text-foreground"
               style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}
             >
               <span className="font-bold">Real people.</span>{" "}
@@ -268,7 +268,7 @@ export default function TestimonialReelsSection() {
             </motion.h2>
             <motion.p
               variants={revealItem}
-              className="mt-4 max-w-md text-sm text-foreground/60 sm:text-base"
+              className="mt-5 max-w-md text-[11px] font-medium leading-relaxed text-foreground/68 xs:text-xs sm:mt-6 sm:text-sm lg:text-base"
             >
               See how pach+ fits into everyday wellness routines.
             </motion.p>

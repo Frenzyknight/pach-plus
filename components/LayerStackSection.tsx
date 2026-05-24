@@ -49,7 +49,7 @@ const LAYERS: Layer[] = [
     src: `/layer2.png?v=${LAYER_IMAGE_VERSION}`,
     alt: "Blue middle layer",
     callout: {
-      title: "Vitamin Reservoir",
+      title: "Nutrient Reservoir",
       className: "items-start text-left right-[-58%] xs:right-[-42%] lg:right-[-44%] 2xl:right-[-42%]",
     },
   },
@@ -153,7 +153,7 @@ export default function LayerStackSection() {
         isShortMobile: "(max-width: 639px) and (max-height: 700px)",
       },
       (context) => {
-        const { isDesktop, isTablet, isShortMobile } =
+        const { isDesktop, isTablet, isMobile, isShortMobile } =
           context.conditions ?? {};
         const spread = isDesktop
           ? [0, 108, 214, 320]
@@ -201,16 +201,20 @@ export default function LayerStackSection() {
           });
         });
 
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: "+=320%",
-            pin: true,
-            scrub: 1,
-            anticipatePin: 1,
-          },
-        });
+        const tl = gsap.timeline(
+          isMobile
+            ? { paused: true }
+            : {
+                scrollTrigger: {
+                  trigger: section,
+                  start: "top top",
+                  end: "+=320%",
+                  pin: true,
+                  scrub: 1,
+                  anticipatePin: 1,
+                },
+              },
+        );
 
         tl.to(
           layers[0],
@@ -265,6 +269,30 @@ export default function LayerStackSection() {
             );
           }
         });
+
+        if (isMobile) {
+          // On mobile we don't pin/scrub — once the patch has scrolled
+          // far enough into view (~60% of the section visible), play the
+          // timeline once on its own.
+          const observer = new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
+                  tl.play();
+                  observer.disconnect();
+                  break;
+                }
+              }
+            },
+            { threshold: [0, 0.25, 0.5, 0.6, 0.75, 1] },
+          );
+          observer.observe(section);
+
+          return () => {
+            observer.disconnect();
+            tl.kill();
+          };
+        }
 
         return () => {
           tl.scrollTrigger?.kill();
