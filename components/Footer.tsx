@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { Reveal, revealItem } from "@/components/motion/Reveal";
 
 const FOOTER_COLUMNS = [
@@ -50,6 +50,8 @@ function BackToTopArrow() {
 }
 
 export default function Footer() {
+  const reduceMotion = useReducedMotion();
+
   const handleBackToTop = () => {
     type LenisLike = {
       scrollTo: (
@@ -135,8 +137,28 @@ export default function Footer() {
           </motion.div>
         </Reveal>
 
-        {/* Divider */}
-        <div className="mt-14 border-t border-foreground/20 lg:mt-20" />
+        {/* Footer illustration — full width at its natural aspect ratio */}
+        <motion.div
+          initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 120 }}
+          whileInView={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={
+            reduceMotion
+              ? { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
+              : { type: "spring", stiffness: 260, damping: 12, mass: 0.9 }
+          }
+          className="mt-14 -mx-4 lg:-mx-16 lg:mt-20"
+        >
+          <Image
+            src="/footer-last.jpeg"
+            alt=""
+            width={2752}
+            height={733}
+            sizes="100vw"
+            className="h-auto w-full"
+            aria-hidden="true"
+          />
+        </motion.div>
 
         {/* Bottom bar */}
         <div className="grid grid-cols-3 items-center gap-2 pt-5 text-[11px] text-foreground xs:text-[12px] sm:gap-4 sm:text-[13px]">

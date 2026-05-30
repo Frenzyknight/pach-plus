@@ -12,6 +12,7 @@ import {
 } from "motion/react";
 import { Reveal, revealItem } from "@/components/motion/Reveal";
 import { PRODUCTS, type Product } from "@/lib/products";
+import { formatMoney } from "@/lib/format-money";
 
 function StarRating({ rating, reviews }: { rating: number; reviews: number }) {
   const fullStars = Math.floor(rating);
@@ -51,11 +52,12 @@ function StarRating({ rating, reviews }: { rating: number; reviews: number }) {
   );
 }
 
-export function ProductCard({
-  product,
-}: {
-  product: Product;
-}) {
+export function ProductCard({ product }: { product: Product }) {
+  const priceLabel = formatMoney({
+    amount: product.price.toString(),
+    currencyCode: product.currencyCode,
+  });
+
   return (
     <motion.div
       className="group flex flex-col"
@@ -102,7 +104,7 @@ export function ProductCard({
           <p className="text-sm font-medium text-foreground truncate">
             {product.name}
             <span className="text-foreground/40 font-normal">
-              {" "}&bull; ₹{product.price}
+              {" "}&bull; {priceLabel}
             </span>
           </p>
           <p className="text-xs text-foreground/50 mt-0.5">{product.tagline}</p>
@@ -110,30 +112,32 @@ export function ProductCard({
         <StarRating rating={product.rating} reviews={product.reviews} />
       </div>
       {product.comingSoon ? (
-        <button
-          type="button"
-          disabled
-          className="mt-4 w-full rounded-full py-3.5 text-[11px] font-medium uppercase tracking-[0.15em] text-white/70 cursor-not-allowed"
-          style={{ backgroundColor: product.accent, opacity: 0.5 }}
-          aria-label={`${product.name} coming soon`}
+        <Link
+          href={`/products/${product.slug}`}
+          className="mt-4 w-full rounded-full py-3.5 text-center text-[11px] font-medium uppercase tracking-[0.15em] text-white/80 transition-opacity"
+          style={{ backgroundColor: product.accent, opacity: 0.65 }}
+          aria-label={`${product.name} coming soon — view details`}
         >
           Coming Soon
-        </button>
+        </Link>
       ) : (
-        <motion.button
-          type="button"
+        <motion.div
           whileHover={{ scale: 1.02, y: -1 }}
           whileTap={{ scale: 0.97 }}
           transition={{ type: "spring", stiffness: 360, damping: 22 }}
-          className="mt-4 w-full rounded-full py-3.5 text-[11px] font-medium uppercase tracking-[0.15em] text-white focus-visible:outline-2 focus-visible:outline-offset-2 cursor-pointer"
-          style={{
-            backgroundColor: product.accent,
-            outlineColor: product.accent,
-          }}
-          aria-label={`Add ${product.name} to cart`}
         >
-          Add to Cart
-        </motion.button>
+          <Link
+            href={`/products/${product.slug}`}
+            className="mt-4 flex w-full items-center justify-center rounded-full py-3.5 text-[11px] font-medium uppercase tracking-[0.15em] text-white focus-visible:outline-2 focus-visible:outline-offset-2"
+            style={{
+              backgroundColor: product.accent,
+              outlineColor: product.accent,
+            }}
+            aria-label={`Shop ${product.name}`}
+          >
+            Shop Now
+          </Link>
+        </motion.div>
       )}
     </motion.div>
   );
@@ -199,35 +203,41 @@ function LifestyleImage({
   );
 }
 
-export default function ShopSection() {
+type ShopSectionProps = {
+  /** When provided, used in place of the static PRODUCTS list (e.g. with Shopify-merged data on /shop). */
+  products?: Product[];
+};
+
+export default function ShopSection({ products }: ShopSectionProps = {}) {
+  const items = products ?? PRODUCTS;
+
   return (
     <section className="bg-white pt-6 pb-20 px-6 lg:px-10">
       <div className="max-w-[1400px] mx-auto">
         {/*
-          Single grid so that on mobile (1 col) the DOM order controls layout:
-          all 4 products first, then both lifestyle images, then the bundle.
-          On md+ we explicitly place items into rows/cols to keep the original
-          desktop layout (prods row, image+prod row, image+bundle row).
+          Single grid so the DOM order controls layout on mobile (1 col): all
+          4 product cards appear first, then both lifestyle images. On md+ we
+          place items into specific rows/cols to keep the original desktop
+          layout (3 prods / image+prod / image+image).
         */}
         <Reveal
           stagger={0.08}
           amount={0.12}
           className="grid grid-cols-1 md:grid-cols-3 gap-5"
         >
-          {/* Row 1 (desktop): 3 product cards */}
-          <ProductCard product={PRODUCTS[0]} />
-          <ProductCard product={PRODUCTS[1]} />
-          <ProductCard product={PRODUCTS[2]} />
+          {items[0] ? <ProductCard product={items[0]} /> : null}
+          {items[1] ? <ProductCard product={items[1]} /> : null}
+          {items[2] ? <ProductCard product={items[2]} /> : null}
 
-          {/* 4th product — mobile: appears right after the first 3; desktop: row 2, col 3 */}
-          <motion.div
-            variants={revealItem}
-            className="md:col-start-3 md:row-start-2"
-          >
-            <ProductCard product={PRODUCTS[3]} />
-          </motion.div>
+          {items[3] ? (
+            <motion.div
+              variants={revealItem}
+              className="md:col-start-3 md:row-start-2"
+            >
+              <ProductCard product={items[3]} />
+            </motion.div>
+          ) : null}
 
-          {/* Lifestyle image 1 — mobile: after all products; desktop: row 2, cols 1-2 */}
           <LifestyleImage
             src="/girl-guy.png"
             alt="Man and woman wearing pach+ transdermal patches"
@@ -236,7 +246,6 @@ export default function ShopSection() {
             priority
           />
 
-          {/* Lifestyle image 2 — mobile: after image 1; desktop: row 3, cols 1-2 */}
           <LifestyleImage
             src="/girl-pach.png"
             alt="Woman using pach+ Happy Hormones patch"
@@ -244,48 +253,7 @@ export default function ShopSection() {
             sizes="(max-width: 768px) 100vw, 66vw"
           />
 
-          {/* Bundle CTA — mobile: last; desktop: row 3, col 3 */}
-          <motion.div
-            variants={revealItem}
-            whileHover={{ y: -4 }}
-            transition={{ type: "spring", stiffness: 260, damping: 24 }}
-            className="flex flex-col md:col-start-3 md:row-start-3"
-          >
-            <div
-              className="flex-1 rounded-2xl p-8 lg:p-10 flex flex-col justify-between"
-              style={{ backgroundColor: "#EAF5F1" }}
-            >
-              <div>
-                <span className="inline-block text-[10px] font-semibold tracking-[0.2em] uppercase text-teal-700 bg-teal-100 px-3 py-1 rounded-full mb-6">
-                  Bestseller
-                </span>
-                <h3 className="text-[1.75rem] font-black leading-[1.1] tracking-tight text-teal-900 xs:text-3xl lg:text-4xl">
-                  The Starter
-                  <br />
-                  Kit
-                </h3>
-                <p className="mt-3 text-[12px] font-medium leading-relaxed text-teal-700/70 sm:text-[13px]">
-                  The complete wellness trio with 12% savings. Recovery, balance, and breathe
-                  — everything you need to get started.
-                </p>
-              </div>
-              <div className="mt-8">
-                <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-2xl font-bold text-teal-900">₹3,997</span>
-                  <span className="text-sm text-teal-700/50 line-through">₹4,497</span>
-                </div>
-                <StarRating rating={5.0} reviews={73} />
-                <motion.button
-                  whileHover={{ scale: 1.02, y: -1 }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ type: "spring", stiffness: 360, damping: 22 }}
-                  className="mt-5 w-full bg-teal-700 text-white text-[11px] font-medium tracking-[0.15em] uppercase py-3.5 rounded-full hover:bg-teal-900 transition-colors cursor-pointer"
-                >
-                  Add to Cart
-                </motion.button>
-              </div>
-            </div>
-          </motion.div>
+          {/* Starter Kit bundle deferred to v2 of the Shopify integration. */}
         </Reveal>
       </div>
     </section>

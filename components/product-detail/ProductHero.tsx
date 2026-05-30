@@ -1,23 +1,24 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import type { Product } from "@/lib/products";
 import ProductImageCarousel from "@/components/product-detail/ProductImageCarousel";
+import { AddToCartForm } from "@/components/cart/add-to-cart-form";
+import { formatMoney } from "@/lib/format-money";
 
-type Supply = 30 | 60 | 90;
-type PurchaseMode = "subscribe" | "single";
-type Frequency = "2w" | "1m" | "2m";
+type SupplyKey = 24 | 48 | 72;
 
-const SUPPLY_OPTIONS: { value: Supply; label: string }[] = [
-  { value: 30, label: "30 Day Supply" },
-  { value: 60, label: "60 Day Supply" },
-  { value: 90, label: "90 Day Supply" },
-];
+type SupplyOption = {
+  value: SupplyKey;
+  label: string;
+  /** Quantity multiplier — single Shopify variant; supply selection just adds N. */
+  multiplier: number;
+};
 
-const FREQUENCY_OPTIONS: { value: Frequency; label: string }[] = [
-  { value: "2w", label: "Delivered every 2 weeks" },
-  { value: "1m", label: "Delivered every month" },
-  { value: "2m", label: "Delivered every 2 months" },
+const SUPPLY_OPTIONS: SupplyOption[] = [
+  { value: 24, label: "24 Day Supply", multiplier: 1 },
+  { value: 48, label: "48 Day Supply", multiplier: 2 },
+  { value: 72, label: "72 Day Supply", multiplier: 3 },
 ];
 
 function Rating({ rating, reviews }: { rating: number; reviews: number }) {
@@ -40,36 +41,20 @@ function Rating({ rating, reviews }: { rating: number; reviews: number }) {
   );
 }
 
-function Chevron({ open }: { open: boolean }) {
-  return (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="h-3 w-3 transition-transform duration-200"
-      style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
-      aria-hidden="true"
-    >
-      <path d="M4 6l4 4 4-4" />
-    </svg>
-  );
-}
-
 function AccentPill({
   active,
   accent,
   onClick,
   ariaPressed,
   children,
+  disabled,
 }: {
   active: boolean;
   accent: string;
   onClick: () => void;
   ariaPressed?: boolean;
   children: React.ReactNode;
+  disabled?: boolean;
 }) {
   const [hover, setHover] = useState(false);
   const filled = active || hover;
@@ -82,152 +67,49 @@ function AccentPill({
       onFocus={() => setHover(true)}
       onBlur={() => setHover(false)}
       aria-pressed={ariaPressed}
-      className="rounded-full border px-3 py-2.5 text-[11px] font-bold transition-colors"
+      disabled={disabled}
+      className="rounded-full border px-3 py-2.5 text-[11px] font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-50"
       style={{
-        backgroundColor: filled ? (hover ? accent : "#F4F5EF") : "transparent",
-        color: hover ? "#fff" : "#000",
-        borderColor: filled ? accent : "#000",
+        backgroundColor: disabled
+          ? "transparent"
+          : filled
+            ? hover
+              ? accent
+              : "#F4F5EF"
+            : "transparent",
+        color: disabled ? "rgba(0,0,0,0.4)" : hover ? "#fff" : "#000",
+        borderColor: disabled
+          ? "rgba(0,0,0,0.2)"
+          : filled
+            ? accent
+            : "#000",
       }}
     >
       {children}
     </button>
-  );
-}
-
-function ModeTab({
-  active,
-  accent,
-  onClick,
-  children,
-  ariaLabel,
-}: {
-  active: boolean;
-  accent: string;
-  onClick: () => void;
-  children: React.ReactNode;
-  ariaLabel: string;
-}) {
-  const [hover, setHover] = useState(false);
-  const filled = active || hover;
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onFocus={() => setHover(true)}
-      onBlur={() => setHover(false)}
-      aria-pressed={active}
-      aria-label={ariaLabel}
-      className="py-3 transition-colors"
-      style={{
-        backgroundColor: filled ? accent : "#fff",
-        color: filled ? "#fff" : "rgba(0,0,0,0.55)",
-      }}
-    >
-      {children}
-    </button>
-  );
-}
-
-function FrequencyDropdown({
-  value,
-  onChange,
-}: {
-  value: Frequency;
-  onChange: (next: Frequency) => void;
-}) {
-  const [open, setOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const onPointer = (event: MouseEvent) => {
-      if (!containerRef.current?.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    };
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("mousedown", onPointer);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onPointer);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
-
-  const selected = FREQUENCY_OPTIONS.find((option) => option.value === value);
-
-  return (
-    <div ref={containerRef} className="relative">
-      <button
-        type="button"
-        onClick={() => setOpen((prev) => !prev)}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        className="flex w-full items-center justify-between rounded-2xl border border-black bg-[#F4F5EF] px-4 py-3 text-left text-[12px] font-semibold"
-      >
-        <span>{selected?.label}</span>
-        <Chevron open={open} />
-      </button>
-
-      {open && (
-        <ul
-          role="listbox"
-          aria-label="Delivery frequency"
-          className="absolute left-0 right-0 top-[calc(100%+6px)] z-20 overflow-hidden rounded-2xl border border-black bg-[#F4F5EF] p-2 text-[12px] font-semibold shadow-[0_8px_24px_-12px_rgba(0,0,0,0.18)]"
-        >
-          {FREQUENCY_OPTIONS.map((option) => {
-            const isSelected = option.value === value;
-            return (
-              <li
-                key={option.value}
-                role="option"
-                aria-selected={isSelected}
-                tabIndex={0}
-                onClick={() => {
-                  onChange(option.value);
-                  setOpen(false);
-                }}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    onChange(option.value);
-                    setOpen(false);
-                  }
-                }}
-                className="cursor-pointer rounded-xl px-3 py-2.5 outline-none transition-colors hover:bg-black/5 focus-visible:bg-black/5"
-                style={{ color: isSelected ? "#000" : "rgba(0,0,0,0.7)" }}
-              >
-                {option.label}
-              </li>
-            );
-          })}
-        </ul>
-      )}
-    </div>
   );
 }
 
 export default function ProductHero({ product }: { product: Product }) {
-  const [supply, setSupply] = useState<Supply>(30);
-  const [mode, setMode] = useState<PurchaseMode>("subscribe");
-  const [frequency, setFrequency] = useState<Frequency>("2w");
+  const [supply, setSupply] = useState<SupplyKey>(24);
 
-  const multiplier = supply / 30;
-  const basePrice = product.price * multiplier;
-  const finalPrice = mode === "subscribe" ? basePrice * 0.9 : basePrice;
+  // Single Shopify variant per product. Supply selection becomes a quantity
+  // multiplier (24 = 1x, 48 = 2x, 72 = 3x) on top of that variant.
+  const baseVariant = product.variants[0];
+  const selectedOption =
+    SUPPLY_OPTIONS.find((option) => option.value === supply) ?? SUPPLY_OPTIONS[0];
+  const multiplier = selectedOption.multiplier;
 
-  const formatPrice = useCallback(
-    (value: number) =>
-      `₹${value.toLocaleString("en-IN", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}`,
-    [],
-  );
+  const headlineUnitPrice = baseVariant
+    ? Number(baseVariant.price.amount)
+    : product.price;
+  const headlineCurrency = baseVariant
+    ? baseVariant.price.currencyCode
+    : product.currencyCode;
+  const headlinePrice = formatMoney({
+    amount: (headlineUnitPrice * multiplier).toString(),
+    currencyCode: headlineCurrency,
+  });
 
   return (
     <section className="grid min-h-[calc(100svh-6rem)] grid-cols-1 gap-4 border-b border-black/10 bg-white p-4 lg:grid-cols-[59%_41%] lg:gap-6 lg:p-6">
@@ -248,7 +130,7 @@ export default function ProductHero({ product }: { product: Product }) {
             </div>
             <div className="text-right">
               <Rating rating={product.rating} reviews={product.reviews} />
-              <p className="mt-1 text-2xl font-black">₹{product.price}</p>
+              <p className="mt-1 text-2xl font-black">{headlinePrice}</p>
             </div>
           </div>
 
@@ -278,7 +160,7 @@ export default function ProductHero({ product }: { product: Product }) {
           {product.comingSoon ? (
             <div
               className="rounded-2xl border-2 px-6 py-8 text-center"
-              style={{ borderColor: product.accent, backgroundColor: `${product.bg}` }}
+              style={{ borderColor: product.accent, backgroundColor: product.bg }}
             >
               <span
                 className="inline-block rounded-full px-4 py-1.5 text-[10px] font-black tracking-[0.25em] uppercase text-white mb-4"
@@ -287,11 +169,12 @@ export default function ProductHero({ product }: { product: Product }) {
                 Coming Soon
               </span>
               <p className="text-sm font-semibold text-black/70 leading-relaxed">
-                We&apos;re putting the finishing touches on this one. Join the waitlist to be first to know when it launches.
+                We&apos;re putting the finishing touches on this one. Check back soon to be first to try it.
               </p>
               <button
                 type="button"
-                className="mt-5 w-full rounded-full py-3.5 text-[11px] font-black tracking-[0.15em] uppercase text-white transition-transform hover:scale-[1.01]"
+                disabled
+                className="mt-5 w-full rounded-full py-3.5 text-[11px] font-black tracking-[0.15em] uppercase text-white opacity-70 cursor-not-allowed"
                 style={{ backgroundColor: product.accent }}
               >
                 Notify Me
@@ -315,58 +198,24 @@ export default function ProductHero({ product }: { product: Product }) {
                 ))}
               </div>
 
-              <div
-                className="mb-3 grid grid-cols-2 overflow-hidden rounded-full border text-[11px] font-bold"
-                style={{ borderColor: product.accent }}
-              >
-                <ModeTab
-                  active={mode === "subscribe"}
-                  accent={product.accent}
-                  onClick={() => setMode("subscribe")}
-                  ariaLabel="Subscribe and save 10 percent"
-                >
-                  Subscribe and Save 10%
-                </ModeTab>
-                <ModeTab
-                  active={mode === "single"}
-                  accent={product.accent}
-                  onClick={() => setMode("single")}
-                  ariaLabel="Single purchase"
-                >
-                  Single Purchase
-                </ModeTab>
-              </div>
+              <AddToCartForm
+                variant={baseVariant}
+                shopifyProduct={product.shopify}
+                accent={product.accent}
+                quantity={multiplier}
+                fallbackProductName={product.name}
+                label="Add to Bag"
+              />
 
-              {mode === "subscribe" && (
-                <div className="rounded-2xl border border-black bg-[#F4F5EF] p-4 text-[11px] font-semibold">
-                  <FrequencyDropdown value={frequency} onChange={setFrequency} />
-                  <ul className="mt-3 space-y-2 border-t border-black/15 pt-3 text-black/70">
-                    <li>* Earn loyalty points and share to friends</li>
-                    <li>* Seasonal wellness object gift</li>
-                    <li>* Edit your frequency or cancel at any time</li>
-                  </ul>
-                </div>
-              )}
-
-              <button
-                type="button"
-                className="mt-4 flex w-full items-center justify-between rounded-full px-5 py-4 text-[12px] font-black text-white transition-transform hover:scale-[1.01]"
-                style={{ backgroundColor: product.accent }}
-              >
-                <span>Add to Bag</span>
-                <span>
-                  {mode === "subscribe" ? (
-                    <>
-                      <span className="mr-2 text-white/55 line-through">
-                        {formatPrice(basePrice)}
-                      </span>
-                      {formatPrice(finalPrice)}
-                    </>
-                  ) : (
-                    formatPrice(basePrice)
-                  )}
-                </span>
-              </button>
+              {!product.shopify ? (
+                <p className="mt-3 text-[11px] font-medium text-black/50">
+                  Storefront not yet connected. See{" "}
+                  <code className="rounded bg-black/5 px-1.5 py-0.5 font-mono text-[10px]">
+                    SHOPIFY_SETUP.md
+                  </code>{" "}
+                  to enable purchases.
+                </p>
+              ) : null}
             </>
           )}
         </div>

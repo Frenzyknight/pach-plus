@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
@@ -7,6 +8,7 @@ import GlassSurface from "@/components/GlassSurface";
 import StaggeredMenu, {
   type StaggeredMenuItem,
 } from "@/components/StaggeredMenu";
+import { CartDrawerTrigger } from "@/components/cart/cart-drawer-trigger";
 
 const MENU_ITEMS: StaggeredMenuItem[] = [
   { label: "Home", ariaLabel: "Go to home page", link: "/" },
@@ -23,6 +25,8 @@ const NAV_LINKS = [
 ];
 
 export default function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <>
       <motion.div
@@ -41,8 +45,8 @@ export default function Navbar() {
           backgroundOpacity={0.12}
           saturation={1.3}
         >
-          <nav className="flex w-full items-center justify-between px-5 pr-16 lg:px-8 lg:pr-8">
-            <div className="flex min-w-0 flex-1 items-center gap-8">
+          <nav className="flex w-full items-center px-5 lg:justify-between lg:gap-3 lg:px-8 lg:pr-3">
+            <div className="hidden min-w-0 flex-1 items-center gap-8 lg:flex">
               <Link href="/" aria-label="pach+ home" className="shrink-0">
                 <Image
                   src="/logo-full.png"
@@ -53,7 +57,7 @@ export default function Navbar() {
                   priority
                 />
               </Link>
-              <div className="hidden items-center gap-6 text-[11px] font-medium tracking-[0.15em] uppercase lg:flex">
+              <div className="items-center gap-6 text-[11px] font-medium tracking-[0.15em] uppercase lg:flex">
                 {NAV_LINKS.map((link) => (
                   <motion.div
                     key={link.href}
@@ -68,23 +72,53 @@ export default function Navbar() {
                 ))}
               </div>
             </div>
+
+            <div className="flex flex-1 justify-center lg:hidden">
+              <Link href="/" aria-label="pach+ home" className="shrink-0">
+                <Image
+                  src="/logo-full.png"
+                  alt="pach+"
+                  width={100}
+                  height={40}
+                  className="h-6 w-auto"
+                  priority
+                />
+              </Link>
+            </div>
+
+            <div className="hidden shrink-0 lg:block">
+              <CartDrawerTrigger />
+            </div>
           </nav>
         </GlassSurface>
       </motion.div>
+
+      <div
+        aria-hidden={menuOpen}
+        className={`pointer-events-none fixed top-5 left-6 right-6 z-61 flex h-14 items-center justify-end px-5 transition-opacity duration-200 lg:hidden ${
+          menuOpen ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        <div className={menuOpen ? "pointer-events-none" : "pointer-events-auto"}>
+          <CartDrawerTrigger className="h-12 w-12" />
+        </div>
+      </div>
 
       <div className="lg:hidden">
         <StaggeredMenu
           hideLogo
           isFixed
-          position="right"
+          position="left"
           items={MENU_ITEMS}
-          displayItemNumbering
+          displayItemNumbering={false}
           displaySocials={false}
           logoUrl="/logo-full.png"
           menuButtonColor="#111111"
           openMenuButtonColor="#111111"
-          colors={["#D8C9FF", "#86C9B9", "#FFEBB8"]}
-          accentColor="#574092"
+          colors={["#86C9B9", "#896CC4", "#F088B8"]}
+          accentColor="#DC2626"
+          onMenuOpen={() => setMenuOpen(true)}
+          onMenuClose={() => setMenuOpen(false)}
         />
       </div>
     </>

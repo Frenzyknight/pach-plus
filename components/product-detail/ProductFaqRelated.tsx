@@ -40,8 +40,20 @@ function RelatedProductCard({ product }: { product: Product }) {
             alt={`${product.name} package`}
             fill
             sizes="(max-width: 768px) 100vw, 25vw"
-            className="object-contain p-10 transition-transform duration-500 group-hover:scale-105"
+            className="object-contain p-10 transition-[transform,opacity] duration-500 group-hover:scale-105 group-hover:opacity-0"
           />
+          {product.hoverSrc && (
+            <div className="absolute inset-0 translate-y-full transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-y-0">
+              <Image
+                src={product.hoverSrc}
+                alt=""
+                fill
+                sizes="(max-width: 768px) 100vw, 25vw"
+                className="object-contain object-bottom"
+                aria-hidden
+              />
+            </div>
+          )}
           {product.comingSoon && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
               <span className="rounded-full bg-white px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.25em] text-black shadow-lg">
@@ -68,14 +80,14 @@ function RelatedProductCard({ product }: { product: Product }) {
           Coming Soon
         </button>
       ) : (
-        <button
-          type="button"
-          className="mt-4 w-full rounded-full px-5 py-3 text-[11px] font-black text-white transition-transform hover:scale-[1.01]"
+        <Link
+          href={`/products/${product.slug}`}
+          className="mt-4 flex w-full items-center justify-center rounded-full px-5 py-3 text-[11px] font-black uppercase tracking-[0.15em] text-white transition-transform hover:scale-[1.01]"
           style={{ backgroundColor: product.accent }}
-          aria-label={`Add ${product.name} to cart`}
+          aria-label={`Shop ${product.name}`}
         >
-          Add to Cart
-        </button>
+          Shop Now
+        </Link>
       )}
     </article>
   );

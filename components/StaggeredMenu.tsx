@@ -10,6 +10,7 @@ import React, {
   useState,
 } from "react";
 import gsap from "gsap";
+import { Squash as Hamburger } from "hamburger-react";
 
 export interface StaggeredMenuItem {
   label: string;
@@ -65,25 +66,16 @@ export default function StaggeredMenu({
   onMenuClose,
 }: StaggeredMenuProps) {
   const [open, setOpen] = useState(false);
-  const [textLines, setTextLines] = useState<string[]>(["Menu", "Close"]);
   const openRef = useRef(false);
 
   const panelRef = useRef<HTMLDivElement | null>(null);
   const preLayersRef = useRef<HTMLDivElement | null>(null);
   const preLayerElsRef = useRef<HTMLElement[]>([]);
 
-  const plusHRef = useRef<HTMLSpanElement | null>(null);
-  const plusVRef = useRef<HTMLSpanElement | null>(null);
-  const iconRef = useRef<HTMLSpanElement | null>(null);
-
-  const textInnerRef = useRef<HTMLSpanElement | null>(null);
-  const toggleBtnRef = useRef<HTMLButtonElement | null>(null);
+  const burgerWrapperRef = useRef<HTMLDivElement | null>(null);
 
   const openTlRef = useRef<gsap.core.Timeline | null>(null);
   const closeTweenRef = useRef<gsap.core.Tween | null>(null);
-  const spinTweenRef = useRef<gsap.core.Timeline | null>(null);
-  const textCycleAnimRef = useRef<gsap.core.Tween | null>(null);
-  const colorTweenRef = useRef<gsap.core.Tween | null>(null);
   const itemEntranceTweenRef = useRef<gsap.core.Tween | null>(null);
   const busyRef = useRef(false);
 
@@ -91,12 +83,8 @@ export default function StaggeredMenu({
     const ctx = gsap.context(() => {
       const panel = panelRef.current;
       const preContainer = preLayersRef.current;
-      const plusH = plusHRef.current;
-      const plusV = plusVRef.current;
-      const icon = iconRef.current;
-      const textInner = textInnerRef.current;
 
-      if (!panel || !plusH || !plusV || !icon || !textInner) return;
+      if (!panel) return;
 
       const preLayers = preContainer
         ? (Array.from(
@@ -110,19 +98,10 @@ export default function StaggeredMenu({
       if (preContainer) {
         gsap.set(preContainer, { xPercent: 0, opacity: 1 });
       }
-
-      gsap.set(plusH, { transformOrigin: "50% 50%", rotate: 0 });
-      gsap.set(plusV, { transformOrigin: "50% 50%", rotate: 90 });
-      gsap.set(icon, { rotate: 0, transformOrigin: "50% 50%" });
-      gsap.set(textInner, { yPercent: 0 });
-
-      if (toggleBtnRef.current) {
-        gsap.set(toggleBtnRef.current, { color: menuButtonColor });
-      }
     });
 
     return () => ctx.revert();
-  }, [menuButtonColor, position]);
+  }, [position]);
 
   useEffect(() => {
     if (!open) return;
@@ -312,97 +291,6 @@ export default function StaggeredMenu({
     });
   }, [position]);
 
-  const animateIcon = useCallback((opening: boolean) => {
-    const icon = iconRef.current;
-    const h = plusHRef.current;
-    const v = plusVRef.current;
-    if (!icon || !h || !v) return;
-
-    spinTweenRef.current?.kill();
-
-    if (opening) {
-      gsap.set(icon, { rotate: 0, transformOrigin: "50% 50%" });
-      spinTweenRef.current = gsap
-        .timeline({ defaults: { ease: "power4.out" } })
-        .to(h, { rotate: 45, duration: 0.5 }, 0)
-        .to(v, { rotate: -45, duration: 0.5 }, 0);
-    } else {
-      spinTweenRef.current = gsap
-        .timeline({ defaults: { ease: "power3.inOut" } })
-        .to(h, { rotate: 0, duration: 0.35 }, 0)
-        .to(v, { rotate: 90, duration: 0.35 }, 0)
-        .to(icon, { rotate: 0, duration: 0.001 }, 0);
-    }
-  }, []);
-
-  const animateColor = useCallback(
-    (opening: boolean) => {
-      const btn = toggleBtnRef.current;
-      if (!btn) return;
-
-      colorTweenRef.current?.kill();
-
-      if (changeMenuColorOnOpen) {
-        const targetColor = opening ? openMenuButtonColor : menuButtonColor;
-        colorTweenRef.current = gsap.to(btn, {
-          color: targetColor,
-          delay: 0.18,
-          duration: 0.3,
-          ease: "power2.out",
-        });
-      } else {
-        gsap.set(btn, { color: menuButtonColor });
-      }
-    },
-    [changeMenuColorOnOpen, menuButtonColor, openMenuButtonColor],
-  );
-
-  useEffect(() => {
-    if (!toggleBtnRef.current) return;
-
-    if (changeMenuColorOnOpen) {
-      const targetColor = openRef.current
-        ? openMenuButtonColor
-        : menuButtonColor;
-      gsap.set(toggleBtnRef.current, { color: targetColor });
-    } else {
-      gsap.set(toggleBtnRef.current, { color: menuButtonColor });
-    }
-  }, [changeMenuColorOnOpen, menuButtonColor, openMenuButtonColor]);
-
-  const animateText = useCallback((opening: boolean) => {
-    const inner = textInnerRef.current;
-    if (!inner) return;
-
-    textCycleAnimRef.current?.kill();
-
-    const currentLabel = opening ? "Menu" : "Close";
-    const targetLabel = opening ? "Close" : "Menu";
-    const cycles = 3;
-    const seq: string[] = [currentLabel];
-    let last = currentLabel;
-
-    for (let i = 0; i < cycles; i += 1) {
-      last = last === "Menu" ? "Close" : "Menu";
-      seq.push(last);
-    }
-
-    if (last !== targetLabel) seq.push(targetLabel);
-    seq.push(targetLabel);
-
-    setTextLines(seq);
-    gsap.set(inner, { yPercent: 0 });
-
-    const lineCount = seq.length;
-    const finalShift = ((lineCount - 1) / lineCount) * 100;
-
-    textCycleAnimRef.current = gsap.to(inner, {
-      yPercent: -finalShift,
-      duration: 0.5 + lineCount * 0.07,
-      ease: "power4.out",
-    });
-  }, []);
-
   const closeMenu = useCallback(() => {
     if (!openRef.current || busyRef.current) return;
 
@@ -410,10 +298,7 @@ export default function StaggeredMenu({
     setOpen(false);
     onMenuClose?.();
     playClose();
-    animateIcon(false);
-    animateColor(false);
-    animateText(false);
-  }, [animateColor, animateIcon, animateText, onMenuClose, playClose]);
+  }, [onMenuClose, playClose]);
 
   const toggleMenu = useCallback(() => {
     if (busyRef.current) return;
@@ -429,19 +314,14 @@ export default function StaggeredMenu({
       onMenuClose?.();
       playClose();
     }
+  }, [onMenuClose, onMenuOpen, playClose, playOpen]);
 
-    animateIcon(target);
-    animateColor(target);
-    animateText(target);
-  }, [
-    animateColor,
-    animateIcon,
-    animateText,
-    onMenuClose,
-    onMenuOpen,
-    playClose,
-    playOpen,
-  ]);
+  useEffect(() => {
+    const btn = burgerWrapperRef.current?.querySelector("button");
+    if (!btn) return;
+    btn.setAttribute("aria-expanded", String(open));
+    btn.setAttribute("aria-controls", "staggered-menu-panel");
+  }, [open]);
 
   useEffect(() => {
     if (!closeOnClickAway || !open) return;
@@ -450,8 +330,8 @@ export default function StaggeredMenu({
       if (
         panelRef.current &&
         !panelRef.current.contains(event.target as Node) &&
-        toggleBtnRef.current &&
-        !toggleBtnRef.current.contains(event.target as Node)
+        burgerWrapperRef.current &&
+        !burgerWrapperRef.current.contains(event.target as Node)
       ) {
         closeMenu();
       }
@@ -510,7 +390,9 @@ export default function StaggeredMenu({
         <header
           className={
             hideLogo
-              ? "staggered-menu-header pointer-events-none fixed top-5 left-6 right-6 z-[61] flex h-14 items-center justify-end bg-transparent px-5 lg:left-10 lg:right-10"
+              ? `staggered-menu-header pointer-events-none fixed top-5 left-6 right-6 z-61 flex h-14 items-center bg-transparent px-5 lg:left-10 lg:right-10 ${
+                  position === "left" ? "justify-start" : "justify-end"
+                }`
               : "staggered-menu-header pointer-events-none absolute top-0 left-0 z-20 flex w-full items-center justify-between bg-transparent p-[2em]"
           }
           aria-label="Main navigation header"
@@ -533,51 +415,24 @@ export default function StaggeredMenu({
             </Link>
           )}
 
-          <button
-            ref={toggleBtnRef}
-            className={`sm-toggle pointer-events-auto relative inline-flex cursor-pointer items-center gap-[0.3rem] overflow-visible border-0 bg-transparent font-medium leading-none ${
-              open ? "text-black" : "text-foreground"
-            }`}
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            aria-controls="staggered-menu-panel"
-            onClick={toggleMenu}
-            type="button"
+          <div
+            ref={burgerWrapperRef}
+            className="sm-toggle pointer-events-auto inline-flex items-center"
           >
-            <span
-              className="sm-toggle-textWrap relative mr-2 inline-block h-[1em] overflow-hidden whitespace-nowrap"
-              aria-hidden="true"
-            >
-              <span
-                ref={textInnerRef}
-                className="sm-toggle-textInner flex flex-col leading-none"
-              >
-                {textLines.map((line, index) => (
-                  <span
-                    className="sm-toggle-line block h-[1em] leading-none"
-                    key={`${line}-${index}`}
-                  >
-                    {line}
-                  </span>
-                ))}
-              </span>
-            </span>
-
-            <span
-              ref={iconRef}
-              className="sm-icon relative inline-flex h-[14px] w-[14px] shrink-0 items-center justify-center will-change-transform"
-              aria-hidden="true"
-            >
-              <span
-                ref={plusHRef}
-                className="sm-icon-line absolute left-1/2 top-1/2 h-[2px] w-full -translate-x-1/2 -translate-y-1/2 rounded-[2px] bg-current will-change-transform"
-              />
-              <span
-                ref={plusVRef}
-                className="sm-icon-line sm-icon-line-v absolute left-1/2 top-1/2 h-[2px] w-full -translate-x-1/2 -translate-y-1/2 rounded-[2px] bg-current will-change-transform"
-              />
-            </span>
-          </button>
+            <Hamburger
+              toggled={open}
+              toggle={() => toggleMenu()}
+              size={22}
+              rounded
+              hideOutline={false}
+              color={
+                changeMenuColorOnOpen && open
+                  ? openMenuButtonColor
+                  : menuButtonColor
+              }
+              label={open ? "Close menu" : "Open menu"}
+            />
+          </div>
         </header>
 
         <aside

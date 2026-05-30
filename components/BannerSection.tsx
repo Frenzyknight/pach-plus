@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import {
   motion,
@@ -26,41 +25,38 @@ export default function BannerSection() {
     mass: 0.4,
   });
 
-  const imageScale = useTransform(smoothed, [0, 1], [1.06, 1.12]);
-  const imageY = useTransform(smoothed, [0, 1], ["0%", "-6%"]);
+  const imageScale = useTransform(smoothed, [0, 1], [1.02, 1.08]);
 
   return (
     <section
       className="relative overflow-hidden bg-slate-100"
-      aria-label="Buy 2, get 1 free promotion"
+      aria-label="A wearable wellness solution"
     >
       <div
         ref={sectionRef}
-        className="relative h-[80svh] min-h-[520px] w-full overflow-hidden md:h-[80vh]"
+        className="relative w-full overflow-hidden"
       >
         <motion.div
-          className="absolute inset-0"
           style={
             reduce
               ? undefined
               : {
                   scale: imageScale,
-                  y: imageY,
+                  transformOrigin: "top center",
                   willChange: "transform",
                 }
           }
         >
-          <picture className="absolute inset-0 block">
-            <source media="(max-width: 639px)" srcSet="/banner-mobile-final.jpeg" />
-            <source media="(max-width: 1023px)" srcSet="/banner-tablet-complete.jpeg" />
-            <Image
-              src="/girl-banner.jpeg"
-              alt="No pills. No powders. Just results. Buy 2, get 1 free."
-              fill
+          <picture className="block">
+            <source media="(max-width: 639px)" srcSet="/mobile-hero.jpeg" />
+            <img
+              src="/desktop-hero.jpeg"
+              alt="A wearable wellness solution. No pills. No powders. No complicated routines."
+              width={2752}
+              height={1536}
               loading="eager"
               fetchPriority="high"
-              sizes="100vw"
-              className="object-cover object-center sm:object-bottom-left lg:object-center"
+              className="block h-auto w-full"
             />
           </picture>
         </motion.div>

@@ -65,7 +65,7 @@ export default function CtaBannerSection() {
           }
         >
           <Image
-            src="/cta-desktop.jpeg"
+            src="/desktop-cta.jpeg"
             alt="The Metabolic Trio — three plant-powered patches designed for consistent daily wellness routines."
             fill
             sizes="100vw"
