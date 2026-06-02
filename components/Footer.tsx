@@ -160,6 +160,13 @@ export default function Footer() {
           />
         </motion.div>
 
+        {/* Wellness disclaimer — explains the * used across the site */}
+        <p className="mt-6 border-t border-black/10 pt-5 text-[10px] leading-relaxed text-foreground/45 xs:text-[11px]">
+          *These are wellness statements and have not been evaluated by the FDA.
+          pach+ products are not intended to diagnose, treat, cure, or prevent
+          any disease.
+        </p>
+
         {/* Bottom bar */}
         <div className="grid grid-cols-3 items-center gap-2 pt-5 text-[11px] text-foreground xs:text-[12px] sm:gap-4 sm:text-[13px]">
           <span className="justify-self-start">

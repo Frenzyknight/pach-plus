@@ -137,12 +137,15 @@ function IngredientsCarousel({
         ref={scrollerRef}
         className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-5 lg:gap-6 [&::-webkit-scrollbar]:hidden"
       >
-        {items.map((ingredient) => (
+        {items.map((ingredient, index) => (
           <div
             key={ingredient.index}
             className="w-full shrink-0 snap-start sm:w-[calc((100%-1.25rem)/2)] lg:w-[calc((100%-3rem)/3)]"
           >
-            <IngredientFlipCard ingredient={ingredient} />
+            <IngredientFlipCard
+              ingredient={ingredient}
+              showFlipHint={index === 0}
+            />
           </div>
         ))}
       </div>

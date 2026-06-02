@@ -6,7 +6,7 @@ import PageMotionProvider from "@/components/motion/PageMotionProvider";
 export const metadata = {
   title: "Blogs | pach+",
   description:
-    "Ingredient deep-dives, ritual ideas, and behind-the-scenes notes on the science of plant-powered patches.",
+    "Ingredient deep-dives, ritual ideas, and behind-the-scenes notes on the science of plant-based patches.",
 };
 
 export default function BlogsPage() {

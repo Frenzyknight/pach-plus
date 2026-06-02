@@ -62,15 +62,38 @@ function ArrowDownRight({ className }: { className?: string }) {
   );
 }
 
+function FlipHintIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
+      <path d="M21 3v5h-5" />
+      <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
+      <path d="M3 21v-5h5" />
+    </svg>
+  );
+}
+
 export default function IngredientFlipCard({
   ingredient,
   priority,
+  showFlipHint,
 }: {
   ingredient: Ingredient;
   priority?: boolean;
+  showFlipHint?: boolean;
 }) {
   const patch = PATCH_META[ingredient.patch];
   const [flipped, setFlipped] = useState(false);
+  const [hasFlipped, setHasFlipped] = useState(false);
   const reducedMotion = useSyncExternalStore(
     subscribeReducedMotion,
     getReducedMotion,
@@ -85,7 +108,10 @@ export default function IngredientFlipCard({
     return () => window.removeEventListener("keydown", onKey);
   }, [flipped]);
 
-  const toggle = useCallback(() => setFlipped((value) => !value), []);
+  const toggle = useCallback(() => {
+    setHasFlipped(true);
+    setFlipped((value) => !value);
+  }, []);
 
   const handleCardClick = useCallback(() => {
     toggle();
@@ -129,26 +155,30 @@ export default function IngredientFlipCard({
         style={{ transform: innerTransform }}
       >
         <article
-          className={`col-start-1 row-start-1 flex h-full flex-col rounded-[28px] bg-[#F4F2EE] p-6 transition-colors duration-300 backface-hidden lg:p-7 ${reducedMotion && flipped ? "invisible opacity-0" : "group-hover:bg-[#EFEDE7]"}`}
+          className={`relative col-start-1 row-start-1 flex h-full flex-col rounded-[28px] bg-[#F4F2EE] p-6 transition-colors duration-300 backface-hidden lg:p-7 ${reducedMotion && flipped ? "invisible opacity-0" : "group-hover:bg-[#EFEDE7]"}`}
           aria-hidden={flipped}
         >
           <div className="mb-8 flex items-start justify-between">
             <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-foreground/55">
               [{pad(ingredient.index)}]
             </span>
-            <span
-              className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.16em] text-foreground/55"
+            <Link
+              href={`/products/${patch.slug}`}
+              onClick={stopFlip}
+              onKeyDown={stopFlip}
               title={patch.label}
+              aria-label={`View ${patch.label}`}
+              className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.16em] text-foreground/55 transition-colors hover:text-foreground"
             >
-              <span className="hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:inline">
+              <span className="hidden underline underline-offset-2 sm:inline">
                 {patch.label}
               </span>
               <span
                 className="block h-2.5 w-2.5 rounded-full"
                 style={{ backgroundColor: patch.accent }}
-                aria-label={patch.label}
+                aria-hidden="true"
               />
-            </span>
+            </Link>
           </div>
 
           <div className="mb-6 flex h-24 items-center justify-center text-foreground/55">
@@ -188,6 +218,12 @@ export default function IngredientFlipCard({
             <p className="text-[12px] leading-relaxed text-foreground/85">
               {ingredient.bestFor.join(", ")}
             </p>
+            {showFlipHint && !hasFlipped ? (
+              <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-slate-900/85 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white">
+                <FlipHintIcon className="h-3.5 w-3.5" />
+                Tap to flip
+              </span>
+            ) : null}
             <span
               aria-hidden="true"
               className="absolute bottom-0 right-0 inline-flex h-7 w-7 items-center justify-center text-slate-900"

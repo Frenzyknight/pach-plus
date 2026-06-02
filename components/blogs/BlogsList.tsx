@@ -108,7 +108,7 @@ export default function BlogsList() {
               className="mt-6 max-w-[460px] text-[12px] font-medium leading-relaxed text-foreground/65 sm:mt-7 sm:text-sm lg:text-[15px]"
             >
               Ingredient deep-dives, ritual ideas, and behind-the-scenes notes
-              on the science of plant-powered patches. Short reads for anyone
+              on the science of plant-based patches. Short reads for anyone
               who wants their wellness routine to feel a little lighter.
             </motion.p>
           </Reveal>

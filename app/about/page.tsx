@@ -12,7 +12,7 @@ import PageMotionProvider from "@/components/motion/PageMotionProvider";
 export const metadata = {
   title: "About | pach+",
   description:
-    "The story, science and values behind pach+ \u2014 plant-powered transdermal patches built for everyday wellness.",
+    "The story, science and values behind pach+ \u2014 plant-based transdermal patches built for everyday wellness.",
 };
 
 export default function AboutPage() {

@@ -124,7 +124,7 @@ export const SHARED_FAQS: ProductFaq[] = [
   {
     question: "How long should I wear one?",
     answer:
-      "Wear one patch for up to 8 hours, then remove and discard it. Do not apply to irritated or broken skin.",
+      "Wear one patch for up to 8 hours. Do not apply to irritated or broken skin.",
   },
   {
     question: "Can I use them daily?",
@@ -266,16 +266,16 @@ export const PRODUCT_CONTENT: ProductContent[] = [
     rating: 4.5,
     reviews: 19,
     fallbackComingSoon: true,
-    tagline: "For Easy, Plant-Based Breathing*",
+    tagline: "For Easier, Clearer Breathing*",
     accent: "#1E3A8A",
     accentLight: "#93C5FD",
     bg: "#DBEAFE",
     patch: "breathe",
-    badges: ["Plant-Based", "Aromatic", "No Pills", "Daily Wear"],
+    badges: ["Plant-Based", "Aromatic", "No Pills", "As Needed"],
     heroDescription:
-      "A crisp nasal comfort patch made with refreshing aromatics to support easier-feeling breathing during busy days, travel, and bedtime routines.",
+      "A plant-based breathing patch worn across the bridge of your nose, using refreshing aromatics to support clearer, easier breathing through colds, allergy season, and stuffy days.",
     heroSubcopy:
-      "A simple stick-on ritual for when you want your breath to feel open, clear, and supported.*",
+      "A simple stick-on ritual for when you want your breath to feel open and clear.*",
     detailLine: "Nasal Comfort Support* - 24 patches - Fresh Aroma",
     stat: "89% Said their breathing routine felt easier and cleaner with Happy Breathe*",
     statFootnote: "*Based on an internal product feedback group of 25 people.",
@@ -288,7 +288,7 @@ export const PRODUCT_CONTENT: ProductContent[] = [
     whatsInside:
       "A breathable patch blend with eucalyptus, menthol, peppermint, lavender, and plant-forward aromatic support.",
     howToTake:
-      "Apply one patch to clean, dry skin on the chest, upper arm, or another comfortable area. Wear for up to 8 hours.",
+      "Apply one patch across the bridge of your nose on clean, dry skin. Wear for up to 8 hours.",
     quickFacts: [
       { label: "Time to Feel", value: "Fresh aromatic lift within minutes*" },
       { label: "Post Use", value: "No greasy balm or heavy residue*" },
@@ -325,14 +325,14 @@ export const PRODUCT_CONTENT: ProductContent[] = [
       },
     ],
     ingredientsHeading:
-      "Breathing comfort patches with crisp aromatics and plant-based daily support.",
+      "Breathing comfort patches with refreshing aromatics and plant-based support.",
     ingredientsCopy:
       "Happy Breathe uses familiar cooling botanicals and calming aromatic notes in a flexible patch made for clean, easy wear.",
     ingredients: [
       {
         name: "Eucalyptus",
         description:
-          "A crisp aromatic selected for a fresh, open-feeling breathing ritual.",
+          "A refreshing aromatic selected for a fresh, open-feeling breathing ritual.",
         accent: "#1E3A8A",
       },
       {
@@ -356,7 +356,7 @@ export const PRODUCT_CONTENT: ProductContent[] = [
       {
         name: "Tea Tree",
         description:
-          "A clean botanical used for its crisp, clarifying aromatic profile.",
+          "A clean botanical used for its bright, clarifying aromatic profile.",
         accent: "#C2B84A",
       },
       {
@@ -385,14 +385,14 @@ export const PRODUCT_CONTENT: ProductContent[] = [
     patch: "hormones",
     badges: ["For Her", "Plant-Based", "No Pills", "Daily Wear"],
     heroDescription:
-      "A daily balance patch designed for cycle-aware routines, mood support, and the moments your body wants a gentler wellness ritual.",
+      "A daily balance patch designed to support your monthly cycle, steadier mood, and the everyday ups and downs of hormonal wellness.",
     heroSubcopy:
       "Stick-on support for feeling more steady, centered, and in sync with your day.*",
     detailLine: "Hormonal Balance Support* - 24 patches - Daily Wear",
-    stat: "93% Felt more balanced and comfortable during their daily routine*",
+    stat: "93% Noticed steadier mood and energy with daily use*",
     statFootnote: "*Based on an internal product feedback group of 25 people.",
     bestFor: [
-      "Cycle-aware daily support*",
+      "Monthly cycle support*",
       "Mood and body balance rituals*",
       "Replacing supplement clutter with one wearable step*",
       "Low-effort consistency through busy weeks*",
@@ -444,7 +444,7 @@ export const PRODUCT_CONTENT: ProductContent[] = [
       {
         name: "Vitex",
         description:
-          "A botanical traditionally used in cycle-aware wellness and balance routines.",
+          "A botanical traditionally used in monthly cycle and hormonal balance routines.",
         accent: "#BE185D",
       },
       {
@@ -501,7 +501,7 @@ export const PRODUCT_CONTENT: ProductContent[] = [
     heroSubcopy:
       "Simple wearable support for days when your digestion routine needs to feel cleaner and easier.*",
     detailLine: "Gut & Metabolism Support* - 24 patches - Daily Wear",
-    stat: "90% Said Happy Gut made their digestive wellness routine easier to keep up with*",
+    stat: "90% of Happy Gut users experienced improved digestive wellness*",
     statFootnote: "*Based on an internal product feedback group of 25 people.",
     bestFor: [
       "Digestive wellness routines*",

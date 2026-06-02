@@ -91,19 +91,19 @@ export default function AboutValues() {
             className="text-[11px] font-medium leading-relaxed text-foreground/68 xs:text-xs sm:text-sm lg:text-base"
           >
             Our values shape every formulation decision we make. We prioritise
-            integrity &mdash; sourcing botanicals from growers we know by name,
-            publishing our doses, and pricing patches honestly. Transparency
-            isn&apos;t a campaign for us; it&apos;s a quiet, daily practice that
+            integrity. Be it sourcing botanicals from growers we know by name,
+            publishing our doses, or pricing patches honestly. Transparency
+            isn&apos;t a campaign for us, it&apos;s a daily practice that
             you&apos;ll feel in the product long before you read about it.
           </motion.p>
           <motion.p
             variants={revealItem}
             className="text-[11px] font-medium leading-relaxed text-foreground/68 xs:text-xs sm:text-sm lg:text-base"
           >
-            We pair that honesty with innovation. Clinical-grade actives,
+            We pair this honesty with innovation. Clinical-grade ingredients,
             transdermal delivery research and an obsession with long-term
-            wellness outcomes mean each patch is engineered to do real work over
-            time &mdash; not just deliver a quick hit. The goal is simple: a
+            wellness outcomes. As a result, each patch is engineered to do real
+            work over time, not just deliver a quick hit. The goal is simple: a
             routine you&apos;ll actually keep, that keeps giving back.
           </motion.p>
         </Reveal>

@@ -99,7 +99,7 @@ const CARDS: ValueCard[] = [
   {
     title: "Transparent science",
     description:
-      "Every active is named, dosed and explained. No proprietary blends, no fine print.",
+      "Every active ingredient is named, dosed and explained. No proprietary blends, no fine print.",
     imageSrc: "/transparent-science.jpeg",
     imageAlt: "Scientist in lab holding petri dish",
     discBg: "bg-purple-100",
@@ -118,8 +118,7 @@ const CARDS: ValueCard[] = [
   },
   {
     title: "Plant-first formulas",
-    description:
-      "Botanicals and minerals lead the recipe. Synthetics only when nothing else will do.",
+    description: "Botanicals and minerals lead the recipe.",
     imageSrc: "/plant-ingredients.jpeg",
     imageAlt: "Botanical herbs and plant extracts laid out on a yellow surface",
     discBg: "bg-teal-100",
@@ -129,7 +128,7 @@ const CARDS: ValueCard[] = [
   {
     title: "Made for daily life",
     description:
-      "Discreet, breathable patches that move with you \u2014 from workouts to long-haul flights.",
+      "Breathable patches that move with you and fit easily into an ordinary day.",
     imageSrc: "/flight-sleep.jpeg",
     imageAlt: "Woman sleeping on a plane wearing a pach+ patch",
     discBg: "bg-pink-100",
@@ -293,7 +292,7 @@ function TitleBlock() {
       </h2>
       <p className="mt-5 max-w-[360px] text-[11px] font-medium leading-relaxed text-foreground/68 xs:text-xs sm:text-sm">
         Four small commitments that add up to a wellness routine you can actually
-        feel &mdash; rooted in plants, backed by science.
+        feel. Rooted in plants, backed by science.
       </p>
       <motion.div
         initial="rest"

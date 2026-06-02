@@ -19,6 +19,7 @@ export default function HerbalIndexGrid() {
               key={ingredient.index}
               ingredient={ingredient}
               priority={ingredient.index === 1}
+              showFlipHint={ingredient.index === 1}
             />
           ))}
         </Reveal>

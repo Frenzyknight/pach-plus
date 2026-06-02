@@ -45,7 +45,7 @@ export default function AboutHero() {
             className="max-w-[1180px] leading-[1.04] tracking-[-0.03em] text-foreground"
             style={{ fontSize: "clamp(2rem, 5.4vw, 4.25rem)" }}
           >
-            <span className="font-bold">We&rsquo;re a plant-powered patch company</span>{" "}
+            <span className="font-bold">We&rsquo;re a plant-based patch company</span>{" "}
             <span className="font-extralight">making everyday wellness</span>{" "}
             <span className="font-bold">effortless.</span>
           </motion.h1>
@@ -65,7 +65,7 @@ export default function AboutHero() {
           >
             <Image
               src="/mobile-about.jpeg"
-              alt="The pach+ team collaborating on plant-powered transdermal patches."
+              alt="The pach+ team collaborating on plant-based transdermal patches."
               fill
               sizes="(max-width: 640px) calc(100vw - 48px), 0px"
               priority
@@ -73,7 +73,7 @@ export default function AboutHero() {
             />
             <Image
               src="/desktop-about.jpeg"
-              alt="The pach+ team collaborating on plant-powered transdermal patches."
+              alt="The pach+ team collaborating on plant-based transdermal patches."
               fill
               sizes="(min-width: 1024px) calc(100vw - 80px), (min-width: 640px) calc(100vw - 48px), 0px"
               priority

@@ -127,7 +127,7 @@ export default function ProductFaqRelated({ product }: { product: Product }) {
 
         <div>
           <h2 className="mb-6 text-xl font-black uppercase tracking-[-0.04em]">
-            Goes Well With
+            Also Try
           </h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {relatedProducts.map((relatedProduct) => (

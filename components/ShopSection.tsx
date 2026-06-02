@@ -14,44 +14,6 @@ import { Reveal, revealItem } from "@/components/motion/Reveal";
 import { PRODUCTS, type Product } from "@/lib/products";
 import { formatMoney } from "@/lib/format-money";
 
-function StarRating({ rating, reviews }: { rating: number; reviews: number }) {
-  const fullStars = Math.floor(rating);
-  const hasHalf = rating - fullStars >= 0.3;
-  const emptyStars = 5 - fullStars - (hasHalf ? 1 : 0);
-
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      <span className="flex gap-px">
-        {Array.from({ length: fullStars }).map((_, i) => (
-          <svg key={`f${i}`} viewBox="0 0 20 20" className="w-3.5 h-3.5 fill-amber-400">
-            <path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.33L10 13.27l-4.77 2.45.91-5.33L2.27 6.62l5.34-.78z" />
-          </svg>
-        ))}
-        {hasHalf && (
-          <svg viewBox="0 0 20 20" className="w-3.5 h-3.5">
-            <defs>
-              <linearGradient id="halfStar">
-                <stop offset="50%" stopColor="#FBBF24" />
-                <stop offset="50%" stopColor="#D1D5DB" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.33L10 13.27l-4.77 2.45.91-5.33L2.27 6.62l5.34-.78z"
-              fill="url(#halfStar)"
-            />
-          </svg>
-        )}
-        {Array.from({ length: emptyStars }).map((_, i) => (
-          <svg key={`e${i}`} viewBox="0 0 20 20" className="w-3.5 h-3.5 fill-gray-300">
-            <path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.33L10 13.27l-4.77 2.45.91-5.33L2.27 6.62l5.34-.78z" />
-          </svg>
-        ))}
-      </span>
-      <span className="text-[11px] text-foreground/40">({reviews})</span>
-    </span>
-  );
-}
-
 export function ProductCard({ product }: { product: Product }) {
   const priceLabel = formatMoney({
     amount: product.price.toString(),
@@ -99,17 +61,14 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         )}
       </Link>
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <p className="text-sm font-medium text-foreground truncate">
-            {product.name}
-            <span className="text-foreground/40 font-normal">
-              {" "}&bull; {priceLabel}
-            </span>
-          </p>
-          <p className="text-xs text-foreground/50 mt-0.5">{product.tagline}</p>
-        </div>
-        <StarRating rating={product.rating} reviews={product.reviews} />
+      <div className="min-w-0">
+        <p className="text-sm font-medium text-foreground truncate">
+          {product.name}
+          <span className="text-foreground/40 font-normal">
+            {" "}&bull; {priceLabel}
+          </span>
+        </p>
+        <p className="text-xs text-foreground/50 mt-0.5">{product.tagline}</p>
       </div>
       {product.comingSoon ? (
         <Link

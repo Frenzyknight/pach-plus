@@ -18,8 +18,8 @@ interface Stat {
 }
 
 const STATS: Stat[] = [
-  { value: "50K+", label: "Patches shipped to wellness routines" },
-  { value: "4.8/5", label: "Average customer rating" },
+  { value: "8 Hr", label: "Steady transdermal wear per patch" },
+  { value: "0", label: "Pills to swallow" },
   { value: "12", label: "Hero plant & mineral ingredients" },
   { value: "100%", label: "Plant-based actives, no fillers" },
 ];
@@ -132,7 +132,7 @@ export default function AboutStatsMission() {
               precision-dosed botanicals and minerals transdermally &mdash; bypassing
               the gut and going straight to where they&apos;re needed. We pair
               centuries-old plant wisdom with modern delivery science, so your
-              daily ritual is one small, considered patch instead of a handful of
+              daily ritual is one small, simple patch instead of a handful of
               pills.
             </p>
 

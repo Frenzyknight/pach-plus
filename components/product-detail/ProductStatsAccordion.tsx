@@ -32,7 +32,7 @@ export default function ProductStatsAccordion({
       content: [product.whatsInside],
     },
     {
-      title: "How to Take",
+      title: "How to Use",
       content: [product.howToTake],
     },
   ];

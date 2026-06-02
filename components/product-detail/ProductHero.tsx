@@ -21,26 +21,6 @@ const SUPPLY_OPTIONS: SupplyOption[] = [
   { value: 72, label: "72 Day Supply", multiplier: 3 },
 ];
 
-function Rating({ rating, reviews }: { rating: number; reviews: number }) {
-  return (
-    <div className="flex items-center gap-2 text-[11px] font-semibold">
-      <span className="flex gap-0.5" aria-label={`${rating} out of 5 stars`}>
-        {Array.from({ length: 5 }).map((_, index) => (
-          <svg
-            key={index}
-            viewBox="0 0 20 20"
-            className="h-3.5 w-3.5 fill-amber-400"
-            aria-hidden="true"
-          >
-            <path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.33L10 13.27l-4.77 2.45.91-5.33L2.27 6.62l5.34-.78z" />
-          </svg>
-        ))}
-      </span>
-      <span>({reviews})</span>
-    </div>
-  );
-}
-
 function AccentPill({
   active,
   accent,
@@ -129,8 +109,7 @@ export default function ProductHero({ product }: { product: Product }) {
               </h1>
             </div>
             <div className="text-right">
-              <Rating rating={product.rating} reviews={product.reviews} />
-              <p className="mt-1 text-2xl font-black">{headlinePrice}</p>
+              <p className="text-2xl font-black">{headlinePrice}</p>
             </div>
           </div>
 

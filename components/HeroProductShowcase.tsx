@@ -106,7 +106,7 @@ const PACKAGES: Package[] = [
     name: "Happy Muscles",
     label: "Daily Recovery",
     description:
-      "Experience the future of wellness with pach+\u2019s tailored transdermal recovery patch.",
+      "Soothe sore, tired muscles with pach+\u2019s plant-based recovery patch \u2014 targeted, all-day comfort without a single pill.",
   },
   {
     slug: "happy-breathe",
@@ -117,7 +117,7 @@ const PACKAGES: Package[] = [
     name: "Happy Breathe",
     label: "Nasal Comfort",
     description:
-      "Breathe easy with pach+\u2019s plant-based nasal comfort patch built for fresh, open days.",
+      "Ease a stuffy, congested nose with pach+\u2019s plant-based breathing patch, worn across the nose for clearer breathing through colds and allergy season.",
     comingSoon: true,
   },
   {
@@ -129,7 +129,7 @@ const PACKAGES: Package[] = [
     name: "Happy Hormones",
     label: "Hormonal Balance",
     description:
-      "Support your daily hormonal balance with pach+\u2019s wearable PCOS support patch.",
+      "Support your daily hormonal balance with pach+\u2019s plant-based wearable patch.",
   },
   {
     slug: "happy-gut",
