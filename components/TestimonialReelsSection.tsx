@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { Reveal, revealItem } from "@/components/motion/Reveal";
-import { getProductBySlug, type Product } from "@/lib/products";
+import { PRODUCTS, getProductBySlug, type Product } from "@/lib/products";
+import { formatMoney } from "@/lib/format-money";
 
 type Reel = {
   src: string;
@@ -23,26 +24,15 @@ const REEL_SOURCES: { src: string; slug: string }[] = [
   { src: "/product8.mp4", slug: "happy-gut" },
 ];
 
-const REELS: Reel[] = REEL_SOURCES.map(({ src, slug }) => {
-  const product = getProductBySlug(slug);
-  if (!product) {
-    throw new Error(`Missing product for slug: ${slug}`);
-  }
-  return { src, product };
-});
-
-const HALF = Math.floor(REELS.length / 2);
+const REEL_COUNT = REEL_SOURCES.length;
+const HALF = Math.floor(REEL_COUNT / 2);
 const ACTIVE_RATIO = 16 / 9;
-
-const GLOW_PRODUCTS = Array.from(
-  new Map(REELS.map((r) => [r.product.slug, r.product])).values(),
-);
 const INACTIVE_RATIO = 1.2;
 const MAX_CARD_W = 340;
 
 function computeOffset(index: number, active: number): number {
   const diff = index - active;
-  return ((diff + REELS.length + HALF) % REELS.length) - HALF;
+  return ((diff + REEL_COUNT + HALF) % REEL_COUNT) - HALF;
 }
 
 function getLayout(width: number) {
@@ -130,7 +120,28 @@ function PlayPauseIcon({
   );
 }
 
-export default function TestimonialReelsSection() {
+export default function TestimonialReelsSection({
+  products,
+}: {
+  /** Shopify-merged products from a server component. Falls back to static content + prices. */
+  products?: Product[];
+}) {
+  const reels = useMemo<Reel[]>(() => {
+    const lookup = new Map((products ?? PRODUCTS).map((p) => [p.slug, p]));
+    return REEL_SOURCES.map(({ src, slug }) => {
+      const product = lookup.get(slug) ?? getProductBySlug(slug);
+      if (!product) {
+        throw new Error(`Missing product for slug: ${slug}`);
+      }
+      return { src, product };
+    });
+  }, [products]);
+
+  const glowProducts = useMemo(
+    () => Array.from(new Map(reels.map((r) => [r.product.slug, r.product])).values()),
+    [reels],
+  );
+
   const [activeState, setActiveState] = useState({ current: 0, previous: 0 });
   const activeIndex = activeState.current;
   const prevActiveIndex = activeState.previous;
@@ -162,7 +173,7 @@ export default function TestimonialReelsSection() {
   }, []);
 
   const goTo = useCallback((index: number) => {
-    const next = ((index % REELS.length) + REELS.length) % REELS.length;
+    const next = ((index % REEL_COUNT) + REEL_COUNT) % REEL_COUNT;
     setActiveState((prev) => ({ current: next, previous: prev.current }));
     setPlaying(true);
   }, []);
@@ -217,7 +228,7 @@ export default function TestimonialReelsSection() {
   };
 
   const { cardVw, gapVw } = layout;
-  const activeProduct = REELS[activeIndex].product;
+  const activeProduct = reels[activeIndex].product;
   const wrapperWidth = `min(${cardVw}vw, ${MAX_CARD_W}px)`;
   const wrapperHeight = `min(${cardVw * ACTIVE_RATIO}vw, ${MAX_CARD_W * ACTIVE_RATIO}px)`;
   const trackHeight = `calc(${wrapperHeight} + 84px)`;
@@ -229,7 +240,7 @@ export default function TestimonialReelsSection() {
     >
       {/* Product-tinted ambient glow — cross-fades with active card */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        {GLOW_PRODUCTS.map((product) => (
+        {glowProducts.map((product) => (
           <div
             key={product.slug}
             className="absolute inset-0 transition-opacity duration-700 ease-in-out"
@@ -286,7 +297,7 @@ export default function TestimonialReelsSection() {
         className="relative z-10 w-full touch-pan-y select-none"
         style={{ height: trackHeight, minHeight: 460 }}
       >
-        {REELS.map((reel, i) => {
+        {reels.map((reel, i) => {
           const offset = computeOffset(i, activeIndex);
           const distance = Math.abs(offset);
           const isActive = offset === 0;
@@ -425,7 +436,10 @@ export default function TestimonialReelsSection() {
                         {reel.product.name}
                       </p>
                       <p className="text-[11px] text-foreground/55">
-                        ₹{reel.product.price}
+                        {formatMoney({
+                          amount: reel.product.price.toString(),
+                          currencyCode: reel.product.currencyCode,
+                        })}
                       </p>
                     </div>
                     {reel.product.comingSoon ? (
@@ -477,7 +491,7 @@ export default function TestimonialReelsSection() {
         </button>
 
         <div className="flex items-center gap-2" aria-hidden="true">
-          {REELS.map((reel, i) => (
+          {reels.map((reel, i) => (
             <span
               key={reel.src}
               className={`h-1.5 rounded-full transition-all duration-300 ${

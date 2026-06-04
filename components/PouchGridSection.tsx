@@ -4,11 +4,17 @@ import Link from "next/link";
 import { useState } from "react";
 import { ProductCard } from "@/components/ShopSection";
 import { Reveal } from "@/components/motion/Reveal";
-import { PRODUCTS } from "@/lib/products";
+import { PRODUCTS, type Product } from "@/lib/products";
 
-export default function PouchGridSection() {
+export default function PouchGridSection({
+  products,
+}: {
+  /** Shopify-merged products from a server component. Falls back to static content + prices. */
+  products?: Product[];
+}) {
+  const items = products ?? PRODUCTS;
   const [currentIndex, setCurrentIndex] = useState(0);
-  const productCount = PRODUCTS.length;
+  const productCount = items.length;
 
   const goToPrevious = () => {
     setCurrentIndex((index) => (index - 1 + productCount) % productCount);
@@ -39,8 +45,8 @@ export default function PouchGridSection() {
               className="flex transition-transform duration-500 ease-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
-              {PRODUCTS.map((product) => (
-                <div key={product.src} className="min-w-full">
+              {items.map((product) => (
+                <div key={product.slug} className="min-w-full">
                   <ProductCard product={product} />
                 </div>
               ))}
@@ -68,9 +74,9 @@ export default function PouchGridSection() {
             </button>
 
             <div className="flex items-center gap-2" aria-hidden="true">
-              {PRODUCTS.map((product, index) => (
+              {items.map((product, index) => (
                 <span
-                  key={product.src}
+                  key={product.slug}
                   className={`h-2 rounded-full transition-all duration-300 ${
                     index === currentIndex
                       ? "w-6 bg-teal-900"
@@ -106,8 +112,8 @@ export default function PouchGridSection() {
           amount={0.2}
           className="hidden gap-5 sm:grid sm:grid-cols-2 lg:grid-cols-4"
         >
-          {PRODUCTS.map((product) => (
-            <ProductCard key={product.src} product={product} />
+          {items.map((product) => (
+            <ProductCard key={product.slug} product={product} />
           ))}
         </Reveal>
       </div>

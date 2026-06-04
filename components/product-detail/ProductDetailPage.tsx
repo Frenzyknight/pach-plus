@@ -8,7 +8,13 @@ import ProductLayerComparison from "./ProductLayerComparison";
 import ProductStatsAccordion from "./ProductStatsAccordion";
 import ProductTestimonials from "./ProductTestimonials";
 
-export default function ProductDetailPage({ product }: { product: Product }) {
+export default function ProductDetailPage({
+  product,
+  relatedProducts,
+}: {
+  product: Product;
+  relatedProducts: Product[];
+}) {
   return (
     <div className="min-h-screen bg-white text-black">
       <Navbar />
@@ -18,7 +24,7 @@ export default function ProductDetailPage({ product }: { product: Product }) {
         <ProductLayerComparison product={product} />
         <ProductTestimonials product={product} />
         <ProductIngredients product={product} />
-        <ProductFaqRelated product={product} />
+        <ProductFaqRelated product={product} relatedProducts={relatedProducts} />
       </main>
       <Footer />
     </div>

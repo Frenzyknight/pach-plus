@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ProductDetailPage from "@/components/product-detail/ProductDetailPage";
-import { getMergedProduct } from "@/lib/products-server";
+import { getMergedProduct, getRelatedMergedProducts } from "@/lib/products-server";
 import { PRODUCT_CONTENT } from "@/lib/content/products";
 
 type ProductPageProps = {
@@ -42,5 +42,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  return <ProductDetailPage product={product} />;
+  const relatedProducts = await getRelatedMergedProducts(product);
+
+  return <ProductDetailPage product={product} relatedProducts={relatedProducts} />;
 }

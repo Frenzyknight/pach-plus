@@ -9,6 +9,7 @@ import PouchGridSection from "@/components/PouchGridSection";
 import Footer from "@/components/Footer";
 import PageMotionProvider from "@/components/motion/PageMotionProvider";
 import { Reveal } from "@/components/motion/Reveal";
+import { getMergedProducts } from "@/lib/products-server";
 
 const POUCH_DIAMOND_COLORS = [
   "#896CC4", // Happy Muscles - purple
@@ -17,7 +18,9 @@ const POUCH_DIAMOND_COLORS = [
   "#34D399", // Happy Gut - green
 ];
 
-export default function Home() {
+export default async function Home() {
+  const products = await getMergedProducts();
+
   return (
     <PageMotionProvider>
       <div className="min-h-screen bg-background relative">
@@ -39,9 +42,9 @@ export default function Home() {
         </Reveal>
         <HeroProductShowcase />
         {/* <WellnessSection /> */}
-        <TestimonialReelsSection />
+        <TestimonialReelsSection products={products} />
         <CtaBannerSection />
-        <PouchGridSection />
+        <PouchGridSection products={products} />
         <Footer />
       </div>
     </PageMotionProvider>

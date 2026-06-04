@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getRelatedProducts, type Product } from "@/lib/products";
+import { type Product } from "@/lib/products";
+import { formatMoney } from "@/lib/format-money";
 
 function Chevron() {
   return (
@@ -64,7 +65,14 @@ function RelatedProductCard({ product }: { product: Product }) {
         </div>
       </Link>
       <h3 className="mt-4 text-[12px] font-black">
-        {product.name} <span className="text-black/45">- ₹{product.price}</span>
+        {product.name}{" "}
+        <span className="text-black/45">
+          -{" "}
+          {formatMoney({
+            amount: product.price.toString(),
+            currencyCode: product.currencyCode,
+          })}
+        </span>
       </h3>
       <p className="mt-1 text-[11px] font-medium text-black/45">
         {product.tagline}
@@ -93,9 +101,13 @@ function RelatedProductCard({ product }: { product: Product }) {
   );
 }
 
-export default function ProductFaqRelated({ product }: { product: Product }) {
-  const relatedProducts = getRelatedProducts(product);
-
+export default function ProductFaqRelated({
+  product,
+  relatedProducts,
+}: {
+  product: Product;
+  relatedProducts: Product[];
+}) {
   return (
     <section
       id="faqs"

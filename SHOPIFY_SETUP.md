@@ -77,7 +77,7 @@ This makes Shopify product edits invalidate the Next.js cache without a redeploy
 2. Create three webhooks — one for each event — all pointing at the same URL:
    - **Event**: `Product creation`, `Product update`, `Product deletion`
    - **Format**: JSON
-   - **URL**: `https://<your-deployed-domain>/api/revalidate?secret=<SHOPIFY_REVALIDATION_SECRET>`
+   - **URL**: `https://pach-plus.vercel.app/api/revalidate?secret=<SHOPIFY_REVALIDATION_SECRET>`
 3. Skip this for local development — you'd need a tunnel like `ngrok` if you want webhooks locally.
 
 ## 6. Verify the integration
