@@ -97,6 +97,7 @@ export default function ProductHero({ product }: { product: Product }) {
         productName={product.name}
         productSrc={product.src}
         bg={product.bg}
+        gallerySlides={product.gallerySlides}
       />
 
       <div className="bg-white px-2 py-8 sm:px-6 lg:px-8 lg:py-9">

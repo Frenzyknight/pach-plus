@@ -15,11 +15,9 @@ type Reel = {
 
 const REEL_SOURCES: { src: string; slug: string }[] = [
   { src: "/product-1.mp4", slug: "happy-muscles" },
-  { src: "/product2.mp4", slug: "happy-breathe" },
   { src: "/product3.mp4", slug: "happy-hormones" },
   { src: "/product4.mp4", slug: "happy-gut" },
   { src: "/product-5.mp4", slug: "happy-muscles" },
-  { src: "/product6.mp4", slug: "happy-breathe" },
   { src: "/product7.mp4", slug: "happy-hormones" },
   { src: "/product8.mp4", slug: "happy-gut" },
 ];

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ProductDetailPage from "@/components/product-detail/ProductDetailPage";
 import { getMergedProduct, getRelatedMergedProducts } from "@/lib/products-server";
-import { PRODUCT_CONTENT } from "@/lib/content/products";
+import { VISIBLE_PRODUCT_CONTENT } from "@/lib/content/products";
 
 type ProductPageProps = {
   params: Promise<{
@@ -11,7 +11,7 @@ type ProductPageProps = {
 };
 
 export function generateStaticParams() {
-  return PRODUCT_CONTENT.map((product) => ({
+  return VISIBLE_PRODUCT_CONTENT.map((product) => ({
     slug: product.slug,
   }));
 }

@@ -5,6 +5,13 @@ import IngredientFlipCard from "@/components/IngredientFlipCard";
 import { Reveal, revealItem } from "@/components/motion/Reveal";
 import { INGREDIENTS, PATCH_META } from "@/lib/ingredients";
 
+const VISIBLE_INGREDIENTS = INGREDIENTS.filter((i) => i.patch !== "breathe");
+const VISIBLE_PATCH_META = Object.entries(PATCH_META).filter(
+  ([key]) => key !== "breathe",
+) as Array<
+  [keyof typeof PATCH_META, (typeof PATCH_META)[keyof typeof PATCH_META]]
+>;
+
 export default function HerbalIndexGrid() {
   return (
     <section className="bg-white px-5 pb-24 xs:px-6 sm:pb-28 lg:px-10 lg:pb-32">
@@ -14,12 +21,12 @@ export default function HerbalIndexGrid() {
           amount={0.05}
           className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6"
         >
-          {INGREDIENTS.map((ingredient) => (
+          {VISIBLE_INGREDIENTS.map((ingredient, index) => (
             <IngredientFlipCard
               key={ingredient.index}
               ingredient={ingredient}
-              priority={ingredient.index === 1}
-              showFlipHint={ingredient.index === 1}
+              priority={index === 0}
+              showFlipHint={index === 0}
             />
           ))}
         </Reveal>
@@ -32,11 +39,7 @@ export default function HerbalIndexGrid() {
           <motion.span variants={revealItem} className="text-foreground/80">
             Legend
           </motion.span>
-          {(
-            Object.entries(PATCH_META) as Array<
-              [keyof typeof PATCH_META, (typeof PATCH_META)[keyof typeof PATCH_META]]
-            >
-          ).map(([key, meta]) => (
+          {VISIBLE_PATCH_META.map(([key, meta]) => (
             <motion.span
               key={key}
               variants={revealItem}

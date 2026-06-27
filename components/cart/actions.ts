@@ -63,6 +63,41 @@ export async function addItem(
   }
 }
 
+type AddItemsPayload = {
+  lines: { variantId: string | undefined; quantity?: number }[];
+};
+
+export async function addItems(
+  _prevState: unknown,
+  payload: AddItemsPayload,
+): Promise<string | undefined> {
+  if (!isShopifyConfigured()) {
+    return "Shopify is not configured. See SHOPIFY_SETUP.md.";
+  }
+
+  const lines = (payload.lines ?? [])
+    .filter((line): line is { variantId: string; quantity?: number } =>
+      Boolean(line.variantId),
+    )
+    .map((line) => ({
+      merchandiseId: line.variantId,
+      quantity: Math.max(1, Math.floor(line.quantity ?? 1)),
+    }));
+
+  if (lines.length === 0) {
+    return "Please select items before adding to bag.";
+  }
+
+  try {
+    const cartId = await getOrCreateCartId();
+    await addToCart(cartId, lines);
+    refresh();
+  } catch (error) {
+    console.error("addItems failed", error);
+    return "We couldn't add these to your bag. Please try again.";
+  }
+}
+
 export async function removeItem(
   _prevState: unknown,
   merchandiseId: string,

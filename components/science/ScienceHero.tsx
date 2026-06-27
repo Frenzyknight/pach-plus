@@ -61,7 +61,7 @@ export default function ScienceHero() {
             style={reduce ? undefined : { scale: 1.08, y, willChange: "transform" }}
           >
             <Image
-              src="/mobile-science-bg-fix.jpeg"
+              src="/scientist-mobile.jpeg"
               alt="A pach+ scientist working with plant-derived actives in a lab."
               fill
               sizes="(max-width: 640px) calc(100vw - 48px), 0px"
@@ -69,7 +69,7 @@ export default function ScienceHero() {
               className="object-contain object-center sm:hidden"
             />
             <Image
-              src="/desktop-science-bg-fix.jpeg"
+              src="/scientist-desktop.jpeg"
               alt="A pach+ scientist working with plant-derived actives in a lab."
               fill
               sizes="(min-width: 1024px) calc(100vw - 80px), (min-width: 640px) calc(100vw - 48px), 0px"

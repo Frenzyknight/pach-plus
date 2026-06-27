@@ -211,7 +211,6 @@ export default function LayerStackSection() {
                   end: "+=320%",
                   pin: true,
                   scrub: 1,
-                  anticipatePin: 1,
                 },
               },
         );

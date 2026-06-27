@@ -3,17 +3,27 @@
 import Image from "next/image";
 import { useState } from "react";
 
+import type { ProductGallerySlide } from "@/lib/content/products";
+
+const DEFAULT_GALLERY_SLIDES: ProductGallerySlide[] = [
+  { type: "placeholder", label: "Placeholder 1" },
+  { type: "placeholder", label: "Placeholder 2" },
+  { type: "placeholder", label: "Placeholder 3" },
+];
+
 type Slide = {
   type: "image" | "placeholder";
   src?: string;
   alt?: string;
   label?: string;
+  fit?: "contain" | "cover";
 };
 
 type Props = {
   productName: string;
   productSrc: string;
   bg: string;
+  gallerySlides?: ProductGallerySlide[];
 };
 
 function Arrow({ direction }: { direction: "left" | "right" }) {
@@ -33,12 +43,24 @@ function Arrow({ direction }: { direction: "left" | "right" }) {
   );
 }
 
-export default function ProductImageCarousel({ productName, productSrc, bg }: Props) {
+export default function ProductImageCarousel({
+  productName,
+  productSrc,
+  bg,
+  gallerySlides = DEFAULT_GALLERY_SLIDES,
+}: Props) {
   const slides: Slide[] = [
-    { type: "image", src: productSrc, alt: `${productName} package` },
-    { type: "placeholder", label: "Placeholder 1" },
-    { type: "placeholder", label: "Placeholder 2" },
-    { type: "placeholder", label: "Placeholder 3" },
+    {
+      type: "image",
+      src: productSrc,
+      alt: `${productName} package`,
+      fit: "contain",
+    },
+    ...gallerySlides.map((slide): Slide =>
+      slide.type === "image"
+        ? { ...slide, fit: "cover" }
+        : { type: "placeholder", label: slide.label },
+    ),
   ];
 
   const [active, setActive] = useState(0);
@@ -61,8 +83,12 @@ export default function ProductImageCarousel({ productName, productSrc, bg }: Pr
           alt={current.alt ?? productName}
           fill
           sizes="(max-width: 1024px) 100vw, 60vw"
-          className="object-contain p-16 sm:p-24 lg:p-28"
-          priority
+          className={
+            current.fit === "cover"
+              ? "object-cover object-center"
+              : "object-contain p-16 sm:p-24 lg:p-28"
+          }
+          priority={active === 0}
         />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center">

@@ -42,11 +42,18 @@ function ValuesImage() {
         }
       >
         <Image
-          src="/about-section.jpeg"
+          src="/about-mobile-final.jpeg"
           alt="Two pach+ customers sharing a patch in a plant-filled apothecary."
           fill
-          sizes="(min-width: 1400px) 1400px, 100vw"
-          className="object-cover object-center"
+          sizes="(max-width: 1023px) 100vw, 0px"
+          className="object-cover object-center lg:hidden"
+        />
+        <Image
+          src="/about-desktop-final.jpeg"
+          alt="Two pach+ customers sharing a patch in a plant-filled apothecary."
+          fill
+          sizes="(min-width: 1400px) 1400px, (min-width: 1024px) 100vw, 0px"
+          className="hidden object-cover object-center lg:block"
         />
       </motion.div>
     </motion.div>

@@ -64,7 +64,7 @@ function ExploreScienceButton({ accent }: { accent: string }) {
   const [hover, setHover] = useState(false);
   return (
     <Link
-      href="/science#herbal-index"
+      href="/science"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onFocus={() => setHover(true)}

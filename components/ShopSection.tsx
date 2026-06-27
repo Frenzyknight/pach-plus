@@ -11,6 +11,8 @@ import {
   useTransform,
 } from "motion/react";
 import { Reveal, revealItem } from "@/components/motion/Reveal";
+import ClinicallyProvenBadge from "@/components/ClinicallyProvenBadge";
+import ComboCard from "@/components/ComboCard";
 import { PRODUCTS, type Product } from "@/lib/products";
 import { formatMoney } from "@/lib/format-money";
 
@@ -34,6 +36,10 @@ export function ProductCard({ product }: { product: Product }) {
         className="relative aspect-square rounded-2xl overflow-hidden mb-4 transition-transform duration-300 group-hover:scale-[1.02]"
         style={{ backgroundColor: product.bg }}
       >
+        <ClinicallyProvenBadge
+          size={56}
+          className="absolute right-3 top-3 z-10 h-12 w-12 lg:h-14 lg:w-14"
+        />
         <Image
           src={product.src}
           alt={product.name}
@@ -167,8 +173,14 @@ type ShopSectionProps = {
   products?: Product[];
 };
 
+const COMBO_SLUGS = ["happy-gut", "happy-hormones", "happy-muscles"] as const;
+
 export default function ShopSection({ products }: ShopSectionProps = {}) {
   const items = products ?? PRODUCTS;
+
+  const comboItems = COMBO_SLUGS.map((slug) =>
+    items.find((p) => p.slug === slug),
+  ).filter((p): p is Product => Boolean(p));
 
   return (
     <section className="bg-white pt-6 pb-20 px-6 lg:px-10">
@@ -195,19 +207,33 @@ export default function ShopSection({ products }: ShopSectionProps = {}) {
             >
               <ProductCard product={items[3]} />
             </motion.div>
+          ) : comboItems.length === 3 ? (
+            <motion.div
+              variants={revealItem}
+              className="md:col-start-3 md:row-start-2"
+            >
+              <ComboCard products={comboItems} />
+            </motion.div>
           ) : null}
 
           <LifestyleImage
-            src="/girl-guy.png"
-            alt="Man and woman wearing pach+ transdermal patches"
-            wrapperClassName="md:col-span-2 md:col-start-1 md:row-start-2 relative rounded-2xl overflow-hidden aspect-video md:aspect-auto md:min-h-[420px]"
-            sizes="(max-width: 768px) 100vw, 66vw"
+            src="/bento-1.jpeg"
+            alt="Arm wearing pach+ transdermal patch"
+            wrapperClassName="md:col-start-1 md:row-start-2 relative rounded-2xl overflow-hidden aspect-square md:aspect-auto md:min-h-[420px]"
+            sizes="(max-width: 768px) 100vw, 33vw"
             priority
           />
 
           <LifestyleImage
-            src="/girl-pach.png"
-            alt="Woman using pach+ Happy Hormones patch"
+            src="/bento-2.jpeg"
+            alt="Man wearing pach+ transdermal patch on chest"
+            wrapperClassName="md:col-start-2 md:row-start-2 relative rounded-2xl overflow-hidden aspect-square md:aspect-auto md:min-h-[420px]"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+
+          <LifestyleImage
+            src="/bento-3.jpg"
+            alt="Woman resting with pach+ Happy Hormones patch"
             wrapperClassName="md:col-span-2 md:col-start-1 md:row-start-3 relative rounded-2xl overflow-hidden aspect-4/5 md:aspect-auto md:min-h-[520px]"
             sizes="(max-width: 768px) 100vw, 66vw"
           />

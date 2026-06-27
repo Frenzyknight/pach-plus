@@ -12,18 +12,6 @@ import {
 } from "motion/react";
 import { Reveal, revealItem } from "@/components/motion/Reveal";
 
-interface Stat {
-  value: string;
-  label: string;
-}
-
-const STATS: Stat[] = [
-  { value: "8 Hr", label: "Steady transdermal wear per patch" },
-  { value: "0", label: "Pills to swallow" },
-  { value: "12", label: "Hero plant & mineral ingredients" },
-  { value: "100%", label: "Plant-based actives, no fillers" },
-];
-
 function ArrowIcon() {
   return (
     <svg
@@ -69,7 +57,7 @@ function MissionImage() {
         }
       >
         <Image
-          src="/mission-tablet.jpeg"
+          src="/our-mission.jpeg"
           alt="Our mission — athletes wearing pach+ patches"
           width={1024}
           height={576}
@@ -77,10 +65,10 @@ function MissionImage() {
           priority
         />
         <Image
-          src="/mission-mobile.jpeg"
+          src="/our-mission.jpeg"
           alt="Our mission — athletes wearing pach+ patches"
-          width={600}
-          height={800}
+          width={1024}
+          height={764}
           className="h-[480px] w-full object-cover lg:hidden"
           priority
         />
@@ -94,26 +82,9 @@ export default function AboutStatsMission() {
     <section id="mission" className="bg-white px-5 py-20 xs:px-6 lg:px-10 lg:py-28">
       <div className="mx-auto max-w-[1400px]">
         <Reveal
-          stagger={0.08}
-          amount={0.25}
-          className="grid grid-cols-2 gap-x-6 gap-y-10 pb-14 lg:grid-cols-4"
-        >
-          {STATS.map((stat) => (
-            <motion.div key={stat.value} variants={revealItem}>
-              <p className="text-[2rem] font-black tracking-[-0.04em] text-slate-900 sm:text-4xl lg:text-5xl">
-                {stat.value}
-              </p>
-              <p className="mt-2 max-w-[200px] text-[11px] font-medium leading-relaxed text-foreground/68 xs:text-xs sm:text-sm">
-                {stat.label}
-              </p>
-            </motion.div>
-          ))}
-        </Reveal>
-
-        <Reveal
           stagger={0.1}
           amount={0.2}
-          className="mt-16 grid grid-cols-1 items-center gap-12 lg:mt-24 lg:grid-cols-2 lg:gap-16"
+          className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16"
         >
           <motion.div variants={revealItem} className="order-2 lg:order-1">
             <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.25em] text-foreground/60 sm:mb-4">

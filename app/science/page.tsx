@@ -1,7 +1,5 @@
 import Navbar from "@/components/Navbar";
 import LayerStackSection from "@/components/LayerStackSection";
-import HerbalIndexHero from "@/components/HerbalIndexHero";
-import HerbalIndexGrid from "@/components/HerbalIndexGrid";
 import Footer from "@/components/Footer";
 import ScienceHero from "@/components/science/ScienceHero";
 import BioavailabilitySection from "@/components/science/BioavailabilitySection";
@@ -21,8 +19,6 @@ export default function SciencePage() {
         <ScienceHero />
         <BioavailabilitySection />
         <LayerStackSection />
-        <HerbalIndexHero />
-        <HerbalIndexGrid />
         <Footer />
       </div>
     </PageMotionProvider>

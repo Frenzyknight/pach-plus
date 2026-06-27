@@ -2,7 +2,7 @@ import {
   getProduct as getShopifyProduct,
   getProducts as getShopifyProducts,
 } from "@/lib/shopify";
-import { PRODUCT_CONTENT, getProductContent } from "@/lib/content/products";
+import { VISIBLE_PRODUCT_CONTENT, getProductContent } from "@/lib/content/products";
 import { buildProductFromContent, type Product } from "@/lib/products";
 
 /** Async, Shopify-merged list. Use in server components. Falls back to local content when Shopify is not configured. */
@@ -10,7 +10,7 @@ export async function getMergedProducts(): Promise<Product[]> {
   const shopifyProducts = await getShopifyProducts();
   const byHandle = new Map(shopifyProducts.map((p) => [p.handle, p]));
 
-  return PRODUCT_CONTENT.map((content) =>
+  return VISIBLE_PRODUCT_CONTENT.map((content) =>
     buildProductFromContent(content, byHandle.get(content.slug)),
   );
 }

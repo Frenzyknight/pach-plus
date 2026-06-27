@@ -13,6 +13,7 @@ import { LayoutGroup, motion, useReducedMotion } from "motion/react";
 import RotatingText, {
   type RotatingTextRef,
 } from "@/components/RotatingText";
+import ClinicallyProvenBadge from "@/components/ClinicallyProvenBadge";
 
 type Package = {
   slug: string;
@@ -107,18 +108,6 @@ const PACKAGES: Package[] = [
     label: "Daily Recovery",
     description:
       "Soothe sore, tired muscles with pach+\u2019s plant-based recovery patch \u2014 targeted, all-day comfort without a single pill.",
-  },
-  {
-    slug: "happy-breathe",
-    src: "/package2.png",
-    alt: "Happy Breathe",
-    accent: "#1E3A8A",
-    accentLight: "#93C5FD",
-    name: "Happy Breathe",
-    label: "Nasal Comfort",
-    description:
-      "Ease a stuffy, congested nose with pach+\u2019s plant-based breathing patch, worn across the nose for clearer breathing through colds and allergy season.",
-    comingSoon: true,
   },
   {
     slug: "happy-hormones",
@@ -413,6 +402,11 @@ export default function HeroProductShowcase() {
 
   return (
     <section className="relative isolate overflow-hidden bg-background py-12 lg:py-20">
+      <ClinicallyProvenBadge
+        size={96}
+        className="absolute right-5 top-5 z-30 h-16 w-16 lg:right-10 lg:top-8 lg:h-24 lg:w-24"
+      />
+
       {/* Preload all pouch images */}
       <div aria-hidden className="pointer-events-none absolute h-0 w-0 overflow-hidden">
         {PACKAGES.map((p) => (

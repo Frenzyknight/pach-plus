@@ -25,6 +25,10 @@ export type ProductComparisonRow = {
   alternatives: string;
 };
 
+export type ProductGallerySlide =
+  | { type: "image"; src: string; alt: string }
+  | { type: "placeholder"; label?: string };
+
 /**
  * Marketing content for each product. Commerce fields (price, inventory,
  * variant ids) live in Shopify and are merged in `lib/products.ts`.
@@ -35,8 +39,15 @@ export type ProductComparisonRow = {
  */
 export type ProductContent = {
   slug: string;
+  /**
+   * When true the product is kept in the project but never surfaced on the
+   * site (no listings, no reels, no detail page, no related links).
+   */
+  hidden?: boolean;
   src: string;
   hoverSrc?: string;
+  /** Extra carousel slides after the packshot. Defaults to three placeholders. */
+  gallerySlides?: ProductGallerySlide[];
   name: string;
   type: string;
   fallbackPrice: number;
@@ -149,6 +160,19 @@ export const PRODUCT_CONTENT: ProductContent[] = [
     slug: "happy-muscles",
     src: "/package.png",
     hoverSrc: "/muscle-hand.png",
+    gallerySlides: [
+      { type: "placeholder", label: "Placeholder 1" },
+      {
+        type: "image",
+        src: "/muscles-2.jpeg",
+        alt: "Hand holding Happy Muscles pach+ pouch",
+      },
+      {
+        type: "image",
+        src: "/muscles-3.jpeg",
+        alt: "Man wearing Happy Muscles patch on shoulder outdoors",
+      },
+    ],
     name: "Happy Muscles",
     type: "Recovery Patch",
     fallbackPrice: 1499,
@@ -255,10 +279,11 @@ export const PRODUCT_CONTENT: ProductContent[] = [
       },
     ],
     faqs: SHARED_FAQS,
-    relatedSlugs: ["happy-breathe", "happy-hormones"],
+    relatedSlugs: ["happy-hormones", "happy-gut"],
   },
   {
     slug: "happy-breathe",
+    hidden: true,
     src: "/package2.png",
     name: "Happy Breathe",
     type: "Nasal Comfort Patch",
@@ -373,6 +398,19 @@ export const PRODUCT_CONTENT: ProductContent[] = [
     slug: "happy-hormones",
     src: "/package3.png",
     hoverSrc: "/hormone-hand.png",
+    gallerySlides: [
+      { type: "placeholder", label: "Placeholder 1" },
+      {
+        type: "image",
+        src: "/hormones-2.jpeg",
+        alt: "Happy Hormones pach+ pouch on a bedside table with patch worn in bed",
+      },
+      {
+        type: "image",
+        src: "/hormones-3.jpeg",
+        alt: "Hands holding a mug with Happy Hormones patch on the back of the hand",
+      },
+    ],
     name: "Happy Hormones",
     type: "Balance Patch",
     fallbackPrice: 1499,
@@ -485,6 +523,19 @@ export const PRODUCT_CONTENT: ProductContent[] = [
     slug: "happy-gut",
     src: "/package4.png",
     hoverSrc: "/gut-hand.png",
+    gallerySlides: [
+      { type: "placeholder", label: "Placeholder 1" },
+      {
+        type: "image",
+        src: "/gut-2.jpeg",
+        alt: "Person holding Happy Gut pach+ pouch in front of their face",
+      },
+      {
+        type: "image",
+        src: "/gut-3.jpeg",
+        alt: "Hand holding orange juice with Happy Gut patch on the back of the hand",
+      },
+    ],
     name: "Happy Gut",
     type: "Nourish Patch",
     fallbackPrice: 1499,
@@ -591,10 +642,23 @@ export const PRODUCT_CONTENT: ProductContent[] = [
       },
     ],
     faqs: SHARED_FAQS,
-    relatedSlugs: ["happy-breathe", "happy-hormones"],
+    relatedSlugs: ["happy-hormones", "happy-muscles"],
   },
 ];
 
+/**
+ * Products that should appear on the site. Hidden products stay in
+ * `PRODUCT_CONTENT` (kept in the project) but are excluded everywhere the
+ * site renders product data.
+ */
+export const VISIBLE_PRODUCT_CONTENT: ProductContent[] = PRODUCT_CONTENT.filter(
+  (p) => !p.hidden,
+);
+
+/**
+ * Looks up content for site-facing surfaces. Returns `undefined` for hidden
+ * products so their listings and detail pages never render.
+ */
 export function getProductContent(slug: string): ProductContent | undefined {
-  return PRODUCT_CONTENT.find((p) => p.slug === slug);
+  return VISIBLE_PRODUCT_CONTENT.find((p) => p.slug === slug);
 }

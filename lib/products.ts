@@ -8,7 +8,7 @@
 import { COMING_SOON_TAG } from "@/lib/shopify/constants";
 import type { Product as ShopifyProductType, ProductVariant } from "@/lib/shopify/types";
 import {
-  PRODUCT_CONTENT,
+  VISIBLE_PRODUCT_CONTENT,
   getProductContent,
   type ProductContent,
 } from "@/lib/content/products";
@@ -63,7 +63,7 @@ export function buildProductFromContent(
 }
 
 /** Synchronous list using local content + fallback prices only. Safe for client components. */
-export const PRODUCTS: Product[] = PRODUCT_CONTENT.map((content) =>
+export const PRODUCTS: Product[] = VISIBLE_PRODUCT_CONTENT.map((content) =>
   buildProductFromContent(content, undefined),
 );
 

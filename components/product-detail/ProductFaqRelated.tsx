@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import ClinicallyProvenBadge from "@/components/ClinicallyProvenBadge";
 import { type Product } from "@/lib/products";
 import { formatMoney } from "@/lib/format-money";
 
@@ -36,6 +37,10 @@ function RelatedProductCard({ product }: { product: Product }) {
           className="relative aspect-square overflow-hidden rounded-2xl"
           style={{ backgroundColor: product.bg }}
         >
+          <ClinicallyProvenBadge
+            size={56}
+            className="absolute right-3 top-3 z-10 h-12 w-12 lg:h-14 lg:w-14"
+          />
           <Image
             src={product.src}
             alt={`${product.name} package`}

@@ -62,7 +62,7 @@ function ContactImage() {
           }
         >
           <Image
-            src="/abhinav.jpeg"
+            src="/contact-us.jpeg"
             alt="Get in touch with the pach+ team"
             fill
             sizes="(min-width: 1024px) calc(50vw - 80px), (min-width: 640px) calc(100vw - 48px), calc(100vw - 40px)"
